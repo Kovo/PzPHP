@@ -1,0 +1,7 @@
+Pz
+======
+Pz is a core framework, intended to act as an underlying infrsutrcutre for any sized project. It is light-weight, and offers a host of useful functions, that are often required in PHP applications.
+
+Pz can be interacted with directly, or through abstraction (see PzPHP, http://www.pzphp.com).
+
+Pz's codebase has been tested and improved on since 2008. It has been used in many large-scale web projects, such as http://www.numubu.com, http://www.loreaon.com, http://www.sharingyourrecipes.com, and many more.
