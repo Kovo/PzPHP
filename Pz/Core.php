@@ -12,13 +12,7 @@
 	 */
 	class PzCore
 	{
-		/*
-		 *
-		 * General
-		 *
-		 */
-
-		const VERSION = '3.5.9';
+		const VERSION = '3.5.10';
 
 		/**
 		 * @var bool
@@ -1023,6 +1017,18 @@
 			$id = ($id===-1?$this->_activeMysqlServerId:$id);
 
 			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->changeUser($user, $password, $dbName):false);
+		}
+
+		/**
+		 * @param $id
+		 *
+		 * @return bool
+		 */
+		public function mysqlActiveObject($id = -1)
+		{
+			$id = ($id===-1?$this->_activeMysqlServerId:$id);
+
+			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->returnMysqliObj():false);
 		}
 
 		/*

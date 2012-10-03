@@ -10,10 +10,27 @@
 	 */
 	class PzphpCore
 	{
+		const VERSION = '1.0.0';
+
 		/**
-		 * @var null|PzphpCore
+		 * @var null|PzCore
 		 */
 		private $_pzObject = NULL;
+
+		/**
+		 * @var null|PzphpCache
+		 */
+		private $_cacheObject = NULL;
+
+		/**
+		 * @var null|PzphpDb
+		 */
+		private $_dbObject = NULL;
+
+		/**
+		 * @var null|PzphpSecurity
+		 */
+		private $_securityObject = NULL;
 
 		function __construct()
 		{
@@ -76,12 +93,52 @@
 		}
 
 		/**
-		 * @return null|PzCore|PzphpCore
+		 * @return null|PzCore
 		 */
-		public function getPz()
+		public function pz()
 		{
 			return $this->_pzObject;
 		}
 
+		/**
+		 * @return null|PzphpCache
+		 */
+		public function cache()
+		{
+			if($this->_cacheObject === NULL)
+			{
+				$this->_cacheObject = new PzphpCache();
+				$this->_cacheObject->init($this);
+			}
 
+			return $this->_cacheObject;
+		}
+
+		/**
+		 * @return null|PzphpDb
+		 */
+		public function db()
+		{
+			if($this->_dbObject === NULL)
+			{
+				$this->_dbObject = new PzphpDb();
+				$this->_dbObject->init($this);
+			}
+
+			return $this->_dbObject;
+		}
+
+		/**
+		 * @return null|PzphpSecurity
+		 */
+		public function security()
+		{
+			if($this->_securityObject === NULL)
+			{
+				$this->_securityObject = new PzphpSecurity();
+				$this->_securityObject->init($this);
+			}
+
+			return $this->_securityObject;
+		}
 	}
