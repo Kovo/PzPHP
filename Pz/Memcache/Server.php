@@ -1,6 +1,5 @@
 <?php
 	/**
-	 * Website: http://www.pzphp.com
 	 * Contributions by:
 	 *     Fayez Awad
 	 *
@@ -49,6 +48,12 @@
 		 */
 		private $_memcache_obj = NULL;
 
+		/**
+		 * @param $mcIp
+		 * @param $mcPort
+		 * @param $connectRetries
+		 * @param $connectRetryWait
+		 */
 		function __construct($mcIp, $mcPort, $connectRetries, $connectRetryWait)
 		{
 			$this->_ip = $mcIp;
