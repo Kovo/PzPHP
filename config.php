@@ -14,6 +14,14 @@
 	define('CACHING_MODE', CACHE_MODE_NO_CACHING);
 
 	/*
+	 * PzSecurity Settings
+	 */
+	define('PZ_SECURITY_HASH_TABLE', '');
+	define('PZ_SECURITY_SALT', '');
+	define('PZ_SECURITY_POISON_CONSTRAINTS', '');
+	define('PZ_SECURITY_REHASH_DEPTH', '');
+
+	/*
 	 * Pz specific settings
 	 */
 	define('PZ_MYSQL_CONNECTION_RETRIES', 1);

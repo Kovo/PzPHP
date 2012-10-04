@@ -12,7 +12,7 @@
 	 */
 	class PzCore
 	{
-		const VERSION = '3.5.10';
+		const VERSION = '3.5.11';
 
 		/**
 		 * @var bool
@@ -20,7 +20,7 @@
 		public $isAjax = false;
 
 		/**
-		 * @var null
+		 * @var null|PzSecuirty
 		 */
 		private $_pzsecurityObject = NULL;
 
@@ -472,6 +472,16 @@
 			{
 				exit();
 			}
+		}
+
+		/**
+		 * @return null|PzSecurity
+		 */
+		public function getSecurityObject()
+		{
+			$this->_lazyLoad('PzSecurity');
+
+			return $this->_pzsecurityObject;
 		}
 
 		/**
