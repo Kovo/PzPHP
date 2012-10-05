@@ -10,14 +10,21 @@
 	 */
 	class PzphpCore
 	{
+		const VERSION = '1.0.0';
+
 		/**
-		 * @var null|PzphpCore
+		 * @var array
 		 */
-		private $_pzObject = NULL;
+		private $_registeredModules = array();
+
+		/**
+		 * @var array
+		 */
+		private $_registeredVariables = array();
 
 		function __construct()
 		{
-			$this->_pzObject = new PzCore(array(
+			$this->_registeredModules['PzCore'] = new PzCore(array(
 				'mysql_connect_retry_attempts' => PZ_MYSQL_CONNECTION_RETRIES,
 				'mysql_connect_retry_delay' => PZ_MYSQL_CONNECTION_RETRY_DELAY,
 				'auto_connect_mysql_servers' => PZ_MYSQL_AUTO_CONNECT_NEW_SERVER,
@@ -37,7 +44,7 @@
 					'target' => PZ_WHITELIST_TARGET,
 					'message' => PZ_WHITELIST_MESSAGE
 				),
-				'whitelist_auto_allow_host_server_ip' => PZ_WHITELIST_AUTO,
+				'whitelist_auto_allow_host_server_ip' => PZ_WHITELIST_AUTO_ALLOW_HOST_SERVER_IP,
 				'blacklist_ip_check' => PZ_BLACKLIST_IP_CHECK,
 				'blacklist_ips' => PZ_BLACKLIST_IPS,
 				'blacklist_action' => array(
@@ -70,18 +77,115 @@
 				'debug_memcached_log_errors' => PZ_DEBUG_LOG_MEMCACHED_ERRORS,
 				'debug_memcached_error_log_file_name' => PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME,
 				'debug_log_php_errors' => PZ_DEBUG_LOG_PHP_ERRORS,
-				'debug_php_error_log_file_name' => PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME,
+				'debug_php_error_log_file_name' => PZ_DEBUG_LOG_PHP_ERROR_LOG_FILE_NAME,
 				'debug_php_display_errors' => PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS
 			));
+
+			$this->registerModule('PzphpCache');
+			$this->registerModule('PzphpDb');
+			$this->registerModule('PzphpSecurity');
 		}
 
 		/**
-		 * @return null|PzCore|PzphpCore
+		 * @param $moduleName
+		 *
+		 * @return bool
 		 */
-		public function getPz()
+		public function registerModule($moduleName)
 		{
-			return $this->_pzObject;
+			if(!isset($this->_registeredModules[$moduleName]))
+			{
+				$this->_registeredModules[$moduleName] = NULL;
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
+		/**
+		 * @param $moduleName
+		 *
+		 * @return null|mixed
+		 */
+		public function getModule($moduleName)
+		{
+			if(isset($this->_registeredModules[$moduleName]))
+			{
+				if($this->_registeredModules[$moduleName] === NULL)
+				{
+					$this->_registeredModules[$moduleName] = new $moduleName();
 
+					if(method_exists($this->_registeredModules[$moduleName], 'init'))
+					{
+						$this->_registeredModules[$moduleName]->init($this);
+					}
+				}
+
+				return $this->_registeredModules[$moduleName];
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+
+		/**
+		 * @param $variableName
+		 * @param $variableValue
+		 *
+		 * @return bool
+		 */
+		public function registerVariable($variableName, $variableValue)
+		{
+			if(!isset($this->_registeredVariables[$variableName]))
+			{
+				$this->_registeredVariables[$variableName] = $variableValue;
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/**
+		 * @param $variableName
+		 *
+		 * @return null|mixed
+		 */
+		public function getVariable($variableName)
+		{
+			if(isset($this->_registeredVariables[$variableName]))
+			{
+				return $this->_registeredVariables[$variableName];
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+
+		/**
+		 * @param $variableName
+		 * @param $variableValue
+		 *
+		 * @return null|mixed
+		 */
+		public function changeVariable($variableName, $variableValue)
+		{
+			if(isset($this->_registeredVariables[$variableName]))
+			{
+				$this->_registeredVariables[$variableName] = $variableValue;
+
+				return $this->_registeredVariables[$variableName];
+			}
+			else
+			{
+				return NULL;
+			}
+		}
 	}

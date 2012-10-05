@@ -14,6 +14,14 @@
 	define('CACHING_MODE', CACHE_MODE_NO_CACHING);
 
 	/*
+	 * PzSecurity Settings
+	 */
+	define('PZ_SECURITY_HASH_TABLE', '');
+	define('PZ_SECURITY_SALT', '');
+	define('PZ_SECURITY_POISON_CONSTRAINTS', '');
+	define('PZ_SECURITY_REHASH_DEPTH', '');
+
+	/*
 	 * Pz specific settings
 	 */
 	define('PZ_MYSQL_CONNECTION_RETRIES', 1);
@@ -54,8 +62,8 @@
 	define('PZ_ALLOWED_DOMAINS', '');
 	define('PZ_TARGET_DOMAIN', '');
 
-	define('PZ_DEBUG_MODE', false);
-	define('PZ_DEBUG_BAR_DISPLAY', false);
+	define('PZ_DEBUG_MODE', true);
+	define('PZ_DEBUG_BAR_DISPLAY', true);
 	define('PZ_DEBUG_DB_USER', '');
 	define('PZ_DEBUG_DB_PASSWORD', '');
 	define('PZ_DEBUG_DB_NAME', '');
@@ -71,5 +79,5 @@
 	define('PZ_DEBUG_LOG_MEMCACHED_ERRORS', true);
 	define('PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME', 'MEMCACHED_ERRORS');
 	define('PZ_DEBUG_LOG_PHP_ERRORS', true);
-	define('PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME', 'PHP_ERRORS');
+	define('PZ_DEBUG_LOG_PHP_ERROR_LOG_FILE_NAME', 'PHP_ERRORS');
 	define('PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS', false);

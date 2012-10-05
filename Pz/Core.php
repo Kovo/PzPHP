@@ -1,6 +1,5 @@
 <?php
 	/**
-	 * Website: http://www.pzphp.com
 	 * Contributions by:
 	 *     Fayez Awad
 	 *
@@ -12,13 +11,7 @@
 	 */
 	class PzCore
 	{
-		/*
-		 *
-		 * General
-		 *
-		 */
-
-		const VERSION = '3.5.9';
+		const VERSION = '3.5.11';
 
 		/**
 		 * @var bool
@@ -26,7 +19,7 @@
 		public $isAjax = false;
 
 		/**
-		 * @var null
+		 * @var null|PzSecuirty
 		 */
 		private $_pzsecurityObject = NULL;
 
@@ -478,6 +471,16 @@
 			{
 				exit();
 			}
+		}
+
+		/**
+		 * @return null|PzSecurity
+		 */
+		public function getSecurityObject()
+		{
+			$this->_lazyLoad('PzSecurity');
+
+			return $this->_pzsecurityObject;
 		}
 
 		/**
@@ -1023,6 +1026,18 @@
 			$id = ($id===-1?$this->_activeMysqlServerId:$id);
 
 			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->changeUser($user, $password, $dbName):false);
+		}
+
+		/**
+		 * @param $id
+		 *
+		 * @return bool
+		 */
+		public function mysqlActiveObject($id = -1)
+		{
+			$id = ($id===-1?$this->_activeMysqlServerId:$id);
+
+			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->returnMysqliObj():false);
 		}
 
 		/*

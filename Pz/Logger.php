@@ -1,6 +1,5 @@
 <?php
 	/**
-	 * Website: http://www.pzphp.com
 	 * Contributions by:
 	 *     Fayez Awad
 	 *
