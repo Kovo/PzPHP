@@ -62,8 +62,8 @@
 	define('PZ_ALLOWED_DOMAINS', '');
 	define('PZ_TARGET_DOMAIN', '');
 
-	define('PZ_DEBUG_MODE', false);
-	define('PZ_DEBUG_BAR_DISPLAY', false);
+	define('PZ_DEBUG_MODE', true);
+	define('PZ_DEBUG_BAR_DISPLAY', true);
 	define('PZ_DEBUG_DB_USER', '');
 	define('PZ_DEBUG_DB_PASSWORD', '');
 	define('PZ_DEBUG_DB_NAME', '');
@@ -79,5 +79,5 @@
 	define('PZ_DEBUG_LOG_MEMCACHED_ERRORS', true);
 	define('PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME', 'MEMCACHED_ERRORS');
 	define('PZ_DEBUG_LOG_PHP_ERRORS', true);
-	define('PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME', 'PHP_ERRORS');
+	define('PZ_DEBUG_LOG_PHP_ERROR_LOG_FILE_NAME', 'PHP_ERRORS');
 	define('PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS', false);

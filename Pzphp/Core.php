@@ -44,7 +44,7 @@
 					'target' => PZ_WHITELIST_TARGET,
 					'message' => PZ_WHITELIST_MESSAGE
 				),
-				'whitelist_auto_allow_host_server_ip' => PZ_WHITELIST_AUTO,
+				'whitelist_auto_allow_host_server_ip' => PZ_WHITELIST_AUTO_ALLOW_HOST_SERVER_IP,
 				'blacklist_ip_check' => PZ_BLACKLIST_IP_CHECK,
 				'blacklist_ips' => PZ_BLACKLIST_IPS,
 				'blacklist_action' => array(
@@ -77,7 +77,7 @@
 				'debug_memcached_log_errors' => PZ_DEBUG_LOG_MEMCACHED_ERRORS,
 				'debug_memcached_error_log_file_name' => PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME,
 				'debug_log_php_errors' => PZ_DEBUG_LOG_PHP_ERRORS,
-				'debug_php_error_log_file_name' => PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME,
+				'debug_php_error_log_file_name' => PZ_DEBUG_LOG_PHP_ERROR_LOG_FILE_NAME,
 				'debug_php_display_errors' => PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS
 			));
 
@@ -152,10 +152,35 @@
 			}
 		}
 
+		/**
+		 * @param $variableName
+		 *
+		 * @return null|mixed
+		 */
 		public function getVariable($variableName)
 		{
 			if(isset($this->_registeredVariables[$variableName]))
 			{
+				return $this->_registeredVariables[$variableName];
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+
+		/**
+		 * @param $variableName
+		 * @param $variableValue
+		 *
+		 * @return null|mixed
+		 */
+		public function changeVariable($variableName, $variableValue)
+		{
+			if(isset($this->_registeredVariables[$variableName]))
+			{
+				$this->_registeredVariables[$variableName] = $variableValue;
+
 				return $this->_registeredVariables[$variableName];
 			}
 			else
