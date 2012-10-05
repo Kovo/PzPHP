@@ -92,9 +92,9 @@
 				switch($this->cacheMethod())
 				{
 					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->addMemcacheServer($mcIp, $mcPort);
+						return $this->pzphp()->getModule('PzCore')->addMemcacheServer($mcIp, $mcPort);
 					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->addMemcachedServer($mcIp, $mcPort);
+						return $this->pzphp()->getModule('PzCore')->addMemcachedServer($mcIp, $mcPort);
 					default:
 						return false;
 				}
@@ -119,13 +119,13 @@
 				switch($this->cacheMethod())
 				{
 					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcRead($keyName);
+						return $this->pzphp()->getModule('PzCore')->apcRead($keyName);
 					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcRead($keyName);
+						return $this->pzphp()->getModule('PzCore')->mcRead($keyName);
 					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdRead($keyName);
+						return $this->pzphp()->getModule('PzCore')->mcdRead($keyName);
 					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmRead($keyName);
+						return $this->pzphp()->getModule('PzCore')->shmRead($keyName);
 					default:
 						return false;
 				}
@@ -150,13 +150,13 @@
 				switch($this->cacheMethod())
 				{
 					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcRead($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->apcRead($keyName, true);
 					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcRead($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->mcRead($keyName, true);
 					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdRead($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->mcdRead($keyName, true);
 					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmRead($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->shmRead($keyName, true);
 					default:
 						return false;
 				}
@@ -183,13 +183,13 @@
 				switch($this->_cachingMethod)
 				{
 					case MongrelCore::APC:
-						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, false, true);
+						return $this->pzphp()->getModule('PzCore')->apcWrite($keyName, $value, $expires, false, true);
 					case MongrelCore::MEMCACHE:
-						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, false, true);
+						return $this->pzphp()->getModule('PzCore')->mcWrite($keyName, $value, $expires, false, true);
 					case MongrelCore::MEMCACHED:
-						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, false, true);
+						return $this->pzphp()->getModule('PzCore')->mcdWrite($keyName, $value, $expires, false, true);
 					case MongrelCore::SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmWrite($keyName, $value, false, true);
+						return $this->pzphp()->getModule('PzCore')->shmWrite($keyName, $value, false, true);
 					default:
 						return false;
 				}
@@ -216,13 +216,13 @@
 				switch($this->_cachingMethod)
 				{
 					case MongrelCore::APC:
-						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, true, true);
+						return $this->pzphp()->getModule('PzCore')->apcWrite($keyName, $value, $expires, true, true);
 					case MongrelCore::MEMCACHE:
-						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, true, true);
+						return $this->pzphp()->getModule('PzCore')->mcWrite($keyName, $value, $expires, true, true);
 					case MongrelCore::MEMCACHED:
-						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, true, true);
+						return $this->pzphp()->getModule('PzCore')->mcdWrite($keyName, $value, $expires, true, true);
 					case MongrelCore::SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmWrite($keyName, $value, true, true);
+						return $this->pzphp()->getModule('PzCore')->shmWrite($keyName, $value, true, true);
 					default:
 						return false;
 				}
@@ -247,13 +247,13 @@
 				switch($this->_cachingMethod)
 				{
 					case MongrelCore::APC:
-						return $this->pzphp()->pz()->apcDelete($keyName, false);
+						return $this->pzphp()->getModule('PzCore')->apcDelete($keyName, false);
 					case MongrelCore::MEMCACHE:
-						return $this->pzphp()->pz()->mcDelete($keyName, false);
+						return $this->pzphp()->getModule('PzCore')->mcDelete($keyName, false);
 					case MongrelCore::MEMCACHED:
-						return $this->pzphp()->pz()->mcdDelete($keyName, false);
+						return $this->pzphp()->getModule('PzCore')->mcdDelete($keyName, false);
 					case MongrelCore::SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmDelete($keyName, false);
+						return $this->pzphp()->getModule('PzCore')->shmDelete($keyName, false);
 					default:
 						return false;
 				}
@@ -278,13 +278,13 @@
 				switch($this->_cachingMethod)
 				{
 					case MongrelCore::APC:
-						return $this->pzphp()->pz()->apcDelete($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->apcDelete($keyName, true);
 					case MongrelCore::MEMCACHE:
-						return $this->pzphp()->pz()->mcDelete($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->mcDelete($keyName, true);
 					case MongrelCore::MEMCACHED:
-						return $this->pzphp()->pz()->mcdDelete($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->mcdDelete($keyName, true);
 					case MongrelCore::SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmDelete($keyName, true);
+						return $this->pzphp()->getModule('PzCore')->shmDelete($keyName, true);
 					default:
 						return false;
 				}

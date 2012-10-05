@@ -13,28 +13,18 @@
 		const VERSION = '1.0.0';
 
 		/**
-		 * @var null|PzCore
+		 * @var array
 		 */
-		private $_pzObject = NULL;
+		private $_registeredModules = array();
 
 		/**
-		 * @var null|PzphpCache
+		 * @var array
 		 */
-		private $_cacheObject = NULL;
-
-		/**
-		 * @var null|PzphpDb
-		 */
-		private $_dbObject = NULL;
-
-		/**
-		 * @var null|PzphpSecurity
-		 */
-		private $_securityObject = NULL;
+		private $_registeredVariables = array();
 
 		function __construct()
 		{
-			$this->_pzObject = new PzCore(array(
+			$this->_registeredModules['PzCore'] = new PzCore(array(
 				'mysql_connect_retry_attempts' => PZ_MYSQL_CONNECTION_RETRIES,
 				'mysql_connect_retry_delay' => PZ_MYSQL_CONNECTION_RETRY_DELAY,
 				'auto_connect_mysql_servers' => PZ_MYSQL_AUTO_CONNECT_NEW_SERVER,
@@ -90,55 +80,87 @@
 				'debug_php_error_log_file_name' => PZ_DEBUG_LOG_MEMCACHED_ERROR_LOG_FILE_NAME,
 				'debug_php_display_errors' => PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS
 			));
+
+			$this->registerModule('PzphpCache');
+			$this->registerModule('PzphpDb');
+			$this->registerModule('PzphpSecurity');
 		}
 
 		/**
-		 * @return null|PzCore
+		 * @param $moduleName
+		 *
+		 * @return bool
 		 */
-		public function pz()
+		public function registerModule($moduleName)
 		{
-			return $this->_pzObject;
-		}
-
-		/**
-		 * @return null|PzphpCache
-		 */
-		public function cache()
-		{
-			if($this->_cacheObject === NULL)
+			if(!isset($this->_registeredModules[$moduleName]))
 			{
-				$this->_cacheObject = new PzphpCache();
-				$this->_cacheObject->init($this);
-			}
+				$this->_registeredModules[$moduleName] = NULL;
 
-			return $this->_cacheObject;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		/**
-		 * @return null|PzphpDb
+		 * @param $moduleName
+		 *
+		 * @return null|mixed
 		 */
-		public function db()
+		public function getModule($moduleName)
 		{
-			if($this->_dbObject === NULL)
+			if(isset($this->_registeredModules[$moduleName]))
 			{
-				$this->_dbObject = new PzphpDb();
-				$this->_dbObject->init($this);
-			}
+				if($this->_registeredModules[$moduleName] === NULL)
+				{
+					$this->_registeredModules[$moduleName] = new $moduleName();
 
-			return $this->_dbObject;
+					if(method_exists($this->_registeredModules[$moduleName], 'init'))
+					{
+						$this->_registeredModules[$moduleName]->init($this);
+					}
+				}
+
+				return $this->_registeredModules[$moduleName];
+			}
+			else
+			{
+				return NULL;
+			}
 		}
 
 		/**
-		 * @return null|PzphpSecurity
+		 * @param $variableName
+		 * @param $variableValue
+		 *
+		 * @return bool
 		 */
-		public function security()
+		public function registerVariable($variableName, $variableValue)
 		{
-			if($this->_securityObject === NULL)
+			if(!isset($this->_registeredVariables[$variableName]))
 			{
-				$this->_securityObject = new PzphpSecurity();
-				$this->_securityObject->init($this);
-			}
+				$this->_registeredVariables[$variableName] = $variableValue;
 
-			return $this->_securityObject;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public function getVariable($variableName)
+		{
+			if(isset($this->_registeredVariables[$variableName]))
+			{
+				return $this->_registeredVariables[$variableName];
+			}
+			else
+			{
+				return NULL;
+			}
 		}
 	}

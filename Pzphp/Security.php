@@ -19,22 +19,22 @@
 
 			if(PZ_SECURITY_HASH_TABLE !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
+				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
 			}
 
 			if(PZ_SECURITY_SALT !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptSalt(PZ_SECURITY_SALT);
+				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptSalt(PZ_SECURITY_SALT);
 			}
 
 			if(PZ_SECURITY_POISON_CONSTRAINTS !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
+				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
 			}
 
 			if(PZ_SECURITY_REHASH_DEPTH !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
+				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
 			}
 		}
 
@@ -46,7 +46,7 @@
 		 */
 		public function createCode($length, $type = PzSecurity::ALPHANUMERIC)
 		{
-			return $this->pzphp()->pz()->createCode($length, $type);
+			return $this->pzphp()->getModule('PzCore')->createCode($length, $type);
 		}
 
 		/**
@@ -56,7 +56,7 @@
 		 */
 		public function twoWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->getModule('PzCore')->encrypt($value, array(PzSecurity::TWO_WAY));
 		}
 
 		/**
@@ -66,7 +66,7 @@
 		 */
 		public function twoWayDecrypt($value)
 		{
-			return $this->pzphp()->pz()->decrypt($value, array(PzSecurity::DE_POISON));
+			return $this->pzphp()->getModule('PzCore')->decrypt($value, array(PzSecurity::DE_POISON));
 		}
 
 		/**
@@ -76,7 +76,7 @@
 		 */
 		public function oneWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->getModule('PzCore')->encrypt($value, array(PzSecurity::ONE_WAY));
 		}
 
 		/**
@@ -87,7 +87,7 @@
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->getModule('PzCore')->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::ONE_WAY));
 		}
 
 		/**
@@ -98,7 +98,7 @@
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->getModule('PzCore')->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::TWO_WAY));
 		}
 
 		/**
@@ -109,7 +109,7 @@
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 0)
 		{
-			return $this->pzphp()->pz()->sanitize($value, true, $decimalPlaces);
+			return $this->pzphp()->getModule('PzCore')->sanitize($value, true, $decimalPlaces);
 		}
 
 		/**
@@ -120,6 +120,6 @@
 		 */
 		public function sanitizeString($value, $cleanMethod = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			return $this->pzphp()->pz()->sanitize($value, false, 0, $cleanMethod);
+			return $this->pzphp()->getModule('PzCore')->sanitize($value, false, 0, $cleanMethod);
 		}
 	}
