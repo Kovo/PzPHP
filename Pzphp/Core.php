@@ -188,4 +188,36 @@
 				return NULL;
 			}
 		}
+
+		/**
+		 * @return PzCore|null
+		 */
+		public function pz()
+		{
+			return $this->getModule('PzCore');
+		}
+
+		/**
+		 * @return PzphpCache|null
+		 */
+		public function cache()
+		{
+			return $this->getModule('PzphpCache');
+		}
+
+		/**
+		 * @return PzphpDb|null
+		 */
+		public function db()
+		{
+			return $this->getModule('PzphpDb');
+		}
+
+		/**
+		 * @return PzphpSecurity|null
+		 */
+		public function security()
+		{
+			return $this->getModule('PzphpSecurity');
+		}
 	}
