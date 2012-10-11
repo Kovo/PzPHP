@@ -202,7 +202,7 @@
 
 			if($this->getSetting('output_buffering') === true && $this->getSetting('compress_output') === true)
 			{
-				ob_start(array($this, '_compressOutput'));
+				ob_start(array($this, 'compressOutput'));
 			}
 			elseif($this->getSetting('output_buffering') === true)
 			{
@@ -538,7 +538,7 @@
 		 *
 		 * When compressing output, make sure not to use unclosed comments in inline javascript and css  (i.e. //comment here... )
 		 */
-		private function _compressOutput($buffer)
+		public function compressOutput($buffer)
 		{
 			$buffer = explode("<!--compress-html-->", $buffer);
 
