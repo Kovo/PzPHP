@@ -59,7 +59,7 @@
 		private $_status = self::DISCONNECTED;
 
 		/**
-		 * @var null
+		 * @var null|mysqli
 		 */
 		private $_mysqli_obj = NULL;
 
@@ -153,7 +153,7 @@
 		}
 
 		/**
-		 * @return null
+		 * @return mysqli|null
 		 */
 		public function returnMysqliObj()
 		{

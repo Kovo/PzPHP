@@ -42,7 +42,7 @@
 				{
 					if($cleanall === self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 					{
-						foreach(array('<:&lt;', '>:&gt;') as $k => $v)
+						foreach(array('<:&lt;', '>:&gt;') as $v)
 						{
 							$ex = explode(':', $v); //explode array item in question
 							$value = str_replace($ex[0], $ex[1], $value); //do the replacements
@@ -90,7 +90,7 @@
 		* @param int $cleanall
 		* @return array|float|int|mixed|string
 		*/
-		public function cleanQuery($dbLinkRes, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function cleanQuery(mysqli $dbLinkRes, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
 			if(is_array($value) === false)
 			{

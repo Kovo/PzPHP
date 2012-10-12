@@ -190,7 +190,7 @@
 		}
 
 		/**
-		 * @return PzCore|null
+		 * @return Pz_Core|null
 		 */
 		public function pz()
 		{

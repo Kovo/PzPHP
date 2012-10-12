@@ -14,7 +14,7 @@
 	define('CACHING_MODE', CACHE_MODE_NO_CACHING);
 
 	/*
-	 * PzSecurity Settings
+	 * Pz_Security Settings
 	 */
 	define('PZ_SECURITY_HASH_TABLE', '');
 	define('PZ_SECURITY_SALT', '');

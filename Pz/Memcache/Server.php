@@ -44,7 +44,7 @@
 		private $_status = self::DISCONNECTED;
 
 		/**
-		 * @var null
+		 * @var null|memcache
 		 */
 		private $_memcache_obj = NULL;
 

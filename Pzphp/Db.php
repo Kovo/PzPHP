@@ -77,7 +77,7 @@
 		 */
 		public function select($query)
 		{
-			return $this->pzphp()->db()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqlRead($query);
 		}
 
 		/**
@@ -87,7 +87,7 @@
 		 */
 		public function set($query)
 		{
-			return $this->pzphp()->db()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqlRead($query);
 		}
 
 		/**
@@ -97,7 +97,7 @@
 		 */
 		public function optimize($query)
 		{
-			return $this->pzphp()->db()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqlRead($query);
 		}
 
 		/**
@@ -107,7 +107,7 @@
 		 */
 		public function check($query)
 		{
-			return $this->pzphp()->db()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqlRead($query);
 		}
 
 		/**
@@ -117,7 +117,7 @@
 		 */
 		public function insert($query)
 		{
-			return $this->pzphp()->db()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqlWrite($query);
 		}
 
 		/**
@@ -127,7 +127,7 @@
 		 */
 		public function delete($query)
 		{
-			return $this->pzphp()->db()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqlWrite($query);
 		}
 
 		/**
@@ -137,7 +137,7 @@
 		 */
 		public function update($query)
 		{
-			return $this->pzphp()->db()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqlWrite($query);
 		}
 
 		/**
@@ -148,7 +148,7 @@
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 2)
 		{
-			return $this->pzphp()->db()->sanitize($value, true, $decimalPlaces);
+			return $this->pzphp()->pz()->sanitize($value, true, $decimalPlaces);
 		}
 
 		/**
@@ -157,8 +157,8 @@
 		 *
 		 * @return mixed
 		 */
-		public function sanitizeNonNumeric($value, $cleanHtmlLevel = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			return $this->pzphp()->db()->sanitize($value, false, 2, $cleanHtmlLevel);
+			return $this->pzphp()->pz()->sanitize($value, false, 2, $cleanHtmlLevel);
 		}
 	}

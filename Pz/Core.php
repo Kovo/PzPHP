@@ -11,7 +11,7 @@
 	 */
 	class Pz_Core
 	{
-		const VERSION = '3.6.1';
+		const VERSION = '3.6.2';
 
 		/**
 		 * @var bool
@@ -19,9 +19,9 @@
 		public $isAjax = false;
 
 		/**
-		 * @var null|PzSecuirty
+		 * @var null|Pz_Security
 		 */
-		private $_pzsecurityObject = NULL;
+		private $_Pz_SecurityObject = NULL;
 
 		/**
 		 * @var null|Pz_Debugger
@@ -347,7 +347,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_pzsecurityObject->getIpAddress();
+					$ip = $this->_Pz_SecurityObject->getIpAddress();
 
 					$ipFound = false;
 
@@ -395,7 +395,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_pzsecurityObject->getIpAddress();
+					$ip = $this->_Pz_SecurityObject->getIpAddress();
 
 					$serverIp = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
 
@@ -480,7 +480,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject;
+			return $this->_Pz_SecurityObject;
 		}
 
 		/**
@@ -493,7 +493,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->createCode($length, $type);
+			return $this->_Pz_SecurityObject->createCode($length, $type);
 		}
 
 		/**
@@ -507,7 +507,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->encrypt($input, $flags, $customRules);
+			return $this->_Pz_SecurityObject->encrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -521,7 +521,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->decrypt($input, $flags, $customRules);
+			return $this->_Pz_SecurityObject->decrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -590,7 +590,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->cleanQuery(
+			return $this->_Pz_SecurityObject->cleanQuery(
 				$this->_mysqlServers[($mysqlServerId===-1?$this->_activeMysqlServerId:$mysqlServerId)]->returnMysqliObj(),
 				$value,
 				$mustBeNumeric,
@@ -612,7 +612,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->cleanQuery(
+			return $this->_Pz_SecurityObject->cleanQuery(
 				$mysqlObj,
 				$value,
 				$mustBeNumeric,
@@ -1473,6 +1473,8 @@
 
 						$this->debuggerLog('mcdDeletesInc');
 					}
+
+					return true;
 				}
 				else
 				{
@@ -1631,6 +1633,8 @@
 
 						$this->debuggerLog('mcDeletesInc');
 					}
+
+					return true;
 				}
 				else
 				{
@@ -1790,6 +1794,8 @@
 
 					$this->debuggerLog('apcDeletesInc');
 				}
+
+				return true;
 			}
 			else
 			{

@@ -44,7 +44,7 @@
 		private $_status = self::DISCONNECTED;
 
 		/**
-		 * @var null
+		 * @var null|memcached
 		 */
 		private $_memcached_obj = NULL;
 
@@ -123,8 +123,6 @@
 		{
 			if($this->isConnected() === true && is_object($this->_memcached_obj))
 			{
-				$this->_memcached_obj->close();
-
 				$this->_memcached_obj = NULL;
 
 				$this->_status = self::DISCONNECTED;

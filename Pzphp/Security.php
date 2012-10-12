@@ -44,7 +44,7 @@
 		 *
 		 * @return mixed
 		 */
-		public function createCode($length, $type = PzSecurity::ALPHANUMERIC)
+		public function createCode($length, $type = Pz_Security::ALPHANUMERIC)
 		{
 			return $this->pzphp()->pz()->createCode($length, $type);
 		}
@@ -56,7 +56,7 @@
 		 */
 		public function twoWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::TWO_WAY));
 		}
 
 		/**
@@ -66,7 +66,7 @@
 		 */
 		public function twoWayDecrypt($value)
 		{
-			return $this->pzphp()->pz()->decrypt($value, array(PzSecurity::DE_POISON));
+			return $this->pzphp()->pz()->decrypt($value, array(Pz_Security::DE_POISON));
 		}
 
 		/**
@@ -76,7 +76,7 @@
 		 */
 		public function oneWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -87,7 +87,7 @@
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -98,7 +98,7 @@
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::TWO_WAY));
 		}
 
 		/**
@@ -118,7 +118,7 @@
 		 *
 		 * @return mixed
 		 */
-		public function sanitizeString($value, $cleanMethod = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function sanitizeString($value, $cleanMethod = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
 			return $this->pzphp()->pz()->sanitize($value, false, 0, $cleanMethod);
 		}

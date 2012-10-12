@@ -182,13 +182,13 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case MongrelCore::APC:
+					case CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, false, true);
-					case MongrelCore::MEMCACHE:
+					case CACHE_MODE_MEMCACHE:
 						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, false, true);
-					case MongrelCore::MEMCACHED:
+					case CACHE_MODE_MEMCACHED:
 						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, false, true);
-					case MongrelCore::SHARED_MEMORY:
+					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmWrite($keyName, $value, false, true);
 					default:
 						return false;
@@ -215,13 +215,13 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case MongrelCore::APC:
+					case CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, true, true);
-					case MongrelCore::MEMCACHE:
+					case CACHE_MODE_MEMCACHE:
 						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, true, true);
-					case MongrelCore::MEMCACHED:
+					case CACHE_MODE_MEMCACHED:
 						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, true, true);
-					case MongrelCore::SHARED_MEMORY:
+					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmWrite($keyName, $value, true, true);
 					default:
 						return false;
@@ -246,13 +246,13 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case MongrelCore::APC:
+					case CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcDelete($keyName, false);
-					case MongrelCore::MEMCACHE:
+					case CACHE_MODE_MEMCACHE:
 						return $this->pzphp()->pz()->mcDelete($keyName, false);
-					case MongrelCore::MEMCACHED:
+					case CACHE_MODE_MEMCACHED:
 						return $this->pzphp()->pz()->mcdDelete($keyName, false);
-					case MongrelCore::SHARED_MEMORY:
+					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmDelete($keyName, false);
 					default:
 						return false;
@@ -277,13 +277,13 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case MongrelCore::APC:
+					case CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcDelete($keyName, true);
-					case MongrelCore::MEMCACHE:
+					case CACHE_MODE_MEMCACHE:
 						return $this->pzphp()->pz()->mcDelete($keyName, true);
-					case MongrelCore::MEMCACHED:
+					case CACHE_MODE_MEMCACHED:
 						return $this->pzphp()->pz()->mcdDelete($keyName, true);
-					case MongrelCore::SHARED_MEMORY:
+					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmDelete($keyName, true);
 					default:
 						return false;
