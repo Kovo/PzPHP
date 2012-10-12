@@ -6,14 +6,14 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpSecurity
+	 * @package PzPHP_Security
 	 */
-	class PzphpSecurity extends PzphpWrapper
+	class PzPHP_Security extends PzPHP_Wrapper
 	{
 		/**
-		 * @param PzphpCore $PzphpCore
+		 * @param PzPHP_Core $PzphpCore
 		 */
-		public function init(PzphpCore $PzphpCore)
+		public function init(PzPHP_Core $PzphpCore)
 		{
 			parent::init($PzphpCore);
 

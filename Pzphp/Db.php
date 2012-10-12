@@ -6,9 +6,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpDb
+	 * @package PzPHP_Db
 	 */
-	class PzphpDb extends PzphpWrapper
+	class PzPHP_Db extends PzPHP_Wrapper
 	{
 		/**
 		 * @param $username

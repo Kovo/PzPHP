@@ -7,9 +7,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzMemcachedServer
+	 * @package Pz_Memcached_Server
 	 */
-	final class PzMemcachedServer
+	final class Pz_Memcached_Server
 	{
 		/*
 		 * Status constants

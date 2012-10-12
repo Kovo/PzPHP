@@ -7,9 +7,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzDebugger
+	 * @package Pz_Debugger
 	 */
-	class PzDebugger
+	class Pz_Debugger
 	{
 		/**
 		 * @var array
@@ -332,7 +332,7 @@
 		/*
 		 * Calcualtes, logs, displays debugger info
 		 */
-		public function finalize(PzCore $_pzcoreObject)
+		public function finalize(Pz_Core $_pzcoreObject)
 		{
 			$this->calculateExecTime();
 			$this->calculateMemoryUsage();
@@ -341,7 +341,7 @@
 
 			if($this->_logToDb === true)
 			{
-				$pzMysqlObject = new PzMysqlServer($this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_dbHost, $this->_dbPort, $this->_dbRetryattempts, $this->_dbRetryDelay);
+				$pzMysqlObject = new Pz_Mysql_Server($this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_dbHost, $this->_dbPort, $this->_dbRetryattempts, $this->_dbRetryDelay);
 
 				if($pzMysqlObject->connect())
 				{
@@ -360,7 +360,7 @@
 		{
 			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0px 0px;border-radius: 5px 5px 0px 0px;height:40px;">';
 
-			$html .= '<div style="float:left;width:25%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>PzDebugger</strong></div></div>';
+			$html .= '<div style="float:left;width:25%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>Pz_Debugger</strong></div></div>';
 
 			$statisticshtml = '';
 			$statisticshtml .= 'Queries: '.$this->_statistics['mysql_queries'].'\n\n';

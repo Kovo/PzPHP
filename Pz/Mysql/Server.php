@@ -7,9 +7,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzMysqlServer
+	 * @package Pz_Mysql_Server
 	 */
-	final class PzMysqlServer
+	final class Pz_Mysql_Server
 	{
 		/*
 		 * Status constants

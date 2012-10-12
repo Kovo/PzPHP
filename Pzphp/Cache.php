@@ -6,9 +6,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpCache
+	 * @package PzPHP_Cache
 	 */
-	class PzphpCache extends PzphpWrapper
+	class PzPHP_Cache extends PzPHP_Wrapper
 	{
 		/**
 		 * @var int
