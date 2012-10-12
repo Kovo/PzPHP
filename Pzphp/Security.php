@@ -6,35 +6,35 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpSecurity
+	 * @package PzPHP_Security
 	 */
-	class PzphpSecurity extends PzphpWrapper
+	class PzPHP_Security extends PzPHP_Wrapper
 	{
 		/**
-		 * @param PzphpCore $PzphpCore
+		 * @param PzPHP_Core $PzphpCore
 		 */
-		public function init(PzphpCore $PzphpCore)
+		public function init(PzPHP_Core $PzphpCore)
 		{
 			parent::init($PzphpCore);
 
 			if(PZ_SECURITY_HASH_TABLE !== '')
 			{
-				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
+				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
 			}
 
 			if(PZ_SECURITY_SALT !== '')
 			{
-				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptSalt(PZ_SECURITY_SALT);
+				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptSalt(PZ_SECURITY_SALT);
 			}
 
 			if(PZ_SECURITY_POISON_CONSTRAINTS !== '')
 			{
-				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
+				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
 			}
 
 			if(PZ_SECURITY_REHASH_DEPTH !== '')
 			{
-				$this->pzphp()->getModule('PzCore')->getSecurityObject()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
+				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
 			}
 		}
 
@@ -44,9 +44,9 @@
 		 *
 		 * @return mixed
 		 */
-		public function createCode($length, $type = PzSecurity::ALPHANUMERIC)
+		public function createCode($length, $type = Pz_Security::ALPHANUMERIC)
 		{
-			return $this->pzphp()->getModule('PzCore')->createCode($length, $type);
+			return $this->pzphp()->pz()->createCode($length, $type);
 		}
 
 		/**
@@ -56,7 +56,7 @@
 		 */
 		public function twoWayEncrypt($value)
 		{
-			return $this->pzphp()->getModule('PzCore')->encrypt($value, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::TWO_WAY));
 		}
 
 		/**
@@ -66,7 +66,7 @@
 		 */
 		public function twoWayDecrypt($value)
 		{
-			return $this->pzphp()->getModule('PzCore')->decrypt($value, array(PzSecurity::DE_POISON));
+			return $this->pzphp()->pz()->decrypt($value, array(Pz_Security::DE_POISON));
 		}
 
 		/**
@@ -76,7 +76,7 @@
 		 */
 		public function oneWayEncrypt($value)
 		{
-			return $this->pzphp()->getModule('PzCore')->encrypt($value, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -87,7 +87,7 @@
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->getModule('PzCore')->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::ONE_WAY));
+			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -98,7 +98,7 @@
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->getModule('PzCore')->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(PzSecurity::TWO_WAY));
+			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::TWO_WAY));
 		}
 
 		/**
@@ -109,7 +109,7 @@
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 0)
 		{
-			return $this->pzphp()->getModule('PzCore')->sanitize($value, true, $decimalPlaces);
+			return $this->pzphp()->pz()->sanitize($value, true, $decimalPlaces);
 		}
 
 		/**
@@ -118,8 +118,8 @@
 		 *
 		 * @return mixed
 		 */
-		public function sanitizeString($value, $cleanMethod = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function sanitizeString($value, $cleanMethod = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			return $this->pzphp()->getModule('PzCore')->sanitize($value, false, 0, $cleanMethod);
+			return $this->pzphp()->pz()->sanitize($value, false, 0, $cleanMethod);
 		}
 	}

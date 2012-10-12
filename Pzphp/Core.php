@@ -6,9 +6,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpCore
+	 * @package PzPHP_Core
 	 */
-	class PzphpCore
+	class PzPHP_Core
 	{
 		const VERSION = '1.0.0';
 
@@ -24,7 +24,7 @@
 
 		function __construct()
 		{
-			$this->_registeredModules['PzCore'] = new PzCore(array(
+			$this->_registeredModules['Pz_Core'] = new Pz_Core(array(
 				'mysql_connect_retry_attempts' => PZ_MYSQL_CONNECTION_RETRIES,
 				'mysql_connect_retry_delay' => PZ_MYSQL_CONNECTION_RETRY_DELAY,
 				'auto_connect_mysql_servers' => PZ_MYSQL_AUTO_CONNECT_NEW_SERVER,
@@ -81,9 +81,9 @@
 				'debug_php_display_errors' => PZ_DEBUG_LOG_DISPLAY_PHP_ERRORS
 			));
 
-			$this->registerModule('PzphpCache');
-			$this->registerModule('PzphpDb');
-			$this->registerModule('PzphpSecurity');
+			$this->registerModule('PzPHP_Cache');
+			$this->registerModule('PzPHP_Db');
+			$this->registerModule('PzPHP_Security');
 		}
 
 		/**
@@ -187,5 +187,37 @@
 			{
 				return NULL;
 			}
+		}
+
+		/**
+		 * @return Pz_Core|null
+		 */
+		public function pz()
+		{
+			return $this->getModule('Pz_Core');
+		}
+
+		/**
+		 * @return PzPHP_Cache|null
+		 */
+		public function cache()
+		{
+			return $this->getModule('PzPHP_Cache');
+		}
+
+		/**
+		 * @return PzPHP_Db|null
+		 */
+		public function db()
+		{
+			return $this->getModule('PzPHP_Db');
+		}
+
+		/**
+		 * @return PzPHP_Security|null
+		 */
+		public function security()
+		{
+			return $this->getModule('PzPHP_Security');
 		}
 	}

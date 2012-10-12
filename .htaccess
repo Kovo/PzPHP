@@ -1,0 +1,34 @@
+###ENVIRONMENT VARAIBLES
+SetEnv BOOTSTRAP_SCRIPT bootstrap.php
+
+###BASIC CONFIG
+Options -Indexes +FollowSymLinks
+ServerSignature Off
+IndexIgnore *
+RewriteEngine on
+
+###HTACCESS PROTECTION
+<Files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</Files>
+
+###INJECTION PREVENTION
+RewriteCond %{QUERY_STRING} (\"|%22).*(\>|%3E|<|%3C).* [NC]
+RewriteRule ^(.*)$ %{BOOTSTRAP_SCRIPT}?action=htaccessProtection [NC]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC]
+RewriteRule ^(.*)$ %{BOOTSTRAP_SCRIPT}?action=htaccessProtection [NC]
+RewriteCond %{QUERY_STRING} (javascript:).*(\;).* [NC]
+RewriteRule ^(.*)$ %{BOOTSTRAP_SCRIPT}?action=htaccessProtection [NC]
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ %{BOOTSTRAP_SCRIPT}?action=htaccessProtection [NC]
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* %{BOOTSTRAP_SCRIPT}?action=htaccessProtection [NC]

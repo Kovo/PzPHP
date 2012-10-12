@@ -7,11 +7,11 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzCore
+	 * @package Pz_Core
 	 */
-	class PzCore
+	class Pz_Core
 	{
-		const VERSION = '3.5.11';
+		const VERSION = '3.6.2';
 
 		/**
 		 * @var bool
@@ -19,27 +19,27 @@
 		public $isAjax = false;
 
 		/**
-		 * @var null|PzSecuirty
+		 * @var null|Pz_Security
 		 */
-		private $_pzsecurityObject = NULL;
+		private $_Pz_SecurityObject = NULL;
 
 		/**
-		 * @var null|PzDebugger
+		 * @var null|Pz_Debugger
 		 */
 		private $_pzdebuggerObject = NULL;
 
 		/**
-		 * @var null|PzLogger
+		 * @var null|Pz_Logger
 		 */
 		private $_pzLoggerObjectMysql = NULL;
 
 		/**
-		 * @var null|PzLogger
+		 * @var null|Pz_Logger
 		 */
 		private $_pzLoggerObjectMemcache = NULL;
 
 		/**
-		 * @var null|PzLogger
+		 * @var null|Pz_Logger
 		 */
 		private $_pzLoggerObjectMemcached = NULL;
 
@@ -90,8 +90,8 @@
 			'allowed_domains' => array(), //array or string (can be comma separated)
 			'target_domain' => '',
 			#debug/profiling
-			'debug_mode' => false,
-			'display_debug_bar' => false,
+			'debug_mode' => true,
+			'display_debug_bar' => true,
 			'debug_db_user' => '',
 			'debug_db_password' => '',
 			'debug_db_name' => '',
@@ -177,21 +177,21 @@
 					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
 				}
 
-				$this->_pzdebuggerObject = new PzDebugger($this->getSetting('debug_db_user'), $this->getSetting('debug_db_password'), $this->getSetting('debug_db_name'), $this->getSetting('debug_db_host'), $this->getSetting('debug_db_port'), $this->getSetting('display_debug_bar'), $this->getSetting('debug_db_log'), $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
+				$this->_pzdebuggerObject = new Pz_Debugger($this->getSetting('debug_db_user'), $this->getSetting('debug_db_password'), $this->getSetting('debug_db_name'), $this->getSetting('debug_db_host'), $this->getSetting('debug_db_port'), $this->getSetting('display_debug_bar'), $this->getSetting('debug_db_log'), $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
 
 				if($this->getSetting('debug_mysql_log_errors'))
 				{
-					$this->_pzLoggerObjectMysql = new PzLogger('', $this->getSetting('debug_mysql_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
+					$this->_pzLoggerObjectMysql = new Pz_Logger('', $this->getSetting('debug_mysql_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
 				}
 
 				if($this->getSetting('debug_memcache_log_errors'))
 				{
-					$this->_pzLoggerObjectMemcache = new PzLogger('', $this->getSetting('debug_memcache_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
+					$this->_pzLoggerObjectMemcache = new Pz_Logger('', $this->getSetting('debug_memcache_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
 				}
 
 				if($this->getSetting('debug_memcached_log_errors'))
 				{
-					$this->_pzLoggerObjectMemcached = new PzLogger('', $this->getSetting('debug_memcached_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
+					$this->_pzLoggerObjectMemcached = new Pz_Logger('', $this->getSetting('debug_memcached_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
 				}
 			}
 
@@ -202,7 +202,7 @@
 
 			if($this->getSetting('output_buffering') === true && $this->getSetting('compress_output') === true)
 			{
-				ob_start(array($this, '_compressOutput'));
+				ob_start(array($this, 'compressOutput'));
 			}
 			elseif($this->getSetting('output_buffering') === true)
 			{
@@ -345,9 +345,9 @@
 
 				if(count($whitelistedips) > 0)
 				{
-					$this->_lazyLoad('PzSecurity');
+					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_pzsecurityObject->getIpAddress();
+					$ip = $this->_Pz_SecurityObject->getIpAddress();
 
 					$ipFound = false;
 
@@ -393,9 +393,9 @@
 
 				if(count($blacklistedips) > 0)
 				{
-					$this->_lazyLoad('PzSecurity');
+					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_pzsecurityObject->getIpAddress();
+					$ip = $this->_Pz_SecurityObject->getIpAddress();
 
 					$serverIp = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
 
@@ -474,13 +474,13 @@
 		}
 
 		/**
-		 * @return null|PzSecurity
+		 * @return null|Pz_Security
 		 */
 		public function getSecurityObject()
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject;
+			return $this->_Pz_SecurityObject;
 		}
 
 		/**
@@ -489,11 +489,11 @@
 		 *
 		 * @return mixed
 		 */
-		public function createCode($length, $type = PzCrypt::ALPHANUMERIC)
+		public function createCode($length, $type = Pz_Crypt::ALPHANUMERIC)
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->createCode($length, $type);
+			return $this->_Pz_SecurityObject->createCode($length, $type);
 		}
 
 		/**
@@ -503,11 +503,11 @@
 		 *
 		 * @return mixed
 		 */
-		public function encrypt($input, $flags = array(PzCrypt::TWO_WAY), $customRules = array())
+		public function encrypt($input, $flags = array(Pz_Crypt::TWO_WAY), $customRules = array())
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->encrypt($input, $flags, $customRules);
+			return $this->_Pz_SecurityObject->encrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -519,9 +519,9 @@
 		 */
 		public function decrypt($input, $flags = array(), $customRules = array())
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->decrypt($input, $flags, $customRules);
+			return $this->_Pz_SecurityObject->decrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -538,7 +538,7 @@
 		 *
 		 * When compressing output, make sure not to use unclosed comments in inline javascript and css  (i.e. //comment here... )
 		 */
-		private function _compressOutput($buffer)
+		public function compressOutput($buffer)
 		{
 			$buffer = explode("<!--compress-html-->", $buffer);
 
@@ -586,11 +586,11 @@
 		 *
 		 * @return mixed
 		 */
-		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $mysqlServerId = -1)
+		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $mysqlServerId = -1)
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->cleanQuery(
+			return $this->_Pz_SecurityObject->cleanQuery(
 				$this->_mysqlServers[($mysqlServerId===-1?$this->_activeMysqlServerId:$mysqlServerId)]->returnMysqliObj(),
 				$value,
 				$mustBeNumeric,
@@ -608,11 +608,11 @@
 		 *
 		 * @return mixed
 		 */
-		public function sanitizeExternal($mysqlObj, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = PzSecurity::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function sanitizeExternal($mysqlObj, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			$this->_lazyLoad('PzSecurity');
+			$this->_lazyLoad('Pz_Security');
 
-			return $this->_pzsecurityObject->cleanQuery(
+			return $this->_Pz_SecurityObject->cleanQuery(
 				$mysqlObj,
 				$value,
 				$mustBeNumeric,
@@ -622,7 +622,7 @@
 		}
 
 		/**
-		 * @param PzLogger $logObject
+		 * @param Pz_Logger $logObject
 		 * @param          $message
 		 */
 		public function addToLog($logObject, $message)
@@ -697,7 +697,7 @@
 		 */
 		public function addMysqlServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306)
 		{
-			$this->_mysqlServers[] = new PzMysqlServer($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
+			$this->_mysqlServers[] = new Pz_Mysql_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_mysqlServers));
 
@@ -1148,7 +1148,7 @@
 		 */
 		public function addMemcachedServer($mcIp, $mcPort)
 		{
-			$this->_memcachedServers[] = new PzMemcachedServer($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
+			$this->_memcachedServers[] = new Pz_Memcached_Server($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_memcachedServers));
 
@@ -1173,7 +1173,7 @@
 		 */
 		public function addMemcacheServer($mcIp, $mcPort)
 		{
-			$this->_memcacheServers[] = new PzMemcacheServer($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
+			$this->_memcacheServers[] = new Pz_Memcache_Server($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_memcacheServers));
 
@@ -1473,6 +1473,8 @@
 
 						$this->debuggerLog('mcdDeletesInc');
 					}
+
+					return true;
 				}
 				else
 				{
@@ -1631,6 +1633,8 @@
 
 						$this->debuggerLog('mcDeletesInc');
 					}
+
+					return true;
 				}
 				else
 				{
@@ -1790,6 +1794,8 @@
 
 					$this->debuggerLog('apcDeletesInc');
 				}
+
+				return true;
 			}
 			else
 			{

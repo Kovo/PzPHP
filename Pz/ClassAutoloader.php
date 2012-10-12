@@ -9,7 +9,7 @@
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
 	 * @package ClassAutoloader
 	 */
-	class ClassAutoloader
+	class Pz_ClassAutoloader
 	{
 		public function __construct()
 		{
@@ -21,7 +21,7 @@
 		 */
 		private function loader($className)
 		{
-			$fileNameParts = preg_split('/(?=[A-Z])/', $className);
+			$fileNameParts = explode('_', $className);
 
 			include BASE_CLASS_DIR.implode('/', $fileNameParts).'.php';
 		}

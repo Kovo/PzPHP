@@ -6,25 +6,25 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzphpWrapper
+	 * @package PzPHP_Wrapper
 	 */
-	class PzphpWrapper
+	class PzPHP_Wrapper
 	{
 		/**
-		 * @var null|PzphpCore
+		 * @var null|PzPHP_Core
 		 */
 		private $_pzphpCore = NULL;
 
 		/**
-		 * @param PzphpCore $PzphpCore
+		 * @param PzPHP_Core $PzphpCore
 		 */
-		public function init(PzphpCore $PzphpCore)
+		public function init(PzPHP_Core $PzphpCore)
 		{
 			$this->_pzphpCore = $PzphpCore;
 		}
 
 		/**
-		 * @return null|PzphpCore
+		 * @return null|PzPHP_Core
 		 */
 		public function pzphp()
 		{

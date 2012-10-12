@@ -29,8 +29,8 @@
 
 	require_once PZ_INC_DIR.'ClassAutoloader.php';
 
-	new ClassAutoloader();
+	new Pz_ClassAutoloader();
 
-	$_PZPHP = new PzphpCore();
+	$_PZPHP = new PzPHP_Core();
 
 	//----------------------BEGIN YOUR MAGIC BELOW----------------------//

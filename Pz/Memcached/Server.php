@@ -7,9 +7,9 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzMemcachedServer
+	 * @package Pz_Memcached_Server
 	 */
-	final class PzMemcachedServer
+	final class Pz_Memcached_Server
 	{
 		/*
 		 * Status constants
@@ -44,7 +44,7 @@
 		private $_status = self::DISCONNECTED;
 
 		/**
-		 * @var null
+		 * @var null|memcached
 		 */
 		private $_memcached_obj = NULL;
 
@@ -123,8 +123,6 @@
 		{
 			if($this->isConnected() === true && is_object($this->_memcached_obj))
 			{
-				$this->_memcached_obj->close();
-
 				$this->_memcached_obj = NULL;
 
 				$this->_status = self::DISCONNECTED;
