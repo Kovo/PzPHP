@@ -49,6 +49,16 @@
 		}
 
 		/**
+		 * @param $object
+		 *
+		 * @return int
+		 */
+		public function returnedRows($object)
+		{
+			return (is_object($object)?$object->num_rows:0);
+		}
+
+		/**
 		 * @param $name
 		 *
 		 * @return bool
