@@ -11,15 +11,15 @@
 	class PzPHP_Db extends PzPHP_Wrapper
 	{
 		/**
-		 * @param $username
-		 * @param $password
-		 * @param $dbname
-		 * @param $host
-		 * @param $port
+		 * @param        $username
+		 * @param        $password
+		 * @param        $dbname
+		 * @param string $host
+		 * @param int    $port
 		 *
 		 * @return mixed
 		 */
-		public function addServer($username, $password, $dbname, $host, $port)
+		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
 		{
 			return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
 		}
