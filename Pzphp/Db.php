@@ -79,6 +79,17 @@
 		}
 
 		/**
+		 * @param $object
+		 */
+		public function freeResult($object)
+		{
+			if(is_object($object) && method_exists($object, 'close'))
+			{
+				$object->close();
+			}
+		}
+
+		/**
 		 * @param $name
 		 *
 		 * @return bool

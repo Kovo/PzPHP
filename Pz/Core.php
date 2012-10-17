@@ -11,7 +11,7 @@
 	 */
 	class Pz_Core
 	{
-		const VERSION = '3.6.2';
+		const VERSION = '3.6.3';
 
 		/**
 		 * @var bool
@@ -21,7 +21,7 @@
 		/**
 		 * @var null|Pz_Security
 		 */
-		private $_Pz_SecurityObject = NULL;
+		private $_pzsecurityObject = NULL;
 
 		/**
 		 * @var null|Pz_Debugger
@@ -347,7 +347,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_Pz_SecurityObject->getIpAddress();
+					$ip = $this->_pzsecurityObject->getIpAddress();
 
 					$ipFound = false;
 
@@ -395,7 +395,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_Pz_SecurityObject->getIpAddress();
+					$ip = $this->_pzsecurityObject->getIpAddress();
 
 					$serverIp = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
 
@@ -480,7 +480,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject;
+			return $this->_pzsecurityObject;
 		}
 
 		/**
@@ -493,7 +493,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->createCode($length, $type);
+			return $this->_pzsecurityObject->createCode($length, $type);
 		}
 
 		/**
@@ -507,7 +507,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->encrypt($input, $flags, $customRules);
+			return $this->_pzsecurityObject->encrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -521,7 +521,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->decrypt($input, $flags, $customRules);
+			return $this->_pzsecurityObject->decrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -590,7 +590,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->cleanQuery(
+			return $this->_pzsecurityObject->cleanQuery(
 				$this->_mysqlServers[($mysqlServerId===-1?$this->_activeMysqlServerId:$mysqlServerId)]->returnMysqliObj(),
 				$value,
 				$mustBeNumeric,
@@ -612,7 +612,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->cleanQuery(
+			return $this->_pzsecurityObject->cleanQuery(
 				$mysqlObj,
 				$value,
 				$mustBeNumeric,

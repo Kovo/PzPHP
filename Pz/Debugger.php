@@ -358,7 +358,7 @@
 
 		private function _buildBar()
 		{
-			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial, sans-serif;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;height:40px;">';
+			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial, sans-serif;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;height:40px;z-index:2147483647;">';
 
 			$html .= '<div style="float:left;width:25%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>Pz_Debugger</strong></div></div>';
 
