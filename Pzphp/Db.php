@@ -59,6 +59,26 @@
 		}
 
 		/**
+		 * @param $object
+		 *
+		 * @return bool
+		 */
+		public function fetchNextRowAssoc($object)
+		{
+			return (is_object($object)?$object->fetch_assoc():false);
+		}
+
+		/**
+		 * @param $object
+		 *
+		 * @return bool
+		 */
+		public function fetchNextRowEnum($object)
+		{
+			return (is_object($object)?$object->fetch_row():false);
+		}
+
+		/**
 		 * @param $name
 		 *
 		 * @return bool
