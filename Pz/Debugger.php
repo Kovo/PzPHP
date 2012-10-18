@@ -30,6 +30,9 @@
 			'shm_writes' => 0,
 			'shm_deletes' => 0,
 			'shm_reads' => 0,
+			'lc_writes' => 0,
+			'lc_deletes' => 0,
+			'lc_reads' => 0,
 			'includes' => 0,
 			'mysql_connections' => 0,
 			'mc_connections' => 0,
@@ -272,6 +275,30 @@
 		}
 
 		/*
+		 * Increase lc writes by 1
+		 */
+		public function lcWritesInc()
+		{
+			$this->_statistics['lc_writes']++;
+		}
+
+		/*
+		 * Increase lc deletes by 1
+		 */
+		public function lcDeletesInc()
+		{
+			$this->_statistics['lc_deletes']++;
+		}
+
+		/*
+		 * Increase lc reads by 1
+		 */
+		public function lcReadsInc()
+		{
+			$this->_statistics['lc_reads']++;
+		}
+
+		/*
 		 * Increase mysql connections by 1
 		 */
 		public function mysqlConnectionsInc()
@@ -346,7 +373,7 @@
 				if($pzMysqlObject->connect())
 				{
 					$mysqlObject = $pzMysqlObject->returnMysqliObj();
-					$pzMysqlObject->returnMysqliObj()->query("INSERT INTO pz_debugger (mysql_queries, mysql_read_queries, mysql_write_queries, mc_writes, mc_deletes, mc_reads, mcd_writes, mcd_deletes, mcd_reads, apc_writes, apc_deletes, apc_reads, shm_writes, shm_deletes, shm_reads, includes, mysql_connections, mc_connections, mcd_connections, mysql_disconnections, mc_disconnections, mcd_disconnections, mysql_queries_executed, start_memory_usage, start_memory_real_usage, start_peak_memory_usage, start_peak_memory_real_usage, end_memory_usage, end_memory_real_usage, end_peak_memory_usage, end_peak_memory_real_usage, exec_time, exec_start_time, exec_end_time) VALUES (".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_read_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_write_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['includes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_disconnections']).", '".$_pzcoreObject->sanitizeExternal($mysqlObject, serialize($this->_statistics['mysql_queries_executed']), false)."', ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_start_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_end_time'], false).")");
+					$pzMysqlObject->returnMysqliObj()->query("INSERT INTO pz_debugger (mysql_queries, mysql_read_queries, mysql_write_queries, mc_writes, mc_deletes, mc_reads, mcd_writes, mcd_deletes, mcd_reads, apc_writes, apc_deletes, apc_reads, shm_writes, shm_deletes, shm_reads, lc_writes, lc_deletes, lc_reads, includes, mysql_connections, mc_connections, mcd_connections, mysql_disconnections, mc_disconnections, mcd_disconnections, mysql_queries_executed, start_memory_usage, start_memory_real_usage, start_peak_memory_usage, start_peak_memory_real_usage, end_memory_usage, end_memory_real_usage, end_peak_memory_usage, end_peak_memory_real_usage, exec_time, exec_start_time, exec_end_time) VALUES (".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_read_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_write_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['includes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_disconnections']).", '".$_pzcoreObject->sanitizeExternal($mysqlObject, serialize($this->_statistics['mysql_queries_executed']), false)."', ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_start_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_end_time'], false).")");
 				}
 			}
 
@@ -378,6 +405,9 @@
 			$statisticshtml .= 'SHM Writes: '.$this->_statistics['shm_writes'].'\n\n';
 			$statisticshtml .= 'SHM Deletes: '.$this->_statistics['shm_deletes'].'\n\n';
 			$statisticshtml .= 'SHM Reads: '.$this->_statistics['shm_reads'].'\n\n\n\n';
+			$statisticshtml .= 'LC Writes: '.$this->_statistics['lc_writes'].'\n\n';
+			$statisticshtml .= 'LC Deletes: '.$this->_statistics['lc_deletes'].'\n\n';
+			$statisticshtml .= 'LC Reads: '.$this->_statistics['lc_reads'].'\n\n\n\n';
 			$statisticshtml .= 'MySql Conn: '.$this->_statistics['mysql_connections'].'\n\n';
 			$statisticshtml .= 'MySql Disconn: '.$this->_statistics['mysql_disconnections'].'\n\n\n\n';
 			$statisticshtml .= 'MC Conn: '.$this->_statistics['mc_connections'].'\n\n';

@@ -7,6 +7,7 @@
 	define('CACHE_MODE_APC', 2);
 	define('CACHE_MODE_MEMCACHE', 3);
 	define('CACHE_MODE_MEMCACHED', 4);
+	define('CACHE_MODE_LOCALCACHE', 5);
 
 	/*
 	 * PzPHP settings
