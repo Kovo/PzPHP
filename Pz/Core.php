@@ -11,7 +11,7 @@
 	 */
 	class Pz_Core
 	{
-		const VERSION = '3.6.2';
+		const VERSION = '3.7.0';
 
 		/**
 		 * @var bool
@@ -21,7 +21,7 @@
 		/**
 		 * @var null|Pz_Security
 		 */
-		private $_Pz_SecurityObject = NULL;
+		private $_pzsecurityObject = NULL;
 
 		/**
 		 * @var null|Pz_Debugger
@@ -152,6 +152,13 @@
 		 * @var int
 		 */
 		private $_activeMemcacheServerId = -1;
+
+		/*
+		 *
+		 * Local Cache
+		 *
+		 */
+		private $_localCache= array();
 
 		/*
 		 *
@@ -347,7 +354,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_Pz_SecurityObject->getIpAddress();
+					$ip = $this->_pzsecurityObject->getIpAddress();
 
 					$ipFound = false;
 
@@ -395,7 +402,7 @@
 				{
 					$this->_lazyLoad('Pz_Security');
 
-					$ip = $this->_Pz_SecurityObject->getIpAddress();
+					$ip = $this->_pzsecurityObject->getIpAddress();
 
 					$serverIp = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
 
@@ -480,7 +487,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject;
+			return $this->_pzsecurityObject;
 		}
 
 		/**
@@ -493,7 +500,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->createCode($length, $type);
+			return $this->_pzsecurityObject->createCode($length, $type);
 		}
 
 		/**
@@ -507,7 +514,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->encrypt($input, $flags, $customRules);
+			return $this->_pzsecurityObject->encrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -521,7 +528,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->decrypt($input, $flags, $customRules);
+			return $this->_pzsecurityObject->decrypt($input, $flags, $customRules);
 		}
 
 		/**
@@ -590,7 +597,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->cleanQuery(
+			return $this->_pzsecurityObject->cleanQuery(
 				$this->_mysqlServers[($mysqlServerId===-1?$this->_activeMysqlServerId:$mysqlServerId)]->returnMysqliObj(),
 				$value,
 				$mustBeNumeric,
@@ -612,7 +619,7 @@
 		{
 			$this->_lazyLoad('Pz_Security');
 
-			return $this->_Pz_SecurityObject->cleanQuery(
+			return $this->_pzsecurityObject->cleanQuery(
 				$mysqlObj,
 				$value,
 				$mustBeNumeric,
@@ -2013,6 +2020,75 @@
 				}
 
 				return $this->shmDelete($key);
+			}
+		}
+
+		/*
+		 *
+		 * LOCAL CACHE
+		 *
+		 */
+
+		/**
+		 * @param      $key
+		 * @param      $value
+		 * @param bool $deleteOnExist
+		 *
+		 * @return bool
+		 */
+		public function lcWrite($key, $value, $deleteOnExist = true)
+		{
+			if(isset($this->_localCache[$key]) && $deleteOnExist === false)
+			{
+				return false;
+			}
+			else
+			{
+				$this->_localCache[$key] = $value;
+
+				$this->debuggerLog('lcWritesInc');
+
+				return true;
+			}
+		}
+
+		/**
+		 * @param $key
+		 *
+		 * @return bool
+		 */
+		public function lcRead($key)
+		{
+			if(isset($this->_localCache[$key]))
+			{
+				$this->debuggerLog('lcReadsInc');
+
+				return $this->_localCache[$key];
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/**
+		 * @param $key
+		 *
+		 * @return bool
+		 */
+		public function lcDelete($key)
+		{
+			if(isset($this->_localCache[$key]))
+			{
+				unset($this->_localCache[$key]);
+
+				$this->debuggerLog('lcDeletesInc');
+
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}

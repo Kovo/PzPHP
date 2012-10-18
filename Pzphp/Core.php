@@ -10,7 +10,7 @@
 	 */
 	class PzPHP_Core
 	{
-		const VERSION = '1.0.0';
+		const VERSION = '1.0.1';
 
 		/**
 		 * @var array
@@ -95,7 +95,7 @@
 		{
 			if(!isset($this->_registeredModules[$moduleName]))
 			{
-				$this->_registeredModules[$moduleName] = NULL;
+				$this->_registeredModules[$moduleName] = false;
 
 				return true;
 			}
@@ -110,11 +110,11 @@
 		 *
 		 * @return null|mixed
 		 */
-		public function getModule($moduleName)
+		public function module($moduleName)
 		{
 			if(isset($this->_registeredModules[$moduleName]))
 			{
-				if($this->_registeredModules[$moduleName] === NULL)
+				if($this->_registeredModules[$moduleName] === false)
 				{
 					$this->_registeredModules[$moduleName] = new $moduleName();
 
@@ -194,7 +194,7 @@
 		 */
 		public function pz()
 		{
-			return $this->getModule('Pz_Core');
+			return $this->module('Pz_Core');
 		}
 
 		/**
@@ -202,7 +202,7 @@
 		 */
 		public function cache()
 		{
-			return $this->getModule('PzPHP_Cache');
+			return $this->module('PzPHP_Cache');
 		}
 
 		/**
@@ -210,7 +210,7 @@
 		 */
 		public function db()
 		{
-			return $this->getModule('PzPHP_Db');
+			return $this->module('PzPHP_Db');
 		}
 
 		/**
@@ -218,6 +218,6 @@
 		 */
 		public function security()
 		{
-			return $this->getModule('PzPHP_Security');
+			return $this->module('PzPHP_Security');
 		}
 	}

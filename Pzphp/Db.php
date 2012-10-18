@@ -11,15 +11,15 @@
 	class PzPHP_Db extends PzPHP_Wrapper
 	{
 		/**
-		 * @param $username
-		 * @param $password
-		 * @param $dbname
-		 * @param $host
-		 * @param $port
+		 * @param        $username
+		 * @param        $password
+		 * @param        $dbname
+		 * @param string $host
+		 * @param int    $port
 		 *
 		 * @return mixed
 		 */
-		public function addServer($username, $password, $dbname, $host, $port)
+		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
 		{
 			return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
 		}
@@ -46,6 +46,47 @@
 		public function affectedRows()
 		{
 			return $this->pzphp()->pz()->mysqlAffectedRows();
+		}
+
+		/**
+		 * @param $object
+		 *
+		 * @return int
+		 */
+		public function returnedRows($object)
+		{
+			return (is_object($object)?$object->num_rows:0);
+		}
+
+		/**
+		 * @param $object
+		 *
+		 * @return bool
+		 */
+		public function fetchNextRowAssoc($object)
+		{
+			return (is_object($object)?$object->fetch_assoc():false);
+		}
+
+		/**
+		 * @param $object
+		 *
+		 * @return bool
+		 */
+		public function fetchNextRowEnum($object)
+		{
+			return (is_object($object)?$object->fetch_row():false);
+		}
+
+		/**
+		 * @param $object
+		 */
+		public function freeResult($object)
+		{
+			if(is_object($object) && method_exists($object, 'close'))
+			{
+				$object->close();
+			}
 		}
 
 		/**

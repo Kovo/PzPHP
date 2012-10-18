@@ -56,6 +56,9 @@
 				case CACHE_MODE_SHARED_MEMORY:
 					$this->_cachingMethod = CACHE_MODE_SHARED_MEMORY;
 					break;
+				case CACHE_MODE_LOCALCACHE:
+					$this->_cachingMethod = CACHE_MODE_LOCALCACHE;
+					break;
 				default:
 					$this->_cachingMethod = CACHE_MODE_NO_CACHING;
 			}
@@ -126,6 +129,8 @@
 						return $this->pzphp()->pz()->mcdRead($keyName);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmRead($keyName);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcRead($keyName);
 					default:
 						return false;
 				}
@@ -157,6 +162,8 @@
 						return $this->pzphp()->pz()->mcdRead($keyName, true);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmRead($keyName, true);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcRead($keyName);
 					default:
 						return false;
 				}
@@ -190,6 +197,8 @@
 						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, false, true);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmWrite($keyName, $value, false, true);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcWrite($keyName, $value, true);
 					default:
 						return false;
 				}
@@ -223,6 +232,8 @@
 						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, true, true);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmWrite($keyName, $value, true, true);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcWrite($keyName, $value, true);
 					default:
 						return false;
 				}
@@ -254,6 +265,8 @@
 						return $this->pzphp()->pz()->mcdDelete($keyName, false);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmDelete($keyName, false);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcDelete($keyName);
 					default:
 						return false;
 				}
@@ -285,6 +298,8 @@
 						return $this->pzphp()->pz()->mcdDelete($keyName, true);
 					case CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmDelete($keyName, true);
+					case CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcDelete($keyName);
 					default:
 						return false;
 				}
