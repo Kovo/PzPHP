@@ -56,4 +56,14 @@
 
 			return $pass;
 		}
+
+		/**
+		 * @param $string
+		 *
+		 * @return bool
+		 */
+		public static function unserializable($string)
+		{
+			return (!@unserialize($string)?false:true);
+		}
 	}

@@ -65,3 +65,13 @@
 	define('PZ_SETTING_DEBUG_LOG_PHP_ERRORS', true);
 	define('PZ_SETTING_DEBUG_PHP_ERROR_LOG_FILE_NAME', 'PHP_ERRORS');
 	define('PZ_SETTING_DEBUG_PHP_DISPLAY_ERRORS', false);
+
+	define('PZ_SETTING_WHITELIST_IP_CHECK', false);
+	define('PZ_SETTING_WHITELIST_IPS', '');
+	define('PZ_SETTING_WHITELIST_ACTION', 'a:3:{s:6:"action";s:4:"exit";s:6:"target";s:0:"";s:7:"message";s:22:"<h1>Access Denied</h1>";}');
+	define('PZ_SETTING_WHITELIST_AUTO_ALLOW_HOST_SERVER_IP', true);
+
+	define('PZ_SETTING_BLACKLIST_IP_CHECK', false);
+	define('PZ_SETTING_BLACKLIST_IPS', '');
+	define('PZ_SETTING_BLACKLIST_ACTION', 'a:3:{s:6:"action";s:4:"exit";s:6:"target";s:0:"";s:7:"message";s:47:"<h1>You have been banned from this website</h1>";}');
+	define('PZ_SETTING_BLACKLIST_IGNORE_HOST_SERVER_IP', true);

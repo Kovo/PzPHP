@@ -51,7 +51,11 @@
 							str_replace('PZ_SETTING_', '', $constantName)
 						);
 
-						$settings[$settingArrayKeyName] = $constantValue;
+						$settings[$settingArrayKeyName] = (
+							!Pz_Helper_String::unserializable($constantValue)?
+								$constantValue:
+								unserialize($constantValue)
+						);
 					}
 				}
 			}
