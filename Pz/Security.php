@@ -1,7 +1,8 @@
 <?php
 	/**
 	 * Contributions by:
-	 *     Fayez Awad
+	 *      Fayez Awad
+	 *      Yann Madeleine (http://www.yann-madeleine.com)
 	 *
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
@@ -16,6 +17,7 @@
 		const CLEAN_JS_STYLE_COMMENTS = 2;
 		const CLEAN_STYLE_COMMENTS = 3;
 		const CLEAN_NOTHING = false;
+
 		/**
 		 * @param $value
 		 * @param int $cleanall
@@ -26,12 +28,13 @@
 			/*
 			* $value } the string to search through
 			* $cleanall | flag that dictates what is done to the string ($value)
-			* 0 = clean everything (javascript tags, styling tags, comments, html tags, convert all <,> to html entities)
-			* 1 = clean everything (javascript tags, styling tags, comments, html tags)
-			* 2 = clean almost everything (javascript tags, styling tags, comments)
-			* 3 = clean some things (styling tags, comments)
-			* false = don't clean anything
+			* CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES = clean everything (javascript tags, styling tags, comments, html tags, convert all <,> to html entities)
+			* CLEAN_HTML_JS_STYLE_COMMENTS = clean everything (javascript tags, styling tags, comments, html tags)
+			* CLEAN_JS_STYLE_COMMENTS = clean almost everything (javascript tags, styling tags, comments)
+			* CLEAN_STYLE_COMMENTS = clean some things (styling tags, comments)
+			* CLEAN_NOTHING = don't clean anything
 			*/
+
 			if($cleanall !== false)
 			{
 				//empty blacklist array
@@ -134,27 +137,6 @@
 
 				return $recallvar;
 			}
-		}
-
-		/**
-		 * @return mixed
-		 */
-		public function getIpAddress()
-		{
-			if(!empty($_SERVER['HTTP_CLIENT_IP']))
-			{
-				$ip = $_SERVER['HTTP_CLIENT_IP'];
-			}
-			elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-			{
-				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			}
-			else
-			{
-				$ip = $_SERVER['REMOTE_ADDR'];
-			}
-
-			return $ip;
 		}
 	}
 

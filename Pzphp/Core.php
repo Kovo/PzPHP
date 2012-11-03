@@ -84,6 +84,8 @@
 			$this->registerModule('PzPHP_Cache');
 			$this->registerModule('PzPHP_Db');
 			$this->registerModule('PzPHP_Security');
+
+			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
 		}
 
 		/**

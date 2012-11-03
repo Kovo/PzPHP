@@ -1,7 +1,8 @@
 <?php
 	/**
 	 * Contributions by:
-	 *     Fayez Awad
+	 *      Fayez Awad
+	 *      Yann Madeleine (http://www.yann-madeleine.com)
 	 *
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
@@ -11,9 +12,6 @@
 	 */
 	class Pz_Crypt
 	{
-		const ALPHANUMERIC = 0;
-		const ALPHANUMERIC_PLUS = 1;
-		const HEX = 2;
 		const TWO_WAY = 3;
 		const ONE_WAY = 4;
 		const STRICT = 5;
@@ -310,7 +308,7 @@
 		 *
 		 * @return string
 		 */
-		private function _poisonString($input, $constraints, $type = self::HEX)
+		private function _poisonString($input, $constraints, $type = Pz_Helper_String::HEX)
 		{
 			$startChar = 0;
 			foreach($constraints as $coords)
@@ -320,7 +318,7 @@
 					$splitLeft = substr($input, 0, $coords[0]+$startChar);
 					$splitRight = substr($input, $coords[0]+$startChar);
 
-					$input = $splitLeft.$this->createCode($coords[1], $type).$splitRight;
+					$input = $splitLeft.Pz_Helper_String::createCode($coords[1], $type).$splitRight;
 
 					$startChar += $coords[1];
 				}
@@ -357,46 +355,6 @@
 			}
 
 			return $input;
-		}
-
-		/**
-		 * @param     $length
-		 * @param int $type
-		 *
-		 * @return string
-		 */
-		public function createCode($length, $type = self::ALPHANUMERIC)
-		{
-			if($type === self::ALPHANUMERIC)
-			{
-				$chars = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-			}
-			elseif($type === self::ALPHANUMERIC_PLUS)
-			{
-				$chars = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz`~!@#$%^&*()_+|}{:?><,./;'[]-=";
-			}
-			else
-			{
-				$chars = "0123456789abcdef";
-			}
-
-			$amountChars = strlen($chars);
-
-			list($usec, $sec) = explode(' ', microtime());
-			$seed = (float) $sec + ((float) $usec * mt_rand(9,999999));
-
-			mt_srand($seed+mt_rand(1,1000));
-
-			$pass = '';
-
-			for($i=0;$i<$length;$i++)
-			{
-				$num = mt_rand()%$amountChars;
-				$tmp = substr($chars, $num, 1);
-				$pass = $pass.$tmp;
-			}
-
-			return $pass;
 		}
 
 		/**
@@ -499,7 +457,7 @@
 		{
 			if($passPhrase === $this->_passPhrase)
 			{
-				return $this->createCode(mt_rand(35,45), self::ALPHANUMERIC_PLUS);
+				return Pz_Helper_String::createCode(mt_rand(35,45), Pz_Helper_String::ALPHANUMERIC_PLUS);
 			}
 
 			return 'Incorrect passphrase supplied.';

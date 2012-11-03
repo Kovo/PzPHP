@@ -1,7 +1,8 @@
 <?php
 	/**
 	 * Contributions by:
-	 *     Fayez Awad
+	 *      Fayez Awad
+	 *      Yann Madeleine (http://www.yann-madeleine.com)
 	 *
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
@@ -11,6 +12,11 @@
 	 */
 	class Pz_Debugger
 	{
+		/**
+		 * @var array
+		 */
+		private $_registeredVersionInfo = array();
+
 		/**
 		 * @var array
 		 */
@@ -53,7 +59,8 @@
 			'script_peak_memory_usage' => 0,
 			'exec_time' => 0,
 			'exec_start_time' => 0,
-			'exec_end_time' => 0
+			'exec_end_time' => 0,
+			'included_files' => 0
 		);
 
 		/**
@@ -101,7 +108,7 @@
 		 */
 		private $_logToDb = false;
 
-		function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $displayBar, $logToDb, $dbRetryAttempts, $dbRetryDelay)
+		function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $displayBar, $logToDb)
 		{
 			$this->_dbUser = $dbUser;
 			$this->_dbPassword = $dbPassword;
@@ -110,8 +117,6 @@
 			$this->_dbPort = $dbPort;
 			$this->_displayBar = $displayBar;
 			$this->_logToDb = $logToDb;
-			$this->_dbRetryattempts = $dbRetryAttempts;
-			$this->_dbRetryDelay = $dbRetryDelay;
 		}
 
 		/*
@@ -359,7 +364,7 @@
 		/*
 		 * Calcualtes, logs, displays debugger info
 		 */
-		public function finalize(Pz_Core $_pzcoreObject)
+		public function finalize(Pz_Core $PzCore)
 		{
 			$this->calculateExecTime();
 			$this->calculateMemoryUsage();
@@ -368,13 +373,26 @@
 
 			if($this->_logToDb === true)
 			{
-				$pzMysqlObject = new Pz_Mysql_Server($this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_dbHost, $this->_dbPort, $this->_dbRetryattempts, $this->_dbRetryDelay);
+				$mysqlServerId = $PzCore->addMysqliServer($this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_dbHost, $this->_dbPort, true);
 
-				if($pzMysqlObject->connect())
+				$columnNames = '';
+				$values = '';
+
+				foreach($this->_statistics as $key => $value)
 				{
-					$mysqlObject = $pzMysqlObject->returnMysqliObj();
-					$pzMysqlObject->returnMysqliObj()->query("INSERT INTO pz_debugger (mysql_queries, mysql_read_queries, mysql_write_queries, mc_writes, mc_deletes, mc_reads, mcd_writes, mcd_deletes, mcd_reads, apc_writes, apc_deletes, apc_reads, shm_writes, shm_deletes, shm_reads, lc_writes, lc_deletes, lc_reads, includes, mysql_connections, mc_connections, mcd_connections, mysql_disconnections, mc_disconnections, mcd_disconnections, mysql_queries_executed, start_memory_usage, start_memory_real_usage, start_peak_memory_usage, start_peak_memory_real_usage, end_memory_usage, end_memory_real_usage, end_peak_memory_usage, end_peak_memory_real_usage, exec_time, exec_start_time, exec_end_time) VALUES (".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_read_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_write_queries']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['apc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['shm_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_writes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_deletes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['lc_reads']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['includes']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_connections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mysql_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mc_disconnections']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['mcd_disconnections']).", '".$_pzcoreObject->sanitizeExternal($mysqlObject, serialize($this->_statistics['mysql_queries_executed']), false)."', ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['start_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['end_peak_memory_real_usage']).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_start_time'], false).", ".$_pzcoreObject->sanitizeExternal($mysqlObject, $this->_statistics['exec_end_time'], false).")");
+					$columnNames .= $key.', ';
+
+					if(is_numeric($value))
+					{
+						$values .= $PzCore->mysqliInteract()->sanitize($value, true, 2, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $mysqlServerId).', ';
+					}
+					else
+					{
+						$values .= '\''.$PzCore->mysqliInteract()->sanitize((is_array($value)?implode(' || ', $value):$value), false, 0, Pz_Security::CLEAN_NOTHING, $mysqlServerId).'\', ';
+					}
 				}
+
+				$PzCore->mysqliInteract()->write("INSERT INTO pz_debugger (".substr($columnNames,0,-2).") VALUES (".substr($values,0,-2).")", $mysqlServerId);
 			}
 
 			if($this->_displayBar === true)
@@ -387,10 +405,9 @@
 		{
 			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial, sans-serif;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;height:40px;z-index:2147483647;">';
 
-			$html .= '<div style="float:left;width:25%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>Pz_Debugger</strong></div></div>';
+			$html .= '<div style="float:left;width:20%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>Pz Debugger</strong></div></div>';
 
-			$statisticshtml = '';
-			$statisticshtml .= 'Queries: '.$this->_statistics['mysql_queries'].'\n\n';
+			$statisticshtml = 'Queries: '.$this->_statistics['mysql_queries'].'\n\n';
 			$statisticshtml .= 'Read Queries: '.$this->_statistics['mysql_read_queries'].'\n\n';
 			$statisticshtml .= 'Write Queries: '.$this->_statistics['mysql_write_queries'].'\n\n\n\n';
 			$statisticshtml .= 'MC Writes: '.$this->_statistics['mc_writes'].'\n\n';
@@ -428,26 +445,59 @@
 				$querieshtml = 'No queries logged.';
 			}
 
-			$executiondata = '';
-			$executiondata .= 'Memory Usage At Start (KB): '.bcdiv($this->_statistics['start_memory_usage'],1024,2).'\n\n';
-			$executiondata .= 'Memory Usage At Start (Real)(KB): '.bcdiv($this->_statistics['start_memory_real_usage'],1024,2).'\n\n';
+			$executiondata = 'Memory Usage At Start (KB): '.bcdiv($this->_statistics['start_memory_usage'],1024,2).'\n\n';
+			$executiondata .= 'Memory Usage At Start (Real)(KB): '.bcdiv($this->_statistics['start_memory_real_usage'],1024).'\n\n';
 			$executiondata .= 'Memory Peak Usage At Start (KB): '.bcdiv($this->_statistics['start_peak_memory_usage'],1024,2).'\n\n';
-			$executiondata .= 'Memory Peak Usage At Start (Real)(KB): '.bcdiv($this->_statistics['start_peak_memory_real_usage'],1024,5).'\n\n';
+			$executiondata .= 'Memory Peak Usage At Start (Real)(KB): '.bcdiv($this->_statistics['start_peak_memory_real_usage'],1024).'\n\n';
 			$executiondata .= 'Memory Usage At End (KB): '.bcdiv($this->_statistics['end_memory_usage'],1024,2).'\n\n';
-			$executiondata .= 'Memory Usage At End (Real)(KB): '.bcdiv($this->_statistics['end_memory_real_usage'],1024,2).'\n\n';
+			$executiondata .= 'Memory Usage At End (Real)(KB): '.bcdiv($this->_statistics['end_memory_real_usage'],1024).'\n\n';
 			$executiondata .= 'Memory Peak Usage At End (KB): '.bcdiv($this->_statistics['end_peak_memory_usage'],1024,2).'\n\n';
-			$executiondata .= 'Memory Peak Usage At End (Real)(KB): '.bcdiv($this->_statistics['end_peak_memory_real_usage'],1024,2).'\n\n';
+			$executiondata .= 'Memory Peak Usage At End (Real)(KB): '.bcdiv($this->_statistics['end_peak_memory_real_usage'],1024).'\n\n';
 			$executiondata .= 'Script Memory Usage(KB): '.bcdiv($this->_statistics['script_memory_usage'],1024,2).'\n\n';
 			$executiondata .= 'Script Peak Memory Usage(KB): '.bcdiv($this->_statistics['script_peak_memory_usage'],1024,2).'\n\n\n\n';
 			$executiondata .= 'Script Execution Time: '.$this->_statistics['exec_time'].'\n\n';
 			$executiondata .= 'Script Start Execution Time: '.$this->_statistics['exec_start_time'].'\n\n';
-			$executiondata .= 'Script End Execution Time: '.$this->_statistics['exec_end_time'].'\n\n';
+			$executiondata .= 'Script End Execution Time: '.$this->_statistics['exec_end_time'].'\n\n\n\n';
+			$executiondata .= 'Included Files: '.$this->_statistics['includes'].'\n\n';
 
+			if($this->_statistics['includes'] > 0)
+			{
+				foreach(get_included_files() as $filename)
+				{
+					$filename = str_replace(DIRECTORY_SEPARATOR, '\\'.DIRECTORY_SEPARATOR, $filename);
 
-			$html .= '<div style="float:left;width:25%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$statisticshtml.'\');">View Statistics</a></div></div>';
-			$html .= '<div style="float:left;width:25%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$querieshtml.'\');">View Queries</a></div></div>';
-			$html .= '<div style="float:left;width:25%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$executiondata.'\');">View Execution Data</a></div></div>';
+					if(($filenameLen = strlen($filename)) > 50)
+					{
+						$filename = '...'.substr($filename, $filenameLen-50);
+					}
+
+					$executiondata .= $filename.'\n\n';
+				}
+			}
+
+			$versionInfo = '';
+			if(count($this->_registeredVersionInfo) > 0)
+			{
+				foreach($this->_registeredVersionInfo as $info)
+				{
+					$versionInfo .= $info[0].': '.$info[1].'\n';
+				}
+			}
+
+			$html .= '<div style="float:left;width:20%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$statisticshtml.'\');">Statistics</a></div></div>';
+			$html .= '<div style="float:left;width:20%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$querieshtml.'\');">Queries</a></div></div>';
+			$html .= '<div style="float:left;width:20%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$executiondata.'\');">Execution Data</a></div></div>';
+			$html .= '<div style="float:left;width:20%;"><div style="padding:10px 10px 0;"><a href="javascript:void(0)" onclick="alert(\''.$versionInfo.'\');">Version Info</a></div></div>';
 
 			return $html.'<div style="clear:both"><!-- --></div></div>';
+		}
+
+		/**
+		 * @param $name
+		 * @param $version
+		 */
+		public function registerVersionInfo($name, $version)
+		{
+			$this->_registeredVersionInfo[] = array($name, $version);
 		}
 	}
