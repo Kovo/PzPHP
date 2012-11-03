@@ -177,7 +177,7 @@
 
 			$this->_initDebugging();
 
-			$this->_initSecurity();
+			$this->_initServerSecurity();
 
 			$this->_initMisc();
 
@@ -263,7 +263,7 @@
 			}
 		}
 
-		private function _initSecurity()
+		private function _initServerSecurity()
 		{
 			if($this->_serverSecurityNeeded())
 			{
