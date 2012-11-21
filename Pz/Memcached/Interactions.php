@@ -8,18 +8,23 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Memcached_Interactions
+	 * @package Pz Library
+	 */
+	/**
+	 * Interaction class for dealing with memcache using memcached.
 	 */
 	class Pz_Memcached_Interactions extends Pz_Abstract_Generic
 	{
 		/**
-		 * @param      $key
-		 * @param      $value
+		 * Writes a value to the cache.
+		 *
+		 * @access public
+		 * @param string $key
+		 * @param mixed $value
 		 * @param int  $expires
 		 * @param bool $deleteLock
 		 * @param bool $checkFirst
-		 * @param      $id
-		 *
+		 * @param int $id
 		 * @return bool
 		 */
 		public function write($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true, $id = -1)
@@ -40,15 +45,20 @@
 					}
 				}
 
+				if(is_scalar($value))
+				{
+					$value = (string)$value;
+				}
+
 				if($checkFirst === true)
 				{
-					$replace = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->replace($key, (is_scalar($value)?(string)$value:$value), $expires);
+					$replace = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->replace($key, $value, $expires);
 
 					$this->pzCore()->debugger('mcdWritesInc');
 
 					if($replace === false)
 					{
-						$return = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, (is_scalar($value)?(string)$value:$value), $expires);
+						$return = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, $value, $expires);
 
 						$this->pzCore()->debugger('mcdWritesInc');
 					}
@@ -59,11 +69,11 @@
 				}
 				else
 				{
-					if($this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, (is_scalar($value)?(string)$value:$value), $expires) === true)
+					if($this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, $value, $expires) === true)
 					{
 						$this->pzCore()->debugger('mcdWritesInc');
 
-						if((is_scalar($value)?(string)$value:$value) == $this->read($key, false, $id))
+						if($value == $this->read($key, false, $id))
 						{
 							$return = true;
 						}
@@ -88,10 +98,12 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
-		 * @param      $id
+		 * Reads a value from the cache.
 		 *
+		 * @access public
+		 * @param string $key
+		 * @param bool $checkLock
+		 * @param int $id
 		 * @return bool|mixed
 		 */
 		public function read($key, $checkLock = false, $id = -1)
@@ -131,10 +143,12 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
-		 * @param      $id
+		 * Deletes a value from the cache.
 		 *
+		 * @access public
+		 * @param string $key
+		 * @param bool $checkLock
+		 * @param int $id
 		 * @return bool
 		 */
 		public function delete($key, $checkLock = false, $id = -1)

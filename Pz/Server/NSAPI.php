@@ -8,13 +8,17 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Server_NSAPI
+	 * @package Pz Library
+	 */
+	/**
+	 * A collection of methods allowing you to interact directly with Netscape/iPlanet/Sun servers.
 	 */
 	class Pz_Server_NSAPI
 	{
 		/**
-		 * @param $uri
-		 *
+		 * @static
+		 * @access public
+		 * @param string $uri
 		 * @return mixed
 		 */
 		public static function virtual($uri)
@@ -23,6 +27,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function getAllRequestHeaders()
@@ -31,6 +37,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function getAllResponseHeaders()

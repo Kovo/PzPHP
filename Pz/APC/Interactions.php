@@ -8,26 +8,36 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_APC_Interactions
+	 * @package Pz Library
+	 */
+	/**
+	 * This class allows you to interact with APC.
 	 */
 	class Pz_APC_Interactions extends Pz_Abstract_Generic
 	{
 		/**
-		 * @param      $key
-		 * @param      $value
+		 * Writes a value to the cache.
+		 *
+		 * @access public
+		 * @param string $key
+		 * @param mixed $value
 		 * @param int  $expires
 		 * @param bool $deleteLock
-		 * @param bool $deleteOnExist
-		 *
+		 * @param bool $replaceOnExist
 		 * @return bool
 		 */
-		public function write($key, $value, $expires = 0, $deleteLock = false, $deleteOnExist = true)
+		public function write($key, $value, $expires = 0, $deleteLock = false, $replaceOnExist = true)
 		{
-			if(apc_add($key, (is_scalar($value)?(string)$value:$value), $expires) === true)
+			if(is_scalar($value))
+			{
+				$value = (string)$value;
+			}
+
+			if(apc_add($key, $value, $expires) === true)
 			{
 				$this->pzCore()->debugger('apcWritesInc');
 
-				if((is_scalar($value)?(string)$value:$value) == $this->read($key))
+				if($value == $this->read($key))
 				{
 					$return = true;
 				}
@@ -38,11 +48,9 @@
 			}
 			else
 			{
-				if($deleteOnExist === true)
+				if($replaceOnExist === true)
 				{
-					$this->delete($key, true);
-
-					$return = $this->write($key, $value, $expires, $deleteLock);
+					$return = apc_store($key, $value, $expires);
 				}
 				else
 				{
@@ -59,7 +67,10 @@
 		}
 
 		/**
-		 * @param $key
+		 * Reads a value from the cache.
+		 *
+		 * @access public
+		 * @param string $key
 		 * @param bool $checkLock
 		 * @return mixed
 		 */
@@ -83,9 +94,11 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
+		 * Deletes a value from the cache.
 		 *
+		 * @access public
+		 * @param string $key
+		 * @param bool $checkLock
 		 * @return mixed
 		 */
 		public function delete($key, $checkLock = false)

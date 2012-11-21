@@ -8,14 +8,19 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Mysqli_Interactions
+	 * @package Pz Library
+	 */
+	/**
+	 * The interaction class for communicating with mysql using mysqli.
 	 */
 	class Pz_Mysqli_Interactions extends Pz_Abstract_Generic
 	{
 		/**
-		 * @param $query
-		 * @param $id
+		 * Expects to handle read related queries.
 		 *
+		 * @access public
+		 * @param string $query
+		 * @param int $id
 		 * @return bool|mysqli_result
 		 */
 		public function read($query, $id = -1)
@@ -58,10 +63,12 @@
 		}
 
 		/**
-		 * @param $query
-		 * @param $id
+		 * Expects to handle write related query.
 		 *
-		 * @return bool|int|mysqli_result
+		 * @access public
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result
 		 */
 		public function write($query, $id = -1)
 		{
@@ -153,7 +160,7 @@
 					}
 					else
 					{
-						$result = 0;
+						$result = false;
 						$retryCount--;
 
 						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysqli'), 'Finally gave up on query: "'.$query.'".');
@@ -187,8 +194,10 @@
 		}
 
 		/**
-		 * @param $id
+		 * Returns the affected rows of the last delete/insert/update/etc... query.
 		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
 		public function mysqliAffectedRows($id = -1)
@@ -199,8 +208,10 @@
 		}
 
 		/**
-		 * @param $id
+		 * Returns the last insert id of the last insert query.
 		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
 		public function mysqliInsertId($id = -1)
@@ -211,9 +222,11 @@
 		}
 
 		/**
-		 * @param $dbName
-		 * @param $id
+		 * Select a new database for the current connection.
 		 *
+		 * @access public
+		 * @param string $dbName
+		 * @param int $id
 		 * @return bool
 		 */
 		public function mysqliSelectDatabase($dbName, $id = -1)
@@ -224,11 +237,13 @@
 		}
 
 		/**
-		 * @param      $user
-		 * @param      $password
-		 * @param null $dbName
-		 * @param      $id
+		 * Change the user for the current connection.
 		 *
+		 * @access public
+		 * @param string $user
+		 * @param string $password
+		 * @param null|string $dbName
+		 * @param int $id
 		 * @return bool
 		 */
 		public function mysqliChangeUser($user, $password, $dbName = NULL, $id = -1)
@@ -239,12 +254,14 @@
 		}
 
 		/**
-		 * @param      $value
+		 * Sanitize a value that will be injected into a query string.
+		 *
+		 * @access public
+		 * @param mixed $value
 		 * @param bool $mustBeNumeric
 		 * @param int  $decimalPlaces
 		 * @param int  $cleanall
-		 * @param      $id
-		 *
+		 * @param int $id
 		 * @return mixed
 		 */
 		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)

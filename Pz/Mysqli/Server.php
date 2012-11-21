@@ -8,62 +8,118 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Mysqli_Server
+	 * @package Pz Library
+	 */
+	/**
+	 * Class is used for storing mysql connection information using mysqli.
 	 */
 	final class Pz_Mysqli_Server
 	{
-		/*
-		 * Status constants
+		/**
+		 * Status constant when the connection is established.
+		 *
+		 * @var int
 		 */
 		const CONNECTED = 1;
+
+		/**
+		 * Status constant when the connection is disconnected.
+		 *
+		 * @var int
+		 */
 		const DISCONNECTED = 2;
+
+		/**
+		 * Status constant when the connection is connecting.
+		 *
+		 * @var int
+		 */
 		const CONNECTING = 3;
 
 		/**
+		 * The username that will access the mysql server.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_user = '';
 
 		/**
+		 * The password that will access the mysql server.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_password = '';
 
 		/**
+		 * The host that the mysql server is on.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_host = '';
 
 		/**
+		 * The default database to connect to.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_dbName = '';
 
 		/**
+		 * The port that the mysql server is on.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_port = 0;
 
 		/**
+		 * The amount of times Pz should try to reconnect to the mysql server.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_connectRetryAttempts = 0;
 
 		/**
+		 * The amount of seconds to wait between connection retry attempts.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_connectRetryDelay = 0;
 
 		/**
+		 * The current connection status.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_status = self::DISCONNECTED;
 
 		/**
+		 * The final mysqli object.
+		 *
+		 * @access private
 		 * @var null|mysqli
 		 */
 		private $_mysqli_obj = NULL;
 
+		/**
+		 * The constructor handles setting the mysql server credentials.
+		 *
+		 * @access private
+		 * @param string $dbUser
+		 * @param string $dbPassword
+		 * @param string $dbName
+		 * @param string $dbHost
+		 * @param int $dbPort
+		 * @param int $connectRetries
+		 * @param int $connectRetryWait
+		 */
 		function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
 		{
 			$this->_user = $dbUser;
@@ -75,8 +131,11 @@
 			$this->_connectRetryDelay = $connectRetryWait;
 		}
 
-		/*
-		 * Attempts to connect to the mysql server
+		/**
+		 * Attempts to connect to the mysql server.
+		 *
+		 * @access public
+		 * @return bool
 		 */
 		public function connect()
 		{
@@ -130,8 +189,10 @@
 			}
 		}
 
-		/*
-		 * Disconnect the mysql server
+		/**
+		 * Disconnects from the mysql server.
+		 *
+		 * @access public
 		 */
 		public function disconnect()
 		{
@@ -146,6 +207,9 @@
 		}
 
 		/**
+		 * Returns true or false if the mysql server connection went through and is active.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function isConnected()
@@ -154,6 +218,9 @@
 		}
 
 		/**
+		 * Returns the active mysqli object.
+		 *
+		 * @access public
 		 * @return mysqli|null
 		 */
 		public function returnMysqliObj()
@@ -162,6 +229,9 @@
 		}
 
 		/**
+		 * Returns the last insert id.
+		 *
+		 * @access public
 		 * @return mixed
 		 */
 		public function insertId()
@@ -170,6 +240,9 @@
 		}
 
 		/**
+		 * Returns the affected rows from the last query.
+		 *
+		 * @access public
 		 * @return mixed
 		 */
 		public function affectedRows()
@@ -178,8 +251,10 @@
 		}
 
 		/**
-		 * @param $dbName
+		 * Select a new database;
 		 *
+		 * @access public
+		 * @param string $dbName
 		 * @return bool
 		 */
 		public function selectDatabase($dbName)
@@ -197,10 +272,12 @@
 		}
 
 		/**
-		 * @param      $user
-		 * @param      $password
-		 * @param null $dbName
+		 * Change the current user.
 		 *
+		 * @access public
+		 * @param string $user
+		 * @param string $password
+		 * @param null|string $dbName
 		 * @return bool
 		 */
 		public function changeUser($user, $password, $dbName = NULL)

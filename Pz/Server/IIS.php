@@ -8,19 +8,23 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Server_IIS
+	 * @package Pz Library
+	 */
+	/**
+	 * A collection of methods allowing you to interact directly with IIS.
 	 */
 	class Pz_Server_IIS
 	{
 		/**
-		 * @param $path
-		 * @param $comment
-		 * @param $server_ip
-		 * @param $port
-		 * @param $host_name
-		 * @param $rights
-		 * @param $start_server
-		 *
+		 * @static
+		 * @access public
+		 * @param string $path
+		 * @param string $comment
+		 * @param string $server_ip
+		 * @param int $port
+		 * @param string $host_name
+		 * @param string $rights
+		 * @param bool $start_server
 		 * @return mixed
 		 */
 		public static function addServer($path, $comment, $server_ip, $port, $host_name, $rights, $start_server)
@@ -29,8 +33,9 @@
 		}
 
 		/**
-		 * @param $id
-		 *
+		 * @static
+		 * @access public
+		 * @param int $id
 		 * @return mixed
 		 */
 		public static function removeServer($id)
@@ -39,8 +44,9 @@
 		}
 
 		/**
-		 * @param $id
-		 *
+		 * @static
+		 * @access public
+		 * @param int $id
 		 * @return mixed
 		 */
 		public static function startServer($id)
@@ -49,8 +55,9 @@
 		}
 
 		/**
-		 * @param $id
-		 *
+		 * @static
+		 * @access public
+		 * @param int $id
 		 * @return mixed
 		 */
 		public static function stopServer($id)
@@ -59,8 +66,9 @@
 		}
 
 		/**
-		 * @param $id
-		 *
+		 * @static
+		 * @access public
+		 * @param int $id
 		 * @return mixed
 		 */
 		public static function startService($id)
@@ -69,8 +77,9 @@
 		}
 
 		/**
-		 * @param $id
-		 *
+		 * @static
+		 * @access public
+		 * @param int $id
 		 * @return mixed
 		 */
 		public static function stopService($id)
@@ -79,9 +88,10 @@
 		}
 
 		/**
-		 * @param $serverId
-		 * @param $vertualDir
-		 *
+		 * @static
+		 * @access public
+		 * @param int $serverId
+		 * @param string $vertualDir
 		 * @return mixed
 		 */
 		public static function getDirectorySecurity($serverId, $vertualDir)
@@ -90,10 +100,11 @@
 		}
 
 		/**
-		 * @param $server_instance
-		 * @param $virtual_path
-		 * @param $directory_flags
-		 *
+		 * @static
+		 * @access public
+		 * @param int $server_instance
+		 * @param string $virtual_path
+		 * @param mixed $directory_flags
 		 * @return mixed
 		 */
 		public static function setDirectorySecurity($server_instance, $virtual_path, $directory_flags)
@@ -102,10 +113,11 @@
 		}
 
 		/**
-		 * @param $serverId
-		 * @param $vertualDir
-		 * @param $scriptExtension
-		 *
+		 * @static
+		 * @access public
+		 * @param int $serverId
+		 * @param string $vertualDir
+		 * @param string $scriptExtension
 		 * @return mixed
 		 */
 		public static function getScriptMap($serverId, $vertualDir, $scriptExtension)
@@ -114,12 +126,13 @@
 		}
 
 		/**
-		 * @param $server_instance
-		 * @param $virtual_path
-		 * @param $script_extension
-		 * @param $engine_path
-		 * @param $allow_scripting
-		 *
+		 * @static
+		 * @access public
+		 * @param int $server_instance
+		 * @param string $virtual_path
+		 * @param string $script_extension
+		 * @param string $engine_path
+		 * @param bool $allow_scripting
 		 * @return mixed
 		 */
 		public static function setScriptMap($server_instance, $virtual_path, $script_extension, $engine_path, $allow_scripting)
@@ -128,8 +141,9 @@
 		}
 
 		/**
-		 * @param $comment
-		 *
+		 * @static
+		 * @access public
+		 * @param string $comment
 		 * @return mixed
 		 */
 		public static function getServerbyComment($comment)
@@ -138,8 +152,9 @@
 		}
 
 		/**
-		 * @param $path
-		 *
+		 * @static
+		 * @access public
+		 * @param string $path
 		 * @return mixed
 		 */
 		public static function getServerbyPath($path)
@@ -148,9 +163,10 @@
 		}
 
 		/**
-		 * @param $server_instance
-		 * @param $virtual_path
-		 *
+		 * @static
+		 * @access public
+		 * @param int $server_instance
+		 * @param string $virtual_path
 		 * @return mixed
 		 */
 		public static function getServerRights($server_instance, $virtual_path)
@@ -159,10 +175,11 @@
 		}
 
 		/**
-		 * @param $server_instance
-		 * @param $virtual_path
-		 * @param $directory_flags
-		 *
+		 * @static
+		 * @access public
+		 * @param int $server_instance
+		 * @param string $virtual_path
+		 * @param string $directory_flags
 		 * @return mixed
 		 */
 		public static function setServerRights($server_instance, $virtual_path, $directory_flags)
@@ -171,8 +188,9 @@
 		}
 
 		/**
-		 * @param $serviceId
-		 *
+		 * @static
+		 * @access public
+		 * @param int $serviceId
 		 * @return mixed
 		 */
 		public static function serviceState($serviceId)
@@ -181,14 +199,15 @@
 		}
 
 		/**
-		 * @param $server_instance
-		 * @param $virtual_path
-		 * @param $application_scope
-		 *
+		 * @static
+		 * @access public
+		 * @param int $server_instance
+		 * @param string $virtual_path
+		 * @param string $application_scope
 		 * @return mixed
 		 */
 		public static function setAppSettings($server_instance, $virtual_path, $application_scope)
 		{
-			return iis_set_app_settings ($server_instance, $virtual_path, $application_scope);
+			return iis_set_app_settings($server_instance, $virtual_path, $application_scope);
 		}
 	}

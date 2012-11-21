@@ -8,13 +8,20 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Helper_Array
+	 * @package Pz Library
+	 */
+	/**
+	 * A helper class that allows you to manipulate or read arrays in useful ways that PHP does not natively support.
 	 */
 	class Pz_Helper_Array
 	{
 		/**
-		 * @param      $sourceArray
-		 * @param      $keyToSortBy
+		 * Sorts an array by a specific key.
+		 *
+		 * @static
+		 * @access public
+		 * @param array $sourceArray
+		 * @param string|int|float $keyToSortBy
 		 * @param int  $sortType
 		 * @param bool $sortAscending
 		 */

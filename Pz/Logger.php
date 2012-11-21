@@ -8,36 +8,51 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Logger
+	 * @package Pz Library
+	 */
+	/**
+	 * The logger class allows you to log messages to a log file.
 	 */
 	class Pz_Logger
 	{
 		/**
+		 * The directory where log files are stored.
+		 *
 		 * @var string
 		 */
 		private $_logsDir = '';
 
 		/**
+		 * The log file name for this logger instance.
+		 *
 		 * @var string
 		 */
 		private $_logFileName = '';
 
 		/**
+		 * Combined log directory and log file name.
+		 *
 		 * @var string
 		 */
 		private $_fullLogFileName = '';
 
 		/**
+		 * Whether log files should rotated or not.
+		 *
 		 * @var bool
 		 */
 		private $_autoRotate = true;
 
 		/**
+		 * Log files older than x days will be deleted on start-up.
+		 *
 		 * @var int
 		 */
 		private $_deleteLogsAfterXDays = 7;
 
 		/**
+		 * Sets the defaults for the logger instance.
+		 *
 		 * @param string $logsDir
 		 * @param string $logFileName
 		 * @param bool   $autoRotate
@@ -53,8 +68,10 @@
 			$this->_warmupLogs();
 		}
 
-		/*
-		 * Makes sure the log dir exists, and rotates if necessary
+		/**
+		 * Makes sure the log dir exists, and rotates if necessary.
+		 *
+		 * @access private
 		 */
 		private function _warmupLogs()
 		{
@@ -107,8 +124,10 @@
 		}
 
 		/**
-		 * @param $lineStr
+		 * Adds a new line to the bottom of the log file.
 		 *
+		 * @access public
+		 * @param string $lineStr
 		 * @return int
 		 */
 		public function addToLog($lineStr)
@@ -117,13 +136,13 @@
 		}
 
 		/**
+		 * Clears the log file.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function clearLog()
 		{
-			$unlinkResult = unlink($this->_fullLogFileName);
-			$createResult = file_put_contents($this->_fullLogFileName, '');
-
-			return ($unlinkResult&&$createResult);
+			return file_put_contents($this->_fullLogFileName, '');
 		}
 	}

@@ -8,26 +8,41 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Http_Response
+	 * @package Pz Library
+	 */
+	/**
+	 * Allows you to set response headers and status codes.
 	 */
 	class Pz_Http_Response extends Pz_Abstract_Generic
 	{
 		/**
+		 * An array of custom set headers.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_headers = array();
 
 		/**
+		 * The http status code to be sent to the client.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_statusCode = 200;
 
 		/**
+		 * The http version being used.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_httpVersion = '1.1';
 
 		/**
+		 * Status code texts array.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_statusText = array(
@@ -94,7 +109,10 @@
 		);
 
 		/**
-		 * @param        $name
+		 * Defines a new header or replaces an existing one.
+		 *
+		 * @access public
+		 * @param  string $name
 		 * @param string $value
 		 * @param bool   $replace
 		 * @param null|int   $responsecode
@@ -107,6 +125,9 @@
 		}
 
 		/**
+		 * Gets all custom set headers.
+		 *
+		 * @access public
 		 * @return array
 		 */
 		public function getHeaders()
@@ -115,8 +136,10 @@
 		}
 
 		/**
-		 * @param $name
+		 * Gets a custom set header.
 		 *
+		 * @access public
+		 * @param string $name
 		 * @return mixed
 		 */
 		public function getHeader($name)
@@ -125,7 +148,10 @@
 		}
 
 		/**
-		 * @param      $url
+		 * Sets redirect headers, and can stop script execution if stated.
+		 *
+		 * @access public
+		 * @param string $url
 		 * @param bool $exit
 		 */
 		public function redirect($url, $exit = true)
@@ -141,7 +167,10 @@
 		}
 
 		/**
-		 * @param $code
+		 * Set the response status code.
+		 *
+		 * @access public
+		 * @param string|int $code
 		 */
 		public function setStatusCode($code)
 		{
@@ -151,7 +180,10 @@
 		}
 
 		/**
-		 * @param $version
+		 * Sets the http version for the response.
+		 *
+		 * @access public
+		 * @param string $version
 		 */
 		public function setHttpVersion($version)
 		{
@@ -159,6 +191,9 @@
 		}
 
 		/**
+		 * Gets the response status code.
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function getStatusCode()
@@ -167,6 +202,9 @@
 		}
 
 		/**
+		 * Gets the response http version.
+		 *
+		 * @access public
 		 * @return string
 		 */
 		public function getHttpVersion()
@@ -175,6 +213,9 @@
 		}
 
 		/**
+		 * Gets the response status code text.
+		 *
+		 * @access public
 		 * @return mixed
 		 */
 		public function getStatusText()

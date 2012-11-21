@@ -8,11 +8,16 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Server_Apache
+	 * @package Pz Library
+	 */
+	/**
+	 * A collection of methods allowing you to interact directly with apache.
 	 */
 	class Pz_Server_Apache
 	{
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function childTerminate()
@@ -21,6 +26,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function loadedModules()
@@ -29,6 +36,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function version()
@@ -37,8 +46,9 @@
 		}
 
 		/**
-		 * @param $filename
-		 *
+		 * @static
+		 * @access public
+		 * @param string $filename
 		 * @return mixed
 		 */
 		public static function virtual($filename)
@@ -47,6 +57,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function getAllRequestHeaders()
@@ -55,6 +67,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function getAllResponseHeaders()
@@ -63,10 +77,11 @@
 		}
 
 		/**
-		 * @param      $varname
-		 * @param      $value
+		 * @static
+		 * @access public
+		 * @param string $varname
+		 * @param mixed $value
 		 * @param bool $walktotop
-		 *
 		 * @return mixed
 		 */
 		public static function setEnvVar($varname, $value, $walktotop = true)
@@ -75,9 +90,10 @@
 		}
 
 		/**
-		 * @param      $varname
+		 * @static
+		 * @access public
+		 * @param string $varname
 		 * @param bool $walktotop
-		 *
 		 * @return mixed
 		 */
 		public static function getEnvVar($varname, $walktotop = true)
@@ -86,6 +102,8 @@
 		}
 
 		/**
+		 * @static
+		 * @access public
 		 * @return mixed
 		 */
 		public static function resetTimeout()
@@ -94,8 +112,9 @@
 		}
 
 		/**
-		 * @param $noteName
-		 *
+		 * @static
+		 * @access public
+		 * @param string $noteName
 		 * @return mixed
 		 */
 		public static function tableGet($noteName)
@@ -104,9 +123,10 @@
 		}
 
 		/**
-		 * @param $noteName
-		 * @param $noteValue
-		 *
+		 * @static
+		 * @access public
+		 * @param string $noteName
+		 * @param string $noteValue
 		 * @return mixed
 		 */
 		public static function tableSet($noteName, $noteValue)
@@ -115,8 +135,9 @@
 		}
 
 		/**
-		 * @param $filename
-		 *
+		 * @static
+		 * @access public
+		 * @param string $filename
 		 * @return mixed
 		 */
 		public static function lookupUri($filename)

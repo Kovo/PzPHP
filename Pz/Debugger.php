@@ -8,16 +8,23 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Debugger
+	 * @package Pz Library
+	 */
+	/**
+	 * The Debugger class keeps track of various statistics during your scripts execution. It can also log them to a dB, or output them in HMTL.
 	 */
 	class Pz_Debugger
 	{
 		/**
+		 * This array holds a key => value pair of any versions of packages/subpackages registered in your script; which are then displayed in the debug bar.
+		 *
 		 * @var array
 		 */
 		private $_registeredVersionInfo = array();
 
 		/**
+		 * Full array of different statistics this class keeps track of.
+		 *
 		 * @var array
 		 */
 		private $_statistics = array(
@@ -64,50 +71,79 @@
 		);
 
 		/**
+		 * The user name for the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var string
 		 */
 		private $_dbUser = '';
 
 		/**
+		 * The password for the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var string
 		 */
 		private $_dbPassword = '';
 
 		/**
+		 * The database name for the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var string
 		 */
 		private $_dbName = '';
 
 		/**
+		 * The host for the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var string
 		 */
 		private $_dbHost = 'localhost';
 
 		/**
+		 * The port for the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var int
 		 */
 		private $_dbPort = 3306;
 
 		/**
+		 * Retry attempts to the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var int
 		 */
 		private $_dbRetryattempts = 1;
 
 		/**
+		 * Retry attempt delays to the mysql server that has access to the pz_debugger table.
+		 *
 		 * @var int
 		 */
 		private $_dbRetryDelay = 2;
 
 		/**
+		 * If the debug bar should be displayed.
+		 *
 		 * @var bool
 		 */
 		private $_displayBar = false;
 
 		/**
+		 * Whether stats should be logged to the database or not.
+		 *
 		 * @var bool
 		 */
 		private $_logToDb = false;
 
+		/**
+		 * Sets the default values for the debugger class.
+		 *
+		 * @param string $dbUser
+		 * @param string $dbPassword
+		 * @param string $dbName
+		 * @param string $dbHost
+		 * @param int $dbPort
+		 * @param bool $displayBar
+		 * @param bool $logToDb
+		 */
 		function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $displayBar, $logToDb)
 		{
 			$this->_dbUser = $dbUser;
@@ -119,24 +155,30 @@
 			$this->_logToDb = $logToDb;
 		}
 
-		/*
-		 * Calculate total included files
+		/**
+		 * Calculate total included files.
+		 *
+		 * @access public
 		 */
 		public function calculateIncludes()
 		{
 			$this->_statistics['includes'] = count(get_included_files());
 		}
 
-		/*
-		 * Calculate total queries
+		/**
+		 * Calculate total queries.
+		 *
+		 * @access public
 		 */
 		public function calculateMysqlQueries()
 		{
 			$this->_statistics['mysql_queries'] = $this->_statistics['mysql_read_queries']+$this->_statistics['mysql_write_queries'];
 		}
 
-		/*
-		 * Calculate total execution time
+		/**
+		 * Calculate total execution time.
+		 *
+		 * @access public
 		 */
 		public function calculateExecTime()
 		{
@@ -146,8 +188,10 @@
 			$this->_statistics['exec_end_time'] = bcmul($microtime,1,4);
 		}
 
-		/*
-		 * Calculate total memory usage
+		/**
+		 * Calculate total memory usage.
+		 *
+		 * @access public
 		 */
 		public function calculateMemoryUsage()
 		{
@@ -167,184 +211,230 @@
 			$this->_statistics['script_peak_memory_usage'] = bcsub($this->_statistics['end_peak_memory_usage'],$this->_statistics['start_peak_memory_usage']);
 		}
 
-		/*
-		 * Increase mysql reads by 1
+		/**
+		 * Increase mysql reads by 1.
+		 *
+		 * @access public
 		 */
 		public function mysqlReadsInc()
 		{
 			$this->_statistics['mysql_read_queries']++;
 		}
 
-		/*
-		 * Increase mysql writes by 1
+		/**
+		 * Increase mysql writes by 1.
+		 *
+		 * @access public
 		 */
 		public function mysqlWritesInc()
 		{
 			$this->_statistics['mysql_write_queries']++;
 		}
 
-		/*
-		 * Increase mc writes by 1
+		/**
+		 * Increase mc writes by 1.
+		 *
+		 * @access public
 		 */
 		public function mcWritesInc()
 		{
 			$this->_statistics['mc_writes']++;
 		}
 
-		/*
-		 * Increase mc deletes by 1
+		/**
+		 * Increase mc deletes by 1.
+		 *
+		 * @access public
 		 */
 		public function mcDeletesInc()
 		{
 			$this->_statistics['mc_deletes']++;
 		}
 
-		/*
-		 * Increase mc reads by 1
+		/**
+		 * Increase mc reads by 1.
+		 *
+		 * @access public
 		 */
 		public function mcReadsInc()
 		{
 			$this->_statistics['mc_reads']++;
 		}
 
-		/*
-		 * Increase mcd writes by 1
+		/**
+		 * Increase mcd writes by 1.
+		 *
+		 * @access public
 		 */
 		public function mcdWritesInc()
 		{
 			$this->_statistics['mcd_writes']++;
 		}
 
-		/*
-		 * Increase mcd deletes by 1
+		/**
+		 * Increase mcd deletes by 1.
+		 *
+		 * @access public
 		 */
 		public function mcdDeletesInc()
 		{
 			$this->_statistics['mcd_deletes']++;
 		}
 
-		/*
-		 * Increase mcd reads by 1
+		/**
+		 * Increase mcd reads by 1.
+		 *
+		 * @access public
 		 */
 		public function mcdReadsInc()
 		{
 			$this->_statistics['mcd_reads']++;
 		}
 
-		/*
-		 * Increase apc writes by 1
+		/**
+		 * Increase apc writes by 1.
+		 *
+		 * @access public
 		 */
 		public function apcWritesInc()
 		{
 			$this->_statistics['apc_writes']++;
 		}
 
-		/*
-		 * Increase apc deletes by 1
+		/**
+		 * Increase apc deletes by 1.
+		 *
+		 * @access public
 		 */
 		public function apcDeletesInc()
 		{
 			$this->_statistics['apc_deletes']++;
 		}
 
-		/*
-		 * Increase apc reads by 1
+		/**
+		 * Increase apc reads by 1.
+		 *
+		 * @access public
 		 */
 		public function apcReadsInc()
 		{
 			$this->_statistics['apc_reads']++;
 		}
 
-		/*
-		 * Increase shm writes by 1
+		/**
+		 * Increase shm writes by 1.
+		 *
+		 * @access public
 		 */
 		public function shmWritesInc()
 		{
 			$this->_statistics['shm_writes']++;
 		}
 
-		/*
-		 * Increase shm deletes by 1
+		/**
+		 * Increase shm deletes by 1.
+		 *
+		 * @access public
 		 */
 		public function shmDeletesInc()
 		{
 			$this->_statistics['shm_deletes']++;
 		}
 
-		/*
-		 * Increase shm reads by 1
+		/**
+		 * Increase shm reads by 1.
+		 *
+		 * @access public
 		 */
 		public function shmReadsInc()
 		{
 			$this->_statistics['shm_reads']++;
 		}
 
-		/*
-		 * Increase lc writes by 1
+		/**
+		 * Increase lc writes by 1.
+		 *
+		 * @access public
 		 */
 		public function lcWritesInc()
 		{
 			$this->_statistics['lc_writes']++;
 		}
 
-		/*
-		 * Increase lc deletes by 1
+		/**
+		 * Increase lc deletes by 1.
+		 *
+		 * @access public
 		 */
 		public function lcDeletesInc()
 		{
 			$this->_statistics['lc_deletes']++;
 		}
 
-		/*
-		 * Increase lc reads by 1
+		/**
+		 * Increase lc reads by 1.
+		 *
+		 * @access public
 		 */
 		public function lcReadsInc()
 		{
 			$this->_statistics['lc_reads']++;
 		}
 
-		/*
-		 * Increase mysql connections by 1
+		/**
+		 * Increase mysql connections by 1.
+		 *
+		 * @access public
 		 */
 		public function mysqlConnectionsInc()
 		{
 			$this->_statistics['mysql_connections']++;
 		}
 
-		/*
-		 * Increase mysql disconnections by 1
+		/**
+		 * Increase mysql disconnections by 1.
+		 *
+		 * @access public
 		 */
 		public function mysqlDisconnectionsInc()
 		{
 			$this->_statistics['mysql_disconnections']++;
 		}
 
-		/*
-		 * Increase mc connections by 1
+		/**
+		 * Increase mc connections by 1.
+		 *
+		 * @access public
 		 */
 		public function mcConnectionsInc()
 		{
 			$this->_statistics['mc_connections']++;
 		}
 
-		/*
-		 * Increase mc disconnections by 1
+		/**
+		 * Increase mc disconnections by 1.
+		 *
+		 * @access public
 		 */
 		public function mcDisconnectionsInc()
 		{
 			$this->_statistics['mc_disconnections']++;
 		}
 
-		/*
-		 * Increase mcd connections by 1
+		/**
+		 * Increase mcd connections by 1.
+		 *
+		 * @access public
 		 */
 		public function mcdConnectionsInc()
 		{
 			$this->_statistics['mcd_connections']++;
 		}
 
-		/*
-		 * Increase mcd disconnections by 1
+		/**
+		 * Increase mcd disconnections by 1.
+		 *
+		 * @access public
 		 */
 		public function mcdDisconnectionsInc()
 		{
@@ -361,8 +451,11 @@
 			$this->_statistics['mysql_queries_executed'][] = $query;
 		}
 
-		/*
-		 * Calcualtes, logs, displays debugger info
+		/**
+		 * Calcualtes, logs, displays debugger info.
+		 *
+		 * @access public
+		 * @param Pz_Core $PzCore
 		 */
 		public function finalize(Pz_Core $PzCore)
 		{
@@ -401,6 +494,12 @@
 			}
 		}
 
+		/**
+		 * This method handles building the debug bar and populating it.
+		 *
+		 * @access private
+		 * @return string
+		 */
 		private function _buildBar()
 		{
 			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial, sans-serif;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;height:40px;z-index:2147483647;">';
@@ -493,8 +592,11 @@
 		}
 
 		/**
-		 * @param $name
-		 * @param $version
+		 * Registers a package or subpackage with version info.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @param string $version
 		 */
 		public function registerVersionInfo($name, $version)
 		{

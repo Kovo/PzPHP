@@ -8,52 +8,89 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Memcache_Server
+	 * @package Pz Library
+	 */
+	/**
+	 * Class that stores and controls access to a memcache server (using memcache).
 	 */
 	final class Pz_Memcache_Server
 	{
-		/*
-		 * Status constants
+		/**
+		 * Status constant when connection has been established to memcache.
+		 *
+		 * @var int
 		 */
 		const CONNECTED = 1;
+
+		/**
+		 * Status constant when there is no connection to the memcache server.
+		 *
+		 * @var int
+		 */
 		const DISCONNECTED = 2;
+
+		/**
+		 * Status constant when connecting to the memcache server.
+		 *
+		 * @var int
+		 */
 		const CONNECTING = 3;
 
 		/**
+		 * The IP of the target memcache server.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_ip = '';
 
 		/**
+		 * The port of the target memcache server.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_port = 0;
 
 		/**
+		 * The amount of times Pz should try to reconnect to memcache on failure.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_connectRetryAttempts = 0;
 
 		/**
+		 * The time in seconds to wait between retry attempts.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_connectRetryDelay = 0;
 
 		/**
+		 * The current connection status.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_status = self::DISCONNECTED;
 
 		/**
+		 * The current active memcached object.
+		 *
+		 * @access private
 		 * @var null|memcache
 		 */
 		private $_memcache_obj = NULL;
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
-		 * @param $connectRetries
-		 * @param $connectRetryWait
+		 * The constructor handles setting the default settings.
+		 *
+		 * @param string $mcIp
+		 * @param int $mcPort
+		 * @param int $connectRetries
+		 * @param int $connectRetryWait
 		 */
 		function __construct($mcIp, $mcPort, $connectRetries, $connectRetryWait)
 		{
@@ -64,9 +101,10 @@
 		}
 
 		/**
-		 * @return bool
+		 * Attempts to connect to the mecache server.
 		 *
-		 * Attempts to connect to the mecached server
+		 * @access public
+		 * @return bool
 		 */
 		public function connect()
 		{
@@ -118,8 +156,10 @@
 			}
 		}
 
-		/*
-		 * Disconnect the mysql server
+		/**
+		 * Disconnect the memcache server.
+		 *
+		 * @access public
 		 */
 		public function disconnect()
 		{
@@ -134,6 +174,9 @@
 		}
 
 		/**
+		 * Returns true or false depending on if a connection has been established to memcache.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function isConnected()
@@ -142,6 +185,9 @@
 		}
 
 		/**
+		 * Return the current active memcache object.
+		 *
+		 * @access public
 		 * @return null|memcache
 		 */
 		public function returnMemcacheObj()

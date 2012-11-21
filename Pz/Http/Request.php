@@ -8,51 +8,80 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Http_Request
+	 * @package Pz Library
+	 */
+	/**
+	 * The Request class allows you to learn about the essentials of the current request.
 	 */
 	class Pz_Http_Request extends Pz_Abstract_Generic
 	{
 		/**
+		 * Whether the current request is an AJAX request or not.
+		 *
+		 * @access private
 		 * @var bool
 		 */
 		private $_isAjax = false;
 
 		/**
+		 * The query string (if any) associated with this request.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_queryString = '';
 
 		/**
+		 * The different accepted media types.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_mediaTypes = array();
 
 		/**
+		 * The different accepted charsets.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_charsets = array();
 
 		/**
+		 * The different accepted encodings.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_encodings = array();
 
 		/**
+		 * The different accepted languages.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_languages = array();
 
 		/**
+		 * The referer url for this request.
+		 *
+		 * @access private
 		 * @var string
 		 */
 		private $_referer = '';
 
 		/**
+		 * Whether this request is being sent over https.
+		 *
+		 * @access private
 		 * @var bool
 		 */
 		private $_secure = false;
 
 		/**
+		 * Sets Pz Core object and starts gathering request data.
+		 *
 		 * @param Pz_Core $PzCore
 		 */
 		function __construct(Pz_Core $PzCore)
@@ -62,6 +91,11 @@
 			$this->_populateRequestParameters();
 		}
 
+		/**
+		 * Gathers various information about the request and stores it.
+		 *
+		 * @access private
+		 */
 		private function _populateRequestParameters()
 		{
 			$this->_detectAjax();
@@ -74,6 +108,11 @@
 			$this->_detectLanguages();
 		}
 
+		/**
+		 * Detects the referer url (if any).
+		 *
+		 * @access private
+		 */
 		private function _detectReferer()
 		{
 			$rawData = $this->server('HTTP_REFERER');
@@ -84,6 +123,11 @@
 			}
 		}
 
+		/**
+		 * Detects whether https is being used.
+		 *
+		 * @access private
+		 */
 		private function _detectHttps()
 		{
 			$rawData = $this->server('HTTPS');
@@ -99,6 +143,11 @@
 			}
 		}
 
+		/**
+		 * Detects and cleans the query string (if any).
+		 *
+		 * @access private
+		 */
 		private function _detectQueryString()
 		{
 			$rawData = $this->server('QUERY_STRING');
@@ -109,6 +158,11 @@
 			}
 		}
 
+		/**
+		 * Reads header information for media types and extracts them.
+		 *
+		 * @access private
+		 */
 		private function _detectMediaTypes()
 		{
 			$rawData = $this->server('HTTP_ACCEPT');
@@ -139,6 +193,11 @@
 			}
 		}
 
+		/**
+		 * Reads header information for charsets and extracts them.
+		 *
+		 * @access private
+		 */
 		private function _detectCharsets()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_CHARSET');
@@ -169,6 +228,11 @@
 			}
 		}
 
+		/**
+		 * Reads header information for accepted encodings and extracts them.
+		 *
+		 * @access private
+		 */
 		private function _detectEncodings()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_ENCODING');
@@ -199,6 +263,11 @@
 			}
 		}
 
+		/**
+		 * Reads header information for accepted languages and extracts them.
+		 *
+		 * @access private
+		 */
 		private function _detectLanguages()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_LANGUAGE');
@@ -230,8 +299,10 @@
 		}
 
 		/**
-		 * @param $header
+		 * Parses any kind of accept header and extracts its data.
 		 *
+		 * @access public
+		 * @param $header
 		 * @return array|null
 		 */
 		public function parseAcceptHeader($header)
@@ -269,8 +340,10 @@
 		}
 
 		/**
-		 * @param $ruleSet
+		 * Breaks-apart the accept header value.
 		 *
+		 * @access public
+		 * @param $ruleSet
 		 * @return array
 		 */
 		public function acceptHeaderOptions($ruleSet)
@@ -305,6 +378,11 @@
 			return array($precedence, $tokens);
 		}
 
+		/**
+		 * Detects if current request is an ajax call.
+		 *
+		 * @access private
+		 */
 		private function _detectAjax()
 		{
 			$serverXmlHttpVar = $this->server('HTTP_X_REQUESTED_WITH');
@@ -313,6 +391,9 @@
 		}
 
 		/**
+		 * Returns true or false depending on if the current request is ajax.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function isAjax()
@@ -321,6 +402,9 @@
 		}
 
 		/**
+		 * Returns this requests accepted media types.
+		 *
+		 * @access public
 		 * @return array
 		 */
 		public function getMediaTypes()
@@ -329,6 +413,9 @@
 		}
 
 		/**
+		 * Returns this requests accepted charsets.
+		 *
+		 * @access public
 		 * @return array
 		 */
 		public function getCharsets()
@@ -337,6 +424,9 @@
 		}
 
 		/**
+		 * Returns this requests accepted encodings.
+		 *
+		 * @access public
 		 * @return array
 		 */
 		public function getEncodings()
@@ -345,6 +435,9 @@
 		}
 
 		/**
+		 * Returns this requests accepted languages.
+		 *
+		 * @access public
 		 * @return array
 		 */
 		public function getLanguages()
@@ -353,6 +446,9 @@
 		}
 
 		/**
+		 * Returns true or false depending on if this request is secure or not.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function isSecure()
@@ -361,6 +457,9 @@
 		}
 
 		/**
+		 * Returns this request's referer url (if any).
+		 *
+		 * @access public
 		 * @return string
 		 */
 		public function getReferer()
@@ -369,8 +468,10 @@
 		}
 
 		/**
-		 * @param $varname
+		 * Returns a value from the SERVER super global.
 		 *
+		 * @access public
+		 * @param $varname
 		 * @return null|string
 		 */
 		public function server($varname)
@@ -386,8 +487,10 @@
 		}
 
 		/**
-		 * @param $varname
+		 * Returns a value from the GET super global.
 		 *
+		 * @access public
+		 * @param $varname
 		 * @return null|string
 		 */
 		public function get($varname)
@@ -403,8 +506,10 @@
 		}
 
 		/**
-		 * @param $varname
+		 * Returns a value from the POST super global.
 		 *
+		 * @access public
+		 * @param $varname
 		 * @return null|string
 		 */
 		public function post($varname)
@@ -420,8 +525,10 @@
 		}
 
 		/**
-		 * @param $varname
+		 * Returns a value from the COOKIE super global.
 		 *
+		 * @access public
+		 * @param $varname
 		 * @return null|string
 		 */
 		public function cookie($varname)
@@ -437,8 +544,10 @@
 		}
 
 		/**
-		 * @param $varname
+		 * Returns a value from the FILES super global.
 		 *
+		 * @access public
+		 * @param $varname
 		 * @return null
 		 */
 		public function files($varname)
@@ -454,6 +563,9 @@
 		}
 
 		/**
+		 * Returns the client IP address.
+		 *
+		 * @access public
 		 * @return string
 		 */
 		public function clientIpAddress()
@@ -483,6 +595,9 @@
 		}
 
 		/**
+		 * Returns the server's IP address/
+		 *
+		 * @access public
 		 * @return null|string
 		 */
 		public function serverIpAddress()
@@ -507,8 +622,10 @@
 		}
 
 		/**
-		 * @param $queryString
+		 * Cleans a raw query string.
 		 *
+		 * @access public
+		 * @param $queryString
 		 * @return string
 		 */
 		public function cleanQueryString($queryString)

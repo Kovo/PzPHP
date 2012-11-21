@@ -6,22 +6,43 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzPHP_Core
+	 * @package PzPHP
+	 */
+	/**
+	 * The PzPHP core class is the central registry for modules, and allows quick access to them.
+	 *
+	 * The PzPHP core class also allows you to register variables that can later be accessed in modules.
 	 */
 	class PzPHP_Core
 	{
+		/**
+		 * The version of PzPHP.
+		 *
+		 * @var string
+		 */
 		const VERSION = '1.0.1';
 
 		/**
+		 * An array of registered modules and their instances.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_registeredModules = array();
 
 		/**
+		 * An array of registered variables accessible to all modules.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_registeredVariables = array();
 
+		/**
+		 * The construct registers the core modules of PzPHP, including Pz_Core.
+		 *
+		 * The construct also registers PzPHP's version with Pz_Core.
+		 */
 		function __construct()
 		{
 			$this->_registeredModules['Pz_Core'] = new Pz_Core($this->_extractPzCoreSettings());
@@ -34,6 +55,9 @@
 		}
 
 		/**
+		 * Extracts all pz related constants to pass to Pz_Core.
+		 *
+		 * @access private
 		 * @return array
 		 */
 		private function _extractPzCoreSettings()
@@ -41,9 +65,9 @@
 			$settings = array();
 			$definedConstants = get_defined_constants(true);
 
-			if(count($definedConstants) > 0)
+			if(isset($definedConstants['user']) && count($definedConstants['user']) > 0)
 			{
-				foreach($definedConstants as $constantName => $constantValue)
+				foreach($definedConstants['user'] as $constantName => $constantValue)
 				{
 					if(strpos($constantName, 'PZ_SETTING_') !== false)
 					{
@@ -64,8 +88,10 @@
 		}
 
 		/**
-		 * @param $moduleName
+		 * Registers a module with PzPHP. It does not get instantiated at this step.
 		 *
+		 * @access public
+		 * @param string $moduleName
 		 * @return bool
 		 */
 		public function registerModule($moduleName)
@@ -83,8 +109,12 @@
 		}
 
 		/**
-		 * @param $moduleName
+		 * Returns the instance of the specified module.
 		 *
+		 * The module gets instantiated at this step if it has not already.
+		 *
+		 * @access public
+		 * @param string $moduleName
 		 * @return null|mixed
 		 */
 		public function module($moduleName)
@@ -110,14 +140,16 @@
 		}
 
 		/**
-		 * @param $variableName
-		 * @param $variableValue
+		 * Registers a variable that can be accessed via any module.
 		 *
+		 * @access public
+		 * @param string $variableName
+		 * @param mixed $variableValue
 		 * @return bool
 		 */
 		public function registerVariable($variableName, $variableValue)
 		{
-			if(!isset($this->_registeredVariables[$variableName]))
+			if(!$this->variableExists($variableName))
 			{
 				$this->_registeredVariables[$variableName] = $variableValue;
 
@@ -130,13 +162,15 @@
 		}
 
 		/**
-		 * @param $variableName
+		 * Returns a registered varaible.
 		 *
+		 * @access public
+		 * @param string $variableName
 		 * @return null|mixed
 		 */
 		public function getVariable($variableName)
 		{
-			if(isset($this->_registeredVariables[$variableName]))
+			if($this->variableExists($variableName))
 			{
 				return $this->_registeredVariables[$variableName];
 			}
@@ -147,14 +181,16 @@
 		}
 
 		/**
+		 * Change a registered variable's value.
+		 *
+		 * @access public
 		 * @param $variableName
 		 * @param $variableValue
-		 *
 		 * @return null|mixed
 		 */
 		public function changeVariable($variableName, $variableValue)
 		{
-			if(isset($this->_registeredVariables[$variableName]))
+			if($this->variableExists($variableName))
 			{
 				$this->_registeredVariables[$variableName] = $variableValue;
 
@@ -167,6 +203,42 @@
 		}
 
 		/**
+		 * Returns true or false depending on if specified variable is registered or not.
+		 *
+		 * @access public
+		 * @param string $variableName
+		 * @return bool
+		 */
+		public function variableExists($variableName)
+		{
+			return isset($this->_registeredVariables[$variableName]);
+		}
+
+		/**
+		 * Unregisters a registered variable.
+		 *
+		 * @access public
+		 * @param string $variableName
+		 * @return bool
+		 */
+		public function unregisterVariable($variableName)
+		{
+			if($this->variableExists($variableName))
+			{
+				unset($this->_registeredVariables[$variableName]);
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/**
+		 * Returns the instance of Pz_Core.
+		 *
+		 * @access public
 		 * @return Pz_Core|null
 		 */
 		public function pz()
@@ -175,6 +247,9 @@
 		}
 
 		/**
+		 * Returns the instance of PzPHP_Cache.
+		 *
+		 * @access public
 		 * @return PzPHP_Cache|null
 		 */
 		public function cache()
@@ -183,6 +258,9 @@
 		}
 
 		/**
+		 * Returns the instance of PzPHP_Db.
+		 *
+		 * @access public
 		 * @return PzPHP_Db|null
 		 */
 		public function db()
@@ -191,10 +269,24 @@
 		}
 
 		/**
+		 * Returns the instance of PzPHP_Security.
+		 *
+		 * @access public
 		 * @return PzPHP_Security|null
 		 */
 		public function security()
 		{
 			return $this->module('PzPHP_Security');
+		}
+
+		/**
+		 * Returns the instance of PzPHP_Locale.
+		 *
+		 * @access public
+		 * @return PzPHP_Locale|null
+		 */
+		public function localize()
+		{
+			return $this->module('PzPHP_Locale');
 		}
 	}

@@ -8,13 +8,26 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Core
+	 * @package Pz Library
+	 */
+	/**
+	 * The core class for Pz Library where most other functionality is accessed from.
 	 */
 	class Pz_Core
 	{
+		/**
+		 * Defines the version of Pz Library.
+		 *
+		 * @var string
+		 */
 		const VERSION = '3.8.0';
 
 		/**
+		 * A multi-dimensional array that will old various object instances.
+		 *
+		 * Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_pzObjects = array(
@@ -33,6 +46,11 @@
 		);
 
 		/**
+		 * An array that holds interaction objects.
+		 *
+		 * Pz stores interaction objects for class representations of data storage/caching architectures, such as MySQL, Memcache, APC, etc...
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_pzInteractions = array(
@@ -46,6 +64,11 @@
 		);
 
 		/**
+		 * Pz's main settings array
+		 *
+		 * A multi-dimensional array that holds default settings for Pz.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_settings = array(
@@ -110,65 +133,83 @@
 			'debug_php_display_errors' => false
 		);
 
-		/*
-		 *
-		 * MySQL(i)
-		 *
-		 */
-
 		/**
+		 * An array where mysql server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular mysql server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_mysqlServers = array();
 
 		/**
+		 * The active mysql server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMysqlServerId = -1;
 
 		/**
+		 * An array where mysqli server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular mysqli server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_mysqliServers = array();
 
 		/**
+		 * The active mysqli server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMysqliServerId = -1;
 
-		/*
-		 *
-		 * Memcache(d)
-		 *
-		 */
-
 		/**
+		 * An array where memcached server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular memcached server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_memcachedServers = array();
 
 		/**
+		 * An array where memcache server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular memcache server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_memcacheServers = array();
 
 		/**
+		 * The active memcached server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMemcachedServerId = -1;
 
 		/**
+		 * The active memcache server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMemcacheServerId = -1;
 
-		/*
-		 *
-		 * General
-		 *
-		 */
-
 		/**
+		 * Boot-up process for the Pz Library.
+		 *
+		 * This is where settings are set (if any custom settings are provided), debugging is started (if enabled), and security checks are executed (if need be).
+		 *
 		 * @param array $settings
 		 */
 		function __construct(array $settings = array())
@@ -184,8 +225,12 @@
 			Pz_Helper_Misc::regenerateMtRandSeed();
 		}
 
-		/*
-		 * Disconnects any active connection to a mysql or memcache server
+		/**
+		 * Disconnects any active connection to a mysql or memcache server, as well as tell the debugger to run its finalize step (if enabled).
+		 *
+		 * The destruct procedure allows you to avoid having to manually disconnect your mysql or memcache servers.
+		 *
+		 * Of course, you can choose to disconnect them at any time before this destruct procedure.
 		 */
 		function __destruct()
 		{
@@ -196,13 +241,10 @@
 			$this->debugger('finalize', array($this));
 		}
 
-		/*
-		 *
-		 * Inits
-		 *
-		 */
-
 		/**
+		 * Apply any custom settings for Pz before anything else gets started.
+		 *
+		 * @access private
 		 * @param array $settings
 		 */
 		private function _initSettings(array $settings = array())
@@ -219,6 +261,11 @@
 			}
 		}
 
+		/**
+		 * Begin debugging class, or warm-up logs.
+		 *
+		 * @access private
+		 */
 		private function _initDebugging()
 		{
 			if($this->getSetting('debug_mode') === true)
@@ -263,6 +310,13 @@
 			}
 		}
 
+		/**
+		 * Begin basic server security checks (if enabled).
+		 *
+		 * This will do a domain check, whitelist check, and blacklist check.
+		 *
+		 * @access private
+		 */
 		private function _initServerSecurity()
 		{
 			if($this->_serverSecurityNeeded())
@@ -286,6 +340,11 @@
 			}
 		}
 
+		/**
+		 * Any other functions that need to be executed at start-up are called here.
+		 *
+		 * @access private
+		 */
 		private function _initMisc()
 		{
 			if($this->getSetting('output_buffering') && $this->getSetting('output_compression'))
@@ -298,15 +357,12 @@
 			}
 		}
 
-		/*
-		 *
-		 * Core set and get
-		 *
-		 */
-
 		/**
-		 * @param $name
-		 * @param $value
+		 * Registers an object in the Pz objects array.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @param string $value
 		 */
 		public function setPzObject($name, $value)
 		{
@@ -323,8 +379,10 @@
 		}
 
 		/**
-		 * @param $name
+		 * Gets a registered object from the Pz objects array.
 		 *
+		 * @access public
+		 * @param string $name
 		 * @return mixed
 		 */
 		public function getPzObject($name)
@@ -342,9 +400,28 @@
 		}
 
 		/**
-		 * @param $name
+		 * Loads a Pz Interaction for a specific submodule.
 		 *
-		 * @return bool
+		 * New interactions are passed an instance of Pz_Core in their constructor.
+		 *
+		 * @access protected
+		 * @param string $name
+		 * @param string $className
+		 */
+		protected function _loadPzInteraction($name, $className)
+		{
+			if($this->_pzInteractions[$name] === NULL)
+			{
+				$this->_pzInteractions[$name] = new $className($this);
+			}
+		}
+
+		/**
+		 * Gets a loaded Pz Interaction.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @return bool|mixed
 		 */
 		public function getPzInteraction($name)
 		{
@@ -359,20 +436,10 @@
 		}
 
 		/**
-		 * @param $name
-		 * @param $className
-		 */
-		protected function _loadPzInteraction($name, $className)
-		{
-			if($this->_pzInteractions[$name] === NULL)
-			{
-				$this->_pzInteractions[$name] = new $className($this);
-			}
-		}
-
-		/**
-		 * @param $settingName
+		 * Gets a Pz setting's value.
 		 *
+		 * @access public
+		 * @param string $settingName
 		 * @return mixed
 		 */
 		public function getSetting($settingName)
@@ -380,22 +447,22 @@
 			return (isset($this->_settings[$settingName])?$this->_settings[$settingName]:false);
 		}
 
-		/*
-		 *
-		 * Security
-		 *
-		 */
-
 		/**
+		 * Returns true if server security is needed/enabled.
+		 *
+		 * @access private
 		 * @return bool
 		 */
 		private function _serverSecurityNeeded()
 		{
-			return ($this->getSetting('domain_protection') || $this->getSetting('blacklist_ip_check') ||$this->getSetting('whitelist_ip_check'));
+			return ($this->getSetting('domain_protection') || $this->getSetting('blacklist_ip_check') || $this->getSetting('whitelist_ip_check'));
 		}
 
 		/**
-		 * @return mixed|void|Pz_Security
+		 * Returns the Pz_Security object (also autoloads it if not already loaded).
+		 *
+		 * @access public
+		 * @return null|Pz_Security
 		 */
 		public function pzSecurity()
 		{
@@ -407,14 +474,11 @@
 			return $pzSecurity;
 		}
 
-		/*
-		 *
-		 * Http
-		 *
-		 */
-
 		/**
-		 * @return mixed|void|Pz_Http_Request
+		 * Returns the Pz_Http_Request object (also autoloads it if not already loaded).
+		 *
+		 * @access public
+		 * @return null|Pz_Http_Request
 		 */
 		public function pzHttpRequest()
 		{
@@ -427,7 +491,10 @@
 		}
 
 		/**
-		 * @return mixed|void|Pz_Http_Response
+		 * Returns the Pz_Http_Response object (also autoloads it if not already loaded).
+		 *
+		 * @access public
+		 * @return null|Pz_Http_Response
 		 */
 		public function pzHttpResponse()
 		{
@@ -439,16 +506,12 @@
 			return $pzHttpResponse;
 		}
 
-		/*
-		 *
-		 * Logs
-		 *
-		 */
-
 		/**
-		 * @param $which
+		 * Returns the logger object for a specified subpackage.
 		 *
-		 * @return mixed|_pzLoggerObjectMysqli|_pzLoggerObjectMemcache|_pzLoggerObjectMemcached
+		 * @access public
+		 * @param string $which
+		 * @return null|_pzLoggerObjectMysql|_pzLoggerObjectMysqli|_pzLoggerObjectMemcache|_pzLoggerObjectMemcached
 		 */
 		public function getLoggerObject($which)
 		{
@@ -456,8 +519,11 @@
 		}
 
 		/**
+		 * Adds a custom log entry to a specified log file (via a logger object).
+		 *
+		 * @access public
 		 * @param Pz_Logger $logObject
-		 * @param          $message
+		 * @param string    $message
 		 */
 		public function addToLog($logObject, $message)
 		{
@@ -468,8 +534,11 @@
 		}
 
 		/**
-		 * @param       $methodName
-		 * @param array $param
+		 * Executes a method inside the debugger object (if it exists).
+		 *
+		 * @access public
+		 * @param string    $methodName
+		 * @param array     $param
 		 */
 		public function debugger($methodName, $param = array())
 		{
@@ -479,18 +548,9 @@
 			}
 		}
 
-		/*
-		 *
-		 * Misc
-		 *
-		 */
-
 		/**
-		 * @param $buffer
-		 *
-		 * @return string
-		 *
 		 * Method that compresses buffered output (started with ob_start()). HTML code is compressed to one line, with whitespaces removed.
+		 *
 		 * Sections of the html can be ignored from compression using:
 		 *
 		 * <!--compress-html--><!--compress-html no compression-->
@@ -498,6 +558,10 @@
 		 * <!--compress-html-->
 		 *
 		 * When compressing output, make sure not to use unclosed comments in inline javascript and css  (i.e. //comment here... )
+		 *
+		 * @access public
+		 * @param string $buffer
+		 * @return string
 		 */
 		public function compressOutput($buffer)
 		{
@@ -538,13 +602,12 @@
 			return $buffer_out;
 		}
 
-		/*
-		 *
-		 * MySQL(i)
-		 *
-		 */
-
 		/**
+		 * Disconnects all registered Mysql servers (using Mysqli).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param bool $removeAlso
 		 */
 		public function disconnectAllMysqliServers($removeAlso = true)
@@ -566,11 +629,20 @@
 		}
 
 		/**
+		 * Disconnects a particular mysql server (using Mysqli).
+		 *
+		 * If a specific id is not given, the current active mysqli server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
 		public function disconnectMysqliServer($id = -1, $removeAlso = true)
 		{
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+
 			if(isset($this->_mysqliServers[$id]))
 			{
 				if($removeAlso === true)
@@ -592,13 +664,19 @@
 		}
 
 		/**
-		 * @param        $dbUser
-		 * @param        $dbPassword
+		 * Registers a mysql server with Pz (using Mysqli).
+		 *
+		 * By default, the mysql server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a mysql server object with Pz (using Mysqli).
+		 *
+		 * @access public
+		 * @param string $dbUser
+		 * @param string $dbPassword
 		 * @param string $dbName
 		 * @param string $dbHost
 		 * @param int    $dbPort
 		 * @param bool   $preventAutoAssign
-		 *
 		 * @return mixed
 		 */
 		public function addMysqliServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306, $preventAutoAssign = false)
@@ -623,12 +701,19 @@
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a mysql server object with Pz (using Mysqli).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
-		public function removeMysqliServer($id)
+		public function removeMysqliServer($id = -1)
 		{
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
 			$return = false;
 
 			if(isset($this->_mysqliServers[$id]) && is_object($this->_mysqliServers[$id]))
@@ -651,54 +736,55 @@
 		}
 
 		/**
-		 * @param      $servierId
-		 * @param bool $setAsActive
+		 * Connects to the mysql server (using Mysqli).
 		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $setAsActive
 		 * @return bool
 		 */
-		public function mysqliConnect($servierId = -1, $setAsActive = false)
+		public function mysqliConnect($id = -1, $setAsActive = false)
 		{
-			if($servierId != -1)
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqliServers[$id]))
 			{
-				if(isset($this->_mysqliServers[$servierId]))
+				if($this->_mysqliServers[$id]->connect())
 				{
-					if($this->_mysqliServers[$servierId]->connect())
+					$this->debugger('mysqlConnectionsInc');
+
+					if($setAsActive === true)
 					{
-						$this->debugger('mysqlConnectionsInc');
-
-						if($setAsActive === true)
-						{
-							$this->_activeMysqliServerId = $servierId;
-						}
-
-						return true;
+						$this->_activeMysqliServerId = $id;
 					}
-					else
-					{
-						$this->addToLog($this->getPzObject('loggers_mysqli'), 'Failed to connect to MySQL server with id#'.$servierId.'.');
 
-						return false;
-					}
+					$return = true;
 				}
 				else
 				{
-					return false;
+					$this->addToLog($this->getPzObject('loggers_mysqli'), 'Failed to connect to MySQL server with id#'.$id.'.');
 				}
 			}
-			else
-			{
-				return false;
-			}
+
+			return $return;
 		}
 
 		/**
-		 * @param      $id
-		 * @param bool $autoConnect
+		 * Sets the active mysql server id (using Mysqli).
 		 *
+		 * By default, this method will not auto connect to the mysql server.
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $autoConnect
 		 * @return bool
 		 */
-		public function setActiveMysqliServerId($id, $autoConnect = true)
+		public function setActiveMysqliServerId($id = -1, $autoConnect = false)
 		{
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+			$return = false;
+
 			if(isset($this->_mysqliServers[$id]))
 			{
 				$this->_activeMysqliServerId = $id;
@@ -708,15 +794,16 @@
 					$this->_mysqliServers[$id]->connect();
 				}
 
-				return true;
+				$return = true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return $return;
 		}
 
 		/**
+		 * Returns the current active mysql server id (using Mysqli).
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function getActiveMysqliServerId()
@@ -725,18 +812,25 @@
 		}
 
 		/**
-		 * @param $id
+		 * Returns the current active mysql server object (using Mysqli).
 		 *
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool|Pz_Mysqli_Server
 		 */
 		public function mysqliActiveObject($id = -1)
 		{
 			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
 
-			return (isset($this->_mysqliServers[$id])?$this->_mysqliServers[$id]->returnMysqliObj():false);
+			return (isset($this->_mysqliServers[$id])?$this->_mysqliServers[$id]:false);
 		}
 
 		/**
+		 * Returns the interaction object for mysqli.
+		 *
+		 * @access public
 		 * @return bool|Pz_Mysqli_Interactions
 		 */
 		public function mysqliInteract()
@@ -745,8 +839,12 @@
 		}
 
 		/**
-		 * @param $id
+		 * Resolves the proper mysql server object id based on input.
 		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
 		public function decideActiveMySqliId($id)
@@ -754,13 +852,12 @@
 			return ($id===-1?$this->getActiveMysqliServerId():$id);
 		}
 
-		/*
-		 *
-		 * Memcache(d)
-		 *
-		 */
-
 		/**
+		 * Disconnects all registered Memcache servers (using Memcached).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param bool $removeAlso
 		 */
 		public function disconnectAllMemcachedServers($removeAlso = true)
@@ -782,6 +879,11 @@
 		}
 
 		/**
+		 * Disconnects all registered Memcache servers (using Memcache).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param bool $removeAlso
 		 */
 		public function disconnectAllMemcacheServers($removeAlso = true)
@@ -803,6 +905,13 @@
 		}
 
 		/**
+		 * Disconnects a particular memcache server (using Memcached).
+		 *
+		 * If a specific id is not given, the current active memcache server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
@@ -829,6 +938,13 @@
 		}
 
 		/**
+		 * Disconnects a particular memcache server (using Memcache).
+		 *
+		 * If a specific id is not given, the current active memcache server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
@@ -855,9 +971,15 @@
 		}
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
+		 * Registers a memcache server with Pz (using Memcached).
 		 *
+		 * By default, the memcache server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a memcache server with Pz (using Memcached).
+		 *
+		 * @access public
+		 * @param string $mcIp
+		 * @param string|int $mcPort
 		 * @return mixed
 		 */
 		public function addMemcachedServer($mcIp, $mcPort)
@@ -882,9 +1004,15 @@
 		}
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
+		 * Registers a memcache server with Pz (using Memcache).
 		 *
+		 * By default, the memcache server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a memcache server with Pz (using Memcache).
+		 *
+		 * @access public
+		 * @param string $mcIp
+		 * @param string|int $mcPort
 		 * @return mixed
 		 */
 		public function addMemcacheServer($mcIp, $mcPort)
@@ -909,8 +1037,14 @@
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a memcache server with Pz (using Memcached).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
 		public function removeMemcachedServer($id)
@@ -937,8 +1071,14 @@
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a memcache server with Pz (using Memcache).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
 		public function removeMemcacheServer($id)
@@ -965,9 +1105,11 @@
 		}
 
 		/**
-		 * @param      $servierId
-		 * @param bool $setAsActive
+		 * Connects to the memcache server (using Memcached).
 		 *
+		 * @access public
+		 * @param int $servierId
+		 * @param bool $setAsActive
 		 * @return bool
 		 */
 		public function memcachedConnect($servierId = -1, $setAsActive = false)
@@ -1006,9 +1148,11 @@
 		}
 
 		/**
-		 * @param      $servierId
-		 * @param bool $setAsActive
+		 * Connects to the memcache server (using Memcache).
 		 *
+		 * @access public
+		 * @param int $servierId
+		 * @param bool $setAsActive
 		 * @return bool
 		 */
 		public function memcacheConnect($servierId = -1, $setAsActive = false)
@@ -1047,9 +1191,13 @@
 		}
 
 		/**
-		 * @param      $id
-		 * @param bool $autoConnect
+		 * Sets the active memcache server id (using Memcached).
 		 *
+		 * By default, this method will not auto connect to the memcache server.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @param bool $autoConnect
 		 * @return bool
 		 */
 		public function setActiveMemcachedServerId($id, $autoConnect = true)
@@ -1072,9 +1220,13 @@
 		}
 
 		/**
-		 * @param      $id
-		 * @param bool $autoConnect
+		 * Sets the active memcache server id (using Memcache).
 		 *
+		 * By default, this method will not auto connect to the memcache server.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @param bool $autoConnect
 		 * @return bool
 		 */
 		public function setActiveMemcacheServerId($id, $autoConnect = true)
@@ -1097,6 +1249,9 @@
 		}
 
 		/**
+		 * Returns the current active memcache server id (using Memcached).
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function getActiveMemcachedServerId()
@@ -1105,6 +1260,9 @@
 		}
 
 		/**
+		 * Returns the current active memcache server id (using Memcache).
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function getActiveMemcacheServerId()
@@ -1113,6 +1271,9 @@
 		}
 
 		/**
+		 * Returns the interaction object for memcached.
+		 *
+		 * @access public
 		 * @return bool|Pz_Memcached_Interactions
 		 */
 		public function memcachedInteract()
@@ -1121,6 +1282,9 @@
 		}
 
 		/**
+		 * Returns the interaction object for memcache.
+		 *
+		 * @access public
 		 * @return bool|Pz_Memcache_Interactions
 		 */
 		public function memcacheInteract()
@@ -1129,8 +1293,12 @@
 		}
 
 		/**
-		 * @param $id
+		 * Resolves the proper memcached server object id based on input.
 		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
 		public function decideActiveMemcachedId($id)
@@ -1139,8 +1307,12 @@
 		}
 
 		/**
-		 * @param $id
+		 * Resolves the proper memcache server object id based on input.
 		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
 		public function decideActiveMemcacheId($id)
@@ -1149,8 +1321,12 @@
 		}
 
 		/**
-		 * @param $id
+		 * Returns the current active memcache server object (using Memcached).
 		 *
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool|Pz_Memcached_Server
 		 */
 		public function memcachedActiveObject($id = -1)
@@ -1161,8 +1337,12 @@
 		}
 
 		/**
-		 * @param $id
+		 * Returns the current active memcache server object (using Memcache).
 		 *
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool|Pz_Memcache_Server
 		 */
 		public function memcacheActiveObject($id = -1)
@@ -1172,13 +1352,10 @@
 			return (isset($this->_memcacheServers[$id])?$this->_memcacheServers[$id]->returnMemcacheObj():false);
 		}
 
-		/*
-		 *
-		 * APC
-		 *
-		 */
-
 		/**
+		 * Returns the interaction object for APC.
+		 *
+		 * @access public
 		 * @return bool|Pz_APC_Interactions
 		 */
 		public function apcInteract()
@@ -1188,13 +1365,10 @@
 			return $this->getPzInteraction('apc');
 		}
 
-		/*
-		 *
-		 * SHARED MEMORY
-		 *
-		 */
-
 		/**
+		 * Returns the interaction object for Shared Memory.
+		 *
+		 * @access public
 		 * @return bool|Pz_SHM_Interactions
 		 */
 		public function shmInteract()
@@ -1204,13 +1378,10 @@
 			return $this->getPzInteraction('shm');
 		}
 
-		/*
-		 *
-		 * LOCAL CACHE
-		 *
-		 */
-
 		/**
+		 * Returns the interaction object for Local Cache.
+		 *
+		 * @access public
 		 * @return bool|Pz_LocalCache_Interactions
 		 */
 		public function lcInteract()

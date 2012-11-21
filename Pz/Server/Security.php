@@ -8,12 +8,18 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Server_Security
+	 * @package Pz Library
+	 */
+	/**
+	 * This class provides methods that normally should be handled by the server itself.
 	 */
 	class Pz_Server_Security extends Pz_Abstract_StaticGeneric
 	{
-		/*
-		 * Checks if domain is allowed
+		/**
+		 * Checks if domain is allowed.
+		 *
+		 * @static
+		 * @access public
 		 */
 		public static function domainCheck()
 		{
@@ -67,8 +73,11 @@
 			}
 		}
 
-		/*
-		 * Check if the visitors IP is whitelisted (if enabled)
+		/**
+		 * Check if the visitors IP is whitelisted (if enabled).
+		 *
+		 * @static
+		 * @access public
 		 */
 		public static function whitelistCheck()
 		{
@@ -116,7 +125,10 @@
 		}
 
 		/*
-		 * Check if the visitors IP is blacklisted (if enabled)
+		 * Check if the visitors IP is blacklisted (if enabled).
+		 *
+		 * @static
+		 * @access public
 		 */
 		public static function blacklistCheck()
 		{

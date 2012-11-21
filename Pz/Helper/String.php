@@ -8,19 +8,42 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Helper_String
+	 * @package Pz Library
+	 */
+	/**
+	 * A helper class with various string manipulation, or reading methods that do not exist in PHP natively.
 	 */
 	class Pz_Helper_String
 	{
+		/**
+		 * Flag specifying the use of alphanumeric characters only.
+		 *
+		 * @var int
+		 */
 		const ALPHANUMERIC = 0;
+
+		/**
+		 * Flag specifying the use of alphanumeric+special characters only.
+		 *
+		 * @var int
+		 */
 		const ALPHANUMERIC_PLUS = 1;
+
+		/**
+		 * Flag specifying the use of hex characters only.
+		 *
+		 * @var int
+		 */
 		const HEX = 2;
 
 		/**
-		 * @param      $length
+		 * Generates a random string.
+		 *
+		 * @static
+		 * @access public
+		 * @param int $length
 		 * @param int  $type
 		 * @param bool $regenerateSeed
-		 *
 		 * @return string
 		 */
 		public static function createCode($length, $type = self::ALPHANUMERIC, $regenerateSeed = true)
@@ -58,8 +81,11 @@
 		}
 
 		/**
-		 * @param $string
+		 * Returns true or false depending on if a string is unserializable (meaning if it is a serialized string).
 		 *
+		 * @static
+		 * @access public
+		 * @param $string
 		 * @return bool
 		 */
 		public static function unserializable($string)

@@ -8,13 +8,18 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_SHM_Interactions
+	 * @package Pz Library
+	 */
+	/**
+	 * This class allows you to interact with the shared memory cache.
 	 */
 	class Pz_SHM_Interactions extends Pz_Abstract_Generic
 	{
 		/**
-		 * @param $keyname
+		 * Converts key to a valid hex value (for proper storage with shmop).
 		 *
+		 * @access private
+		 * @param string $keyname
 		 * @return string
 		 */
 		private function _shmKeyToHex($keyname)
@@ -23,8 +28,10 @@
 		}
 
 		/**
-		 * @param $value
+		 * Converts a value to be stored to a string, or a serialized string.
 		 *
+		 * @access private
+		 * @param $value
 		 * @return string
 		 */
 		private function _shmValueToString($value)
@@ -40,8 +47,10 @@
 		}
 
 		/**
-		 * @param $value
+		 * Returns a stringback to its original type.
 		 *
+		 * @access private
+		 * @param $value
 		 * @return string
 		 */
 		private function _shmStringToValue($value)
@@ -59,11 +68,13 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param      $value
+		 * Writes a value to the cache.
+		 *
+		 * @access public
+		 * @param string $key
+		 * @param mixed $value
 		 * @param bool $deleteLock
 		 * @param bool $deleteOnExist
-		 *
 		 * @return bool
 		 */
 		public function write($key, $value, $deleteLock = false, $deleteOnExist = true)
@@ -120,7 +131,10 @@
 		}
 
 		/**
-		 * @param $key
+		 * Reads a value from the cache.
+		 *
+		 * @access public
+		 * @param string $key
 		 * @param bool $checkLock
 		 * @return mixed
 		 */
@@ -159,9 +173,11 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
+		 * Deletes a value from the cache.
 		 *
+		 * @qccess public
+		 * @param string $key
+		 * @param bool $checkLock
 		 * @return mixed
 		 */
 		public function delete($key, $checkLock = false)
