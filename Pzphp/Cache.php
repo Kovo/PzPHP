@@ -16,15 +16,24 @@
 	class PzPHP_Cache extends PzPHP_Wrapper
 	{
 		/**
+		 * The established caching method (if any).
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
 
 		/**
+		 * Flag if caching is enabled or not.
+		 *
+		 * @access private
 		 * @var bool
 		 */
 		private $_cachingEnabled = false;
 
+		/**
+		 * The contstruct verifies if caching is enabled, and sets it, if it is.
+		 */
 		function __construct()
 		{
 			$this->_verifyIfCachingEnabled();
@@ -32,6 +41,11 @@
 			$this->setCachingMethod();
 		}
 
+		/**
+		 * Verifies if caching is enabled, and sets the flag accordingly.
+		 *
+		 * @access private
+		 */
 		private function _verifyIfCachingEnabled()
 		{
 			if(PZPHP_CACHING_MODE !== PZPHP_CACHE_MODE_NO_CACHING)
@@ -41,8 +55,10 @@
 		}
 
 		/**
-		 * @param int $method
+		 * Sets the chosen caching method locally, and then returns its identifier.
 		 *
+		 * @access public
+		 * @param int $method
 		 * @return int
 		 */
 		public function setCachingMethod($method = PZPHP_CACHING_MODE)
@@ -72,6 +88,9 @@
 		}
 
 		/**
+		 * Returns true or false depending on if caching is enabled or not.
+		 *
+		 * @access public
 		 * @return bool
 		 */
 		public function cacheEnabled()
@@ -80,6 +99,9 @@
 		}
 
 		/**
+		 * Returns the identifier for the current caching method.
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function cacheMethod()
@@ -88,9 +110,11 @@
 		}
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
+		 * Add a cache server (if using mecache).
 		 *
+		 * @access public
+		 * @param string $mcIp
+		 * @param int|string $mcPort
 		 * @return mixed
 		 */
 		public function addServer($mcIp, $mcPort)
@@ -114,11 +138,13 @@
 		}
 
 		/**
-		 * @param $keyName
+		 * Cache read without a lock check and set.
 		 *
+		 * Reads from the cache without setting a lock, or checking for one.
+		 *
+		 * @access public
+		 * @param string $keyName
 		 * @return bool|mixed
-		 *
-		 * Cache read without a lock check and set
 		 */
 		public function read_il($keyName)
 		{
@@ -147,11 +173,13 @@
 		}
 
 		/**
+		 * Cache read with a lock check and set.
+		 *
+		 * Reads from the cache, checking for a lock first (and waiting if one is present), and then sets a lock once the previous lock (if any) is removed.
+		 *
+		 * @access public
 		 * @param $keyName
-		 *
 		 * @return bool|mixed
-		 *
-		 * Cache read with a lock check and set
 		 */
 		public function read_csl($keyName)
 		{
@@ -180,13 +208,15 @@
 		}
 
 		/**
-		 * @param     $keyName
-		 * @param     $value
+		 * Cache write without a lock delete.
+		 *
+		 * Writes to the cache without deleting a lock on the specified key.
+		 *
+		 * @access public
+		 * @param string $keyName
+		 * @param mixed $value
 		 * @param int $expires
-		 *
 		 * @return bool|mixed
-		 *
-		 * Cache write without a lock delete
 		 */
 		public function write_ddl($keyName, $value, $expires = 0)
 		{
@@ -215,13 +245,15 @@
 		}
 
 		/**
-		 * @param     $keyName
-		 * @param     $value
+		 * Cache write with a lock delete.
+		 *
+		 * Writes to the cache as well as deletes a lock (if present) on the specified key.
+		 *
+		 * @access public
+		 * @param string $keyName
+		 * @param mixed $value
 		 * @param int $expires
-		 *
 		 * @return bool|mixed
-		 *
-		 * Cache write with a lock delete
 		 */
 		public function write_dl($keyName, $value, $expires = 0)
 		{
@@ -250,11 +282,13 @@
 		}
 
 		/**
-		 * @param $keyName
+		 * Cache delete without a lock check.
 		 *
+		 * Deletes key from the cache without checking for a lock.
+		 *
+		 * @access public
+		 * @param string $keyName
 		 * @return bool|mixed
-		 *
-		 * Cache delete without a lock check
 		 */
 		public function delete_nlc($keyName)
 		{
@@ -283,11 +317,13 @@
 		}
 
 		/**
-		 * @param $keyName
+		 * Cache delete with a lock check.
 		 *
+		 * Deletes key from the cache, checking for a lock first before deleting.
+		 *
+		 * @access public
+		 * @param string $keyName
 		 * @return bool|mixed
-		 *
-		 * Cache delete with a lock check
 		 */
 		public function delete_lc($keyName)
 		{

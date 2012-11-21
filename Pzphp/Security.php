@@ -6,7 +6,10 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzPHP_Security
+	 * @package PzPHP
+	 */
+	/**
+	 * 
 	 */
 	class PzPHP_Security extends PzPHP_Wrapper
 	{
