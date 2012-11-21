@@ -1,37 +1,67 @@
 <?php
 	/**
 	 * Contributions by:
-	 *     Fayez Awad
+	 *      Fayez Awad
+	 *      Yann Madeleine (http://www.yann-madeleine.com)
 	 *
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Security
+	 * @package Pz Library
+	 */
+	/**
+	 * This class extends Pz_Crypt, and adds some functions that allow you to santize queries and user input.
 	 */
 	class Pz_Security extends Pz_Crypt
 	{
-		const CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES = 0;
-		const CLEAN_HTML_JS_STYLE_COMMENTS = 1;
-		const CLEAN_JS_STYLE_COMMENTS = 2;
-		const CLEAN_STYLE_COMMENTS = 3;
-		const CLEAN_NOTHING = false;
 		/**
-		 * @param $value
+		 * Clean everything (javascript tags, styling tags, comments, html tags, convert all <,> to html entities).
+		 *
+		 * @var int
+		 */
+		const CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES = 0;
+
+		/**
+		 * Clean everything (javascript tags, styling tags, comments, html tags).
+		 *
+		 * @var int
+		 */
+		const CLEAN_HTML_JS_STYLE_COMMENTS = 1;
+
+		/**
+		 * Clean almost everything (javascript tags, styling tags, comments).
+		 *
+		 * @var int
+		 */
+		const CLEAN_JS_STYLE_COMMENTS = 2;
+
+		/**
+		 * Clean some things (styling tags, comments).
+		 *
+		 * @var int
+		 */
+		const CLEAN_STYLE_COMMENTS = 3;
+
+		/**
+		 * Don't clean anything.
+		 *
+		 * @var int
+		 */
+		const CLEAN_NOTHING = false;
+
+		/**
+		 * Method cleans various HTML related elements from a string.
+		 *
+		 * The type of elements cleaned depends on the $cleanall paramter.
+		 *
+		 * @access public
+		 * @param string $value
 		 * @param int $cleanall
 		 * @return mixed|string
 		 */
 		public function cleanHTML($value, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			/*
-			* $value } the string to search through
-			* $cleanall | flag that dictates what is done to the string ($value)
-			* 0 = clean everything (javascript tags, styling tags, comments, html tags, convert all <,> to html entities)
-			* 1 = clean everything (javascript tags, styling tags, comments, html tags)
-			* 2 = clean almost everything (javascript tags, styling tags, comments)
-			* 3 = clean some things (styling tags, comments)
-			* false = don't clean anything
-			*/
 			if($cleanall !== false)
 			{
 				//empty blacklist array
@@ -81,10 +111,12 @@
 		}
 
 		/**
-		* Function that sanitizes a given query string
-		* Do not pass an entire query string to this function, only the individual varaibles that make up the string should be passed
-		* @param $dbLinkRes
-		* @param $value
+		* Function that sanitizes a given query string.
+		*
+		* Do not pass an entire query string to this function, only the individual varaibles that make up the string should be passed.
+		* @access public
+		* @param mysqli $dbLinkRes
+		* @param mixed $value
 		* @param bool $mustBeNumeric
 		* @param int $decimalPlaces
 		* @param int $cleanall
@@ -134,27 +166,6 @@
 
 				return $recallvar;
 			}
-		}
-
-		/**
-		 * @return mixed
-		 */
-		public function getIpAddress()
-		{
-			if(!empty($_SERVER['HTTP_CLIENT_IP']))
-			{
-				$ip = $_SERVER['HTTP_CLIENT_IP'];
-			}
-			elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-			{
-				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			}
-			else
-			{
-				$ip = $_SERVER['REMOTE_ADDR'];
-			}
-
-			return $ip;
 		}
 	}
 

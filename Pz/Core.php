@@ -1,57 +1,82 @@
 <?php
 	/**
 	 * Contributions by:
-	 *     Fayez Awad
+	 *      Fayez Awad
+	 *      Yann Madeleine (http://www.yann-madeleine.com)
 	 *
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz_Core
+	 * @package Pz Library
+	 */
+	/**
+	 * The core class for Pz Library where most other functionality is accessed from.
 	 */
 	class Pz_Core
 	{
-		const VERSION = '3.7.0';
-
 		/**
-		 * @var bool
+		 * Defines the version of Pz Library.
+		 *
+		 * @var string
 		 */
-		public $isAjax = false;
+		const VERSION = '3.8.0';
 
 		/**
-		 * @var null|Pz_Security
+		 * A multi-dimensional array that will old various object instances.
+		 *
+		 * Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.
+		 *
+		 * @access private
+		 * @var array
 		 */
-		private $_pzsecurityObject = NULL;
+		private $_pzObjects = array(
+			'security' => NULL,
+			'debugger' => NULL,
+			'loggers' => array(
+				'mysql' => NULL,
+				'mysqli' => NULL,
+				'memcache' => NULL,
+				'memcached' => NULL
+			),
+			'http' => array(
+				'response' => NULL,
+				'request' => NULL
+			)
+		);
 
 		/**
-		 * @var null|Pz_Debugger
+		 * An array that holds interaction objects.
+		 *
+		 * Pz stores interaction objects for class representations of data storage/caching architectures, such as MySQL, Memcache, APC, etc...
+		 *
+		 * @access private
+		 * @var array
 		 */
-		private $_pzdebuggerObject = NULL;
+		private $_pzInteractions = array(
+			'mysql' => NULL,
+			'mysqli' => NULL,
+			'memcache' => NULL,
+			'memcached' => NULL,
+			'apc' => NULL,
+			'shm' => NULL,
+			'localcache' => NULL
+		);
 
 		/**
-		 * @var null|Pz_Logger
-		 */
-		private $_pzLoggerObjectMysql = NULL;
-
-		/**
-		 * @var null|Pz_Logger
-		 */
-		private $_pzLoggerObjectMemcache = NULL;
-
-		/**
-		 * @var null|Pz_Logger
-		 */
-		private $_pzLoggerObjectMemcached = NULL;
-
-		/**
+		 * Pz's main settings array
+		 *
+		 * A multi-dimensional array that holds default settings for Pz.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_settings = array(
-			#mysql
+			#mysql(i)
 			'mysql_connect_retry_attempts' => 1,
 			'mysql_connect_retry_delay' => 2,
-			'auto_connect_mysql_servers' => false,
-			'auto_assign_active_mysql_server' => true,
+			'mysql_auto_connect_server' => false,
+			'mysql_auto_assign_active_server' => true,
 			'mysql_write_retry_first_interval_delay' => 3000000,
 			'mysql_write_retry_second_interval_delay' => 500000,
 			'mysql_write_retry_first_interval_retries' => 3,
@@ -59,8 +84,8 @@
 			#memcache(d)
 			'memcache_connect_retry_attempts' => 1,
 			'memcache_connect_retry_delay' => 2,
-			'auto_connect_memcache_servers' => false,
-			'auto_assign_active_memcache_server' => true,
+			'memcache_auto_connect_server' => false,
+			'memcache_auto_assign_active_server' => true,
 			#whitelisting
 			'whitelist_ip_check' => false,
 			'whitelist_ips' => array(), //array or string (can be comma separated)
@@ -79,19 +104,16 @@
 				'message' => '<h1>You have been banned from this website</h1>' //if action = exit, provide message to be shown
 			),
 			'blacklist_ignore_host_server_ip' => true,
-			#redirect handling for ajax requests
-			'redirect_for_ajax_calls' => false,
-			'ajax_redirect_message' => '',
 			#compression
-			'compress_output' => true,
+			'output_compression' => true,
 			'output_buffering' => true,
 			#domain protection
 			'domain_protection' => false,
-			'allowed_domains' => array(), //array or string (can be comma separated)
-			'target_domain' => '',
+			'domain_allowed_domains' => array(), //array or string (can be comma separated)
+			'domain_target_domain' => '',
 			#debug/profiling
 			'debug_mode' => true,
-			'display_debug_bar' => true,
+			'debug_display_bar' => true,
 			'debug_db_user' => '',
 			'debug_db_password' => '',
 			'debug_db_name' => '',
@@ -111,133 +133,121 @@
 			'debug_php_display_errors' => false
 		);
 
-		/*
-		 *
-		 * MySQL
-		 *
-		 */
-
 		/**
+		 * An array where mysql server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular mysql server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_mysqlServers = array();
 
 		/**
+		 * The active mysql server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMysqlServerId = -1;
 
-		/*
+		/**
+		 * An array where mysqli server objects are stored.
 		 *
-		 * Memcache(d)
+		 * They keys in this array also act as the id for the particular mysqli server object.
 		 *
+		 * @access private
+		 * @var array
 		 */
+		private $_mysqliServers = array();
 
 		/**
+		 * The active mysqli server id.
+		 *
+		 * @access private
+		 * @var int
+		 */
+		private $_activeMysqliServerId = -1;
+
+		/**
+		 * An array where memcached server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular memcached server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_memcachedServers = array();
 
 		/**
+		 * An array where memcache server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular memcache server object.
+		 *
+		 * @access private
 		 * @var array
 		 */
 		private $_memcacheServers = array();
 
 		/**
+		 * The active memcached server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMemcachedServerId = -1;
 
 		/**
+		 * The active memcache server id.
+		 *
+		 * @access private
 		 * @var int
 		 */
 		private $_activeMemcacheServerId = -1;
 
-		/*
-		 *
-		 * Local Cache
-		 *
-		 */
-		private $_localCache= array();
-
-		/*
-		 *
-		 * General
-		 *
-		 */
-
 		/**
+		 * Boot-up process for the Pz Library.
+		 *
+		 * This is where settings are set (if any custom settings are provided), debugging is started (if enabled), and security checks are executed (if need be).
+		 *
 		 * @param array $settings
 		 */
 		function __construct(array $settings = array())
 		{
-			$this->init($settings);
+			$this->_initSettings($settings);
 
-			$this->isAjax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+			$this->_initDebugging();
 
-			if($this->getSetting('debug_mode') === true)
-			{
-				if($this->getSetting('debug_log_php_errors'))
-				{
-					ini_set('error_log', PZ_LOGS_DIR.$this->getSetting('debug_php_error_log_file_name').'.log');
-					ini_set('error_reporting', E_ALL | E_NOTICE);
-					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
-				}
+			$this->_initServerSecurity();
 
-				$this->_pzdebuggerObject = new Pz_Debugger($this->getSetting('debug_db_user'), $this->getSetting('debug_db_password'), $this->getSetting('debug_db_name'), $this->getSetting('debug_db_host'), $this->getSetting('debug_db_port'), $this->getSetting('display_debug_bar'), $this->getSetting('debug_db_log'), $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
+			$this->_initMisc();
 
-				if($this->getSetting('debug_mysql_log_errors'))
-				{
-					$this->_pzLoggerObjectMysql = new Pz_Logger('', $this->getSetting('debug_mysql_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
-				}
-
-				if($this->getSetting('debug_memcache_log_errors'))
-				{
-					$this->_pzLoggerObjectMemcache = new Pz_Logger('', $this->getSetting('debug_memcache_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
-				}
-
-				if($this->getSetting('debug_memcached_log_errors'))
-				{
-					$this->_pzLoggerObjectMemcached = new Pz_Logger('', $this->getSetting('debug_memcached_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'));
-				}
-			}
-
-			if($this->getSetting('domain_protection') === true)
-			{
-				$this->_domainCheck();
-			}
-
-			if($this->getSetting('output_buffering') === true && $this->getSetting('compress_output') === true)
-			{
-				ob_start(array($this, 'compressOutput'));
-			}
-			elseif($this->getSetting('output_buffering') === true)
-			{
-				ob_start();
-			}
-
-			$this->_whitelistCheck();
-			$this->_blacklistCheck();
-
-			$this->regenerateMtRandSeed();
-		}
-
-		/*
-		 * Disconnects any active connection to a mysql or memcache server
-		 */
-		function __destruct()
-		{
-			$this->disconnectAllMysqlServers();
-			$this->disconnectAllMemcachedServers();
-			$this->disconnectAllMemcacheServers();
-
-			$this->debuggerLog('finalize', $this);
+			Pz_Helper_Misc::regenerateMtRandSeed();
 		}
 
 		/**
+		 * Disconnects any active connection to a mysql or memcache server, as well as tell the debugger to run its finalize step (if enabled).
+		 *
+		 * The destruct procedure allows you to avoid having to manually disconnect your mysql or memcache servers.
+		 *
+		 * Of course, you can choose to disconnect them at any time before this destruct procedure.
+		 */
+		function __destruct()
+		{
+			$this->disconnectAllMysqliServers();
+			$this->disconnectAllMemcachedServers();
+			$this->disconnectAllMemcacheServers();
+
+			$this->debugger('finalize', array($this));
+		}
+
+		/**
+		 * Apply any custom settings for Pz before anything else gets started.
+		 *
+		 * @access private
 		 * @param array $settings
 		 */
-		public function init(array $settings = array())
+		private function _initSettings(array $settings = array())
 		{
 			if(count($settings) > 0)
 			{
@@ -252,204 +262,184 @@
 		}
 
 		/**
-		 * @param $classname
-		 */
-		private function _lazyLoad($classname)
-		{
-			$properName = '_'.strtolower($classname).'Object';
-
-			if($this->$properName === NULL)
-			{
-				$this->$properName = new $classname();
-			}
-		}
-
-		/**
-		 * @param      $methodName
-		 * @param null $param
-		 */
-		public function debuggerLog($methodName, $param = NULL)
-		{
-			if($this->_pzdebuggerObject !== NULL)
-			{
-				$this->_pzdebuggerObject->$methodName($param);
-			}
-		}
-
-		/*
-		 * Checks if domain is allowed
-		 */
-		private function _domainCheck()
-		{
-			//domain protection prevents certainr rare exploits, where attackers may play with the HEADER information
-			//this also helps redirect users when they type example.com instead of www.example.com
-			if(isset($_SERVER['SERVER_NAME']))
-			{
-				$allowedDomains = $this->getSetting('allowed_domains');
-
-				if(is_array($allowedDomains) || strpos($allowedDomains, ',') !== false)
-				{
-					if(!is_array($allowedDomains))
-					{
-						$allowedDomains = array_map('trim', explode(',', $allowedDomains));
-					}
-
-					if(count($allowedDomains) > 0)
-					{
-						$exists = false;
-
-						foreach($allowedDomains as $domain)
-						{
-							if(strrpos(trim($_SERVER['SERVER_NAME']), $domain) === true)
-							{
-								$exists = true;
-								break;
-							}
-						}
-
-						if($exists === false)
-						{
-							header("HTTP/1.1 301 Moved Permanently");
-							header("Location: ".(isset($_SERVER["HTTPS"])&&strtolower($_SERVER["HTTPS"])==='on'?'https://':'http://').$this->getSetting('target_domain').$_SERVER['REQUEST_URI']);
-							header("Connection: close");
-
-							exit();
-						}
-					}
-				}
-				else
-				{
-					if(strrpos(trim($_SERVER['SERVER_NAME']), $allowedDomains) === false)
-					{
-						header("HTTP/1.1 301 Moved Permanently");
-						header("Location: ".(isset($_SERVER["HTTPS"])&&strtolower($_SERVER["HTTPS"])==='on'?'https://':'http://').$this->getSetting('target_domain').$_SERVER['REQUEST_URI']);
-						header("Connection: close");
-
-						exit();
-					}
-				}
-			}
-		}
-
-		/*
-		 * Check if the visitors IP is whitelisted (if enabled)
-		 */
-		private function _whitelistCheck()
-		{
-			if($this->getSetting('whitelist_ip_check') === true)
-			{
-				$whitelistedips = $this->getSetting('whitelist_ips');
-
-				if(!is_array($whitelistedips))
-				{
-					$whitelistedips = array_map('trim', explode(',', $whitelistedips));
-				}
-
-				if($this->getSetting('whitelist_auto_allow_host_server_ip') === true)
-				{
-					$whitelistedips[] = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
-				}
-
-				if(count($whitelistedips) > 0)
-				{
-					$this->_lazyLoad('Pz_Security');
-
-					$ip = $this->_pzsecurityObject->getIpAddress();
-
-					$ipFound = false;
-
-					foreach($whitelistedips as $allowedIp)
-					{
-						if($allowedIp !== '' && $allowedIp === $ip)
-						{
-							$ipFound = true;
-						}
-					}
-
-					if($ipFound === false)
-					{
-						$whatToDo = $this->getSetting('whitelist_action');
-
-						if($whatToDo['action'] === 'exit')
-						{
-							echo $whatToDo['message'];
-							exit();
-						}
-						elseif($whatToDo['action'] === 'url')
-						{
-							$this->redirect($whatToDo['target']);
-						}
-					}
-				}
-			}
-		}
-
-		/*
-		 * Check if the visitors IP is blacklisted (if enabled)
-		 */
-		private function _blacklistCheck()
-		{
-			if($this->getSetting('blacklist_ip_check') === true)
-			{
-				$blacklistedips = $this->getSetting('blacklist_ips');
-
-				if(!is_array($blacklistedips))
-				{
-					$blacklistedips = array_map('trim', explode(',', $blacklistedips));
-				}
-
-				if(count($blacklistedips) > 0)
-				{
-					$this->_lazyLoad('Pz_Security');
-
-					$ip = $this->_pzsecurityObject->getIpAddress();
-
-					$serverIp = (isset($_SERVER['LOCAL_ADDR'])&&$_SERVER['LOCAL_ADDR']!==''?$_SERVER['LOCAL_ADDR']:(isset($_SERVER['SERVER_ADDR'])&&$_SERVER['SERVER_ADDR']!==''?$_SERVER['SERVER_ADDR']:'127.0.0.1'));
-
-					$ignoreServerIp = $this->getSetting('blacklist_ignore_host_server_ip');
-
-					$ipFound = false;
-
-					foreach($blacklistedips as $notallowedIp)
-					{
-						if($notallowedIp !== '' && ($ignoreServerIp === false || $serverIp !== $ip) && $notallowedIp === $ip)
-						{
-							$ipFound = true;
-						}
-					}
-
-					if($ipFound === true)
-					{
-						$whatToDo = $this->getSetting('blacklist_action');
-
-						if($whatToDo['action'] === 'exit')
-						{
-							echo $whatToDo['message'];
-							exit();
-						}
-						elseif($whatToDo['action'] === 'url')
-						{
-							$this->redirect($whatToDo['target']);
-						}
-					}
-				}
-			}
-		}
-
-		/*
-		 * Regenerates a unique mt_rand seed
-		 */
-		public function regenerateMtRandSeed()
-		{
-			list($usec, $sec) = explode(' ', microtime());
-			$seed = (float) $sec + ((float) $usec * mt_rand(1,999999));
-
-			mt_srand($seed+mt_rand(1,1000));
-		}
-
-		/**
-		 * @param $settingName
+		 * Begin debugging class, or warm-up logs.
 		 *
+		 * @access private
+		 */
+		private function _initDebugging()
+		{
+			if($this->getSetting('debug_mode') === true)
+			{
+				if($this->getSetting('debug_log_php_errors'))
+				{
+					ini_set('error_log', PZ_LOGS_DIR.$this->getSetting('debug_php_error_log_file_name').'.log');
+					ini_set('error_reporting', E_ALL | E_NOTICE);
+					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
+				}
+
+				$this->setPzObject(
+					'debugger',
+					new Pz_Debugger($this->getSetting('debug_db_user'), $this->getSetting('debug_db_password'), $this->getSetting('debug_db_name'), $this->getSetting('debug_db_host'), $this->getSetting('debug_db_port'), $this->getSetting('debug_display_bar'), $this->getSetting('debug_db_log'))
+				);
+
+				$this->debugger('registerVersionInfo', array('Pz Library', self::VERSION));
+
+				if($this->getSetting('debug_mysql_log_errors'))
+				{
+					$this->setPzObject(
+						'loggers_mysqli',
+						new Pz_Logger('', $this->getSetting('debug_mysql_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'))
+					);
+				}
+
+				if($this->getSetting('debug_memcache_log_errors'))
+				{
+					$this->setPzObject(
+						'loggers_memcache',
+						new Pz_Logger('', $this->getSetting('debug_memcache_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'))
+					);
+				}
+
+				if($this->getSetting('debug_memcached_log_errors'))
+				{
+					$this->setPzObject(
+						'loggers_memcached',
+						new Pz_Logger('', $this->getSetting('debug_memcached_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'))
+					);
+				}
+			}
+		}
+
+		/**
+		 * Begin basic server security checks (if enabled).
+		 *
+		 * This will do a domain check, whitelist check, and blacklist check.
+		 *
+		 * @access private
+		 */
+		private function _initServerSecurity()
+		{
+			if($this->_serverSecurityNeeded())
+			{
+				Pz_Server_Security::init($this);
+
+				if($this->getSetting('domain_protection'))
+				{
+					Pz_Server_Security::domainCheck();
+				}
+
+				if($this->getSetting('whitelist_ip_check'))
+				{
+					Pz_Server_Security::whitelistCheck();
+				}
+
+				if($this->getSetting('blacklist_ip_check'))
+				{
+					Pz_Server_Security::blacklistCheck();
+				}
+			}
+		}
+
+		/**
+		 * Any other functions that need to be executed at start-up are called here.
+		 *
+		 * @access private
+		 */
+		private function _initMisc()
+		{
+			if($this->getSetting('output_buffering') && $this->getSetting('output_compression'))
+			{
+				ob_start(array($this, 'compressOutput'));
+			}
+			elseif($this->getSetting('output_buffering'))
+			{
+				ob_start();
+			}
+		}
+
+		/**
+		 * Registers an object in the Pz objects array.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @param string $value
+		 */
+		public function setPzObject($name, $value)
+		{
+			$explodeName = explode('_', $name);
+
+			if(count($explodeName) === 2)
+			{
+				$this->_pzObjects[$explodeName[0]][$explodeName[1]] = $value;
+			}
+			else
+			{
+				$this->_pzObjects[$explodeName[0]] = $value;
+			}
+		}
+
+		/**
+		 * Gets a registered object from the Pz objects array.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @return mixed
+		 */
+		public function getPzObject($name)
+		{
+			$explodeName = explode('_', $name);
+
+			if(count($explodeName) === 2)
+			{
+				return $this->_pzObjects[$explodeName[0]][$explodeName[1]];
+			}
+			else
+			{
+				return $this->_pzObjects[$explodeName[0]];
+			}
+		}
+
+		/**
+		 * Loads a Pz Interaction for a specific submodule.
+		 *
+		 * New interactions are passed an instance of Pz_Core in their constructor.
+		 *
+		 * @access protected
+		 * @param string $name
+		 * @param string $className
+		 */
+		protected function _loadPzInteraction($name, $className)
+		{
+			if($this->_pzInteractions[$name] === NULL)
+			{
+				$this->_pzInteractions[$name] = new $className($this);
+			}
+		}
+
+		/**
+		 * Gets a loaded Pz Interaction.
+		 *
+		 * @access public
+		 * @param string $name
+		 * @return bool|mixed
+		 */
+		public function getPzInteraction($name)
+		{
+			if($this->_pzInteractions[$name] === NULL)
+			{
+				return false;
+			}
+			else
+			{
+				return $this->_pzInteractions[$name];
+			}
+		}
+
+		/**
+		 * Gets a Pz setting's value.
+		 *
+		 * @access public
+		 * @param string $settingName
 		 * @return mixed
 		 */
 		public function getSetting($settingName)
@@ -458,85 +448,109 @@
 		}
 
 		/**
-		 * @param      $url
-		 * @param bool $exit
+		 * Returns true if server security is needed/enabled.
+		 *
+		 * @access private
+		 * @return bool
 		 */
-		public function redirect($url, $exit = true)
+		private function _serverSecurityNeeded()
 		{
-			if(!$this->isAjax || $this->getSetting('redirect_for_ajax_calls') === true)
-			{
-				header("HTTP/1.1 301 Moved Permanently");
-				header("Location: ".$url);
-				header("Connection: close");
-			}
-			else
-			{
-				echo $this->getSetting('ajax_redirect_message');
-			}
-
-			if($exit === true)
-			{
-				exit();
-			}
+			return ($this->getSetting('domain_protection') || $this->getSetting('blacklist_ip_check') || $this->getSetting('whitelist_ip_check'));
 		}
 
 		/**
+		 * Returns the Pz_Security object (also autoloads it if not already loaded).
+		 *
+		 * @access public
 		 * @return null|Pz_Security
 		 */
-		public function getSecurityObject()
+		public function pzSecurity()
 		{
-			$this->_lazyLoad('Pz_Security');
+			if(($pzSecurity = $this->getPzObject('security')) === NULL)
+			{
+				$pzSecurity = $this->setPzObject('security', new Pz_Security());
+			}
 
-			return $this->_pzsecurityObject;
+			return $pzSecurity;
 		}
 
 		/**
-		 * @param     $length
-		 * @param int $type
+		 * Returns the Pz_Http_Request object (also autoloads it if not already loaded).
 		 *
-		 * @return mixed
+		 * @access public
+		 * @return null|Pz_Http_Request
 		 */
-		public function createCode($length, $type = Pz_Crypt::ALPHANUMERIC)
+		public function pzHttpRequest()
 		{
-			$this->_lazyLoad('Pz_Security');
+			if(($pzHttpRequest = $this->getPzObject('http_request')) === NULL)
+			{
+				$pzHttpRequest = $this->setPzObject('http_request', new Pz_Http_Request($this));
+			}
 
-			return $this->_pzsecurityObject->createCode($length, $type);
+			return $pzHttpRequest;
 		}
 
 		/**
-		 * @param       $input
-		 * @param array $flags
-		 * @param array $customRules
+		 * Returns the Pz_Http_Response object (also autoloads it if not already loaded).
 		 *
-		 * @return mixed
+		 * @access public
+		 * @return null|Pz_Http_Response
 		 */
-		public function encrypt($input, $flags = array(Pz_Crypt::TWO_WAY), $customRules = array())
+		public function pzHttpResponse()
 		{
-			$this->_lazyLoad('Pz_Security');
+			if(($pzHttpResponse = $this->getPzObject('http_response')) === NULL)
+			{
+				$pzHttpResponse = $this->setPzObject('http_response', new Pz_Http_Response($this));
+			}
 
-			return $this->_pzsecurityObject->encrypt($input, $flags, $customRules);
+			return $pzHttpResponse;
 		}
 
 		/**
-		 * @param       $input
-		 * @param array $flags
-		 * @param array $customRules
+		 * Returns the logger object for a specified subpackage.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param string $which
+		 * @return null|_pzLoggerObjectMysql|_pzLoggerObjectMysqli|_pzLoggerObjectMemcache|_pzLoggerObjectMemcached
 		 */
-		public function decrypt($input, $flags = array(), $customRules = array())
+		public function getLoggerObject($which)
 		{
-			$this->_lazyLoad('Pz_Security');
-
-			return $this->_pzsecurityObject->decrypt($input, $flags, $customRules);
+			return $this->getPzObject('loggers_'.$which);
 		}
 
 		/**
-		 * @param $buffer
+		 * Adds a custom log entry to a specified log file (via a logger object).
 		 *
-		 * @return string
+		 * @access public
+		 * @param Pz_Logger $logObject
+		 * @param string    $message
+		 */
+		public function addToLog($logObject, $message)
+		{
+			if(is_object($logObject))
+			{
+				$logObject->addToLog($message);
+			}
+		}
+
+		/**
+		 * Executes a method inside the debugger object (if it exists).
 		 *
+		 * @access public
+		 * @param string    $methodName
+		 * @param array     $param
+		 */
+		public function debugger($methodName, $param = array())
+		{
+			if($this->getPzObject('debugger') !== NULL)
+			{
+				call_user_func_array(array($this->getPzObject('debugger'), $methodName), $param);
+			}
+		}
+
+		/**
 		 * Method that compresses buffered output (started with ob_start()). HTML code is compressed to one line, with whitespaces removed.
+		 *
 		 * Sections of the html can be ignored from compression using:
 		 *
 		 * <!--compress-html--><!--compress-html no compression-->
@@ -544,6 +558,10 @@
 		 * <!--compress-html-->
 		 *
 		 * When compressing output, make sure not to use unclosed comments in inline javascript and css  (i.e. //comment here... )
+		 *
+		 * @access public
+		 * @param string $buffer
+		 * @return string
 		 */
 		public function compressOutput($buffer)
 		{
@@ -585,162 +603,130 @@
 		}
 
 		/**
-		 * @param      $value
-		 * @param bool $mustBeNumeric
-		 * @param int  $decimalPlaces
-		 * @param int  $cleanall
-		 * @param      $mysqlServerId
+		 * Disconnects all registered Mysql servers (using Mysqli).
 		 *
-		 * @return mixed
-		 */
-		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $mysqlServerId = -1)
-		{
-			$this->_lazyLoad('Pz_Security');
-
-			return $this->_pzsecurityObject->cleanQuery(
-				$this->_mysqlServers[($mysqlServerId===-1?$this->_activeMysqlServerId:$mysqlServerId)]->returnMysqliObj(),
-				$value,
-				$mustBeNumeric,
-				$decimalPlaces,
-				$cleanall
-			);
-		}
-
-		/**
-		 * @param      $mysqlObj
-		 * @param      $value
-		 * @param bool $mustBeNumeric
-		 * @param int  $decimalPlaces
-		 * @param int  $cleanall
+		 * You have the option to not have them unregistered with Pz after being disconnected.
 		 *
-		 * @return mixed
-		 */
-		public function sanitizeExternal($mysqlObj, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
-		{
-			$this->_lazyLoad('Pz_Security');
-
-			return $this->_pzsecurityObject->cleanQuery(
-				$mysqlObj,
-				$value,
-				$mustBeNumeric,
-				$decimalPlaces,
-				$cleanall
-			);
-		}
-
-		/**
-		 * @param Pz_Logger $logObject
-		 * @param          $message
-		 */
-		public function addToLog($logObject, $message)
-		{
-			if(is_object($logObject))
-			{
-				$logObject->addToLog($message);
-			}
-		}
-
-		/*
-		 *
-		 * MySQL
-		 *
-		 */
-
-		/**
+		 * @access public
 		 * @param bool $removeAlso
 		 */
-		public function disconnectAllMysqlServers($removeAlso = true)
+		public function disconnectAllMysqliServers($removeAlso = true)
 		{
-			if(count($this->_mysqlServers) > 0)
+			if(count($this->_mysqliServers) > 0)
 			{
-				foreach($this->_mysqlServers as $id => $mysqlObj)
+				foreach($this->_mysqliServers as $id => $mysqlObj)
 				{
 					if($removeAlso === true)
 					{
-						$this->removeMysqlServer($id);
+						$this->removeMysqliServer($id);
 					}
 					else
 					{
-						$this->disconnectMysqlServer($id, false);
+						$this->disconnectMysqliServer($id, false);
 					}
 				}
 			}
 		}
 
 		/**
+		 * Disconnects a particular mysql server (using Mysqli).
+		 *
+		 * If a specific id is not given, the current active mysqli server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
-		public function disconnectMysqlServer($id = -1, $removeAlso = true)
+		public function disconnectMysqliServer($id = -1, $removeAlso = true)
 		{
-			if(isset($this->_mysqlServers[$id]))
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+
+			if(isset($this->_mysqliServers[$id]))
 			{
 				if($removeAlso === true)
 				{
-					$this->removeMysqlServer($id);
+					$this->removeMysqliServer($id);
 				}
 				else
 				{
-					$this->_mysqlServers[$id]->disconnect();
+					$this->_mysqliServers[$id]->disconnect();
 
-					$this->debuggerLog('mysqlDisconnectionsInc');
+					$this->debugger('mysqlDisconnectionsInc');
 
-					if($this->_activeMysqlServerId === $id)
+					if($this->_activeMysqliServerId === $id)
 					{
-						$this->_activeMysqlServerId = -1;
+						$this->_activeMysqliServerId = -1;
 					}
 				}
 			}
 		}
 
 		/**
-		 * @param        $dbUser
-		 * @param        $dbPassword
+		 * Registers a mysql server with Pz (using Mysqli).
+		 *
+		 * By default, the mysql server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a mysql server object with Pz (using Mysqli).
+		 *
+		 * @access public
+		 * @param string $dbUser
+		 * @param string $dbPassword
 		 * @param string $dbName
 		 * @param string $dbHost
 		 * @param int    $dbPort
-		 *
+		 * @param bool   $preventAutoAssign
 		 * @return mixed
 		 */
-		public function addMysqlServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306)
+		public function addMysqliServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306, $preventAutoAssign = false)
 		{
-			$this->_mysqlServers[] = new Pz_Mysql_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
+			$this->_mysqliServers[] = new Pz_Mysqli_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
 
-			$newId = max(array_keys($this->_mysqlServers));
+			$newId = max(array_keys($this->_mysqliServers));
 
-			if($this->getSetting('auto_assign_active_mysql_server') === true)
+			if($this->getSetting('mysql_auto_assign_active_server') === true && $preventAutoAssign === false)
 			{
-				$this->_activeMysqlServerId = $newId;
+				$this->_activeMysqliServerId = $newId;
 			}
 
-			if($this->getSetting('auto_connect_mysql_servers') === true)
+			if($this->getSetting('mysql_auto_connect_server') === true)
 			{
-				$this->mysqlConnect($newId, $this->getSetting('auto_assign_active_mysql_server'));
+				$this->mysqliConnect($newId, $this->getSetting('mysql_auto_assign_active_server'));
 			}
+
+			$this->_loadPzInteraction('mysqli', 'Pz_Mysqli_Interactions');
 
 			return $newId;
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a mysql server object with Pz (using Mysqli).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
-		public function removeMysqlServer($id)
+		public function removeMysqliServer($id = -1)
 		{
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
 			$return = false;
 
-			if(isset($this->_mysqlServers[$id]) && is_object($this->_mysqlServers[$id]))
+			if(isset($this->_mysqliServers[$id]) && is_object($this->_mysqliServers[$id]))
 			{
-				$this->_mysqlServers[$id]->disconnect();
+				$this->_mysqliServers[$id]->disconnect();
 
-				$this->debuggerLog('mysqlDisconnectionsInc');
+				$this->debugger('mysqlDisconnectionsInc');
 
-				unset($this->_mysqlServers[$id]);
+				unset($this->_mysqliServers[$id]);
 
-				if($this->_activeMysqlServerId === $id)
+				if($this->_activeMysqliServerId === $id)
 				{
-					$this->_activeMysqlServerId = -1;
+					$this->_activeMysqliServerId = -1;
 				}
 
 				$return = true;
@@ -750,310 +736,128 @@
 		}
 
 		/**
-		 * @param      $servierId
+		 * Connects to the mysql server (using Mysqli).
+		 *
+		 * @access public
+		 * @param int  $id
 		 * @param bool $setAsActive
-		 *
 		 * @return bool
 		 */
-		public function mysqlConnect($servierId = -1, $setAsActive = false)
+		public function mysqliConnect($id = -1, $setAsActive = false)
 		{
-			if($servierId != -1)
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqliServers[$id]))
 			{
-				if(isset($this->_mysqlServers[$servierId]))
+				if($this->_mysqliServers[$id]->connect())
 				{
-					if($this->_mysqlServers[$servierId]->connect())
+					$this->debugger('mysqlConnectionsInc');
+
+					if($setAsActive === true)
 					{
-						$this->debuggerLog('mysqlConnectionsInc');
-
-						if($setAsActive === true)
-						{
-							$this->_activeMysqlServerId = $servierId;
-						}
-
-						return true;
+						$this->_activeMysqliServerId = $id;
 					}
-					else
-					{
-						$this->addToLog($this->_pzLoggerObjectMysql, 'Failed to connect to MySQL server with id#'.$servierId.'.');
 
-						return false;
-					}
+					$return = true;
 				}
 				else
 				{
-					return false;
+					$this->addToLog($this->getPzObject('loggers_mysqli'), 'Failed to connect to MySQL server with id#'.$id.'.');
 				}
 			}
-			else
-			{
-				return false;
-			}
+
+			return $return;
 		}
 
 		/**
-		 * @param $query
+		 * Sets the active mysql server id (using Mysqli).
 		 *
-		 * @return bool
-		 */
-		public function mysqlRead($query)
-		{
-			if($this->_activeMysqlServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_mysqlServers[$this->_activeMysqlServerId]->isConnected() === false)
-				{
-					if($this->mysqlConnect($this->_activeMysqlServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				$result = $this->_mysqlServers[$this->_activeMysqlServerId]->returnMysqliObj()->query($query);
-
-				if(!$result && strtoupper(substr($query,0,6)) === 'SELECT')
-				{
-					$this->addToLog($this->_pzLoggerObjectMysql, 'Query failed: "'.$query.'".');
-				}
-
-				$this->debuggerLog('mysqlReadsInc');
-				$this->debuggerLog('mysqlLogQuery', $query);
-
-				if(empty($result))
-				{
-					return false;
-				}
-				else
-				{
-					return $result;
-				}
-			}
-		}
-
-		/**
-		 * @param $query
+		 * By default, this method will not auto connect to the mysql server.
 		 *
-		 * @return bool|int
-		 */
-		public function mysqlWrite($query)
-		{
-			if($this->_activeMysqlServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_mysqlServers[$this->_activeMysqlServerId]->isConnected() === false)
-				{
-					if($this->mysqlConnect($this->_activeMysqlServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				$firstIntervalDelay = $this->getSetting('mysql_write_retry_first_interval_delay');
-				$secondIntervalDelay = $this->getSetting('mysql_write_retry_second_interval_delay');
-
-				$firstIntervalRetries = $this->getSetting('mysql_write_retry_first_interval_retries');
-				$secondIntervalRetries = $this->getSetting('mysql_write_retry_second_interval_retries');
-
-				$retryCodes = array(
-					1213, //Deadlock found when trying to get lock
-					1205 //Lock wait timeout exceeded
-				);
-
-				//Initialize
-				$cnt_retry = 0;
-
-				//Main loop
-				do
-				{
-					//Initialize 'flag_retry' indicating whether or not we need to retry this transaction
-					$flag_retry = 0;
-
-					// Write query (UPDATE, INSERT)
-					$result = $this->_mysqlServers[$this->_activeMysqlServerId]->returnMysqliObj()->query($query);
-					$mysql_errno = $this->_mysqlServers[$this->_activeMysqlServerId]->returnMysqliObj()->errno;
-					$mysql_error = $this->_mysqlServers[$this->_activeMysqlServerId]->returnMysqliObj()->error;
-
-					$this->debuggerLog('mysqlWritesInc');
-					$this->debuggerLog('mysqlLogQuery', $query);
-
-					// If failed,
-					if(!$result)
-					{
-						// Determine if we need to retry this transaction -
-						// If duplicate PRIMARY key error,
-						// or one of the errors in 'arr_need_to_retry_error_codes'
-						// then we need to retry
-						if($mysql_errno == 1062 && strpos($mysql_error,"for key 'PRIMARY'") !== false)
-						{
-							$this->addToLog($this->_pzLoggerObjectMysql, 'Duplicate Primary Key error for query: "'.$query.'".');
-						}
-
-						$flag_retry = (in_array($mysql_errno, $retryCodes));
-
-						if(!empty($flag_retry))
-						{
-							$this->addToLog($this->_pzLoggerObjectMysql, 'Deadlock detected for query: "'.$query.'".');
-						}
-					}
-
-					// If successful or failed but no need to retry
-					if($result || empty($flag_retry))
-					{
-						// We're done
-						break;
-					}
-
-					$cnt_retry++;
-
-					if($cnt_retry <= $firstIntervalRetries)
-					{
-						if($cnt_retry === $firstIntervalRetries)
-						{
-							$this->addToLog($this->_pzLoggerObjectMysql, 'Reducing retry interval for deadlock detection on query: "'.$query.'".');
-						}
-
-						usleep($firstIntervalDelay);
-					}
-					elseif($cnt_retry > $firstIntervalRetries && $cnt_retry <= $secondIntervalRetries)
-					{
-						usleep($secondIntervalDelay);
-					}
-					else
-					{
-						$result = 0;
-						$cnt_retry--;
-
-						$this->addToLog($this->_pzLoggerObjectMysql, 'Finally gave up on query: "'.$query.'".');
-
-						break;
-					}
-				}
-				while(1);
-
-				// If update query failed, log
-				if(!$result)
-				{
-					$this->addToLog($this->_pzLoggerObjectMysql, 'Query failed: "'.$query.'".');
-				}
-
-				if($cnt_retry > 0 && $cnt_retry < $secondIntervalRetries)
-				{
-					$this->addToLog($this->_pzLoggerObjectMysql, 'Query finally succeeded: "'.$query.'".');
-				}
-
-				// Return result
-				if(empty($result))
-				{
-					return false;
-				}
-				else
-				{
-					return $result;
-				}
-			}
-		}
-
-		/**
-		 * @param      $id
+		 * @access public
+		 * @param int  $id
 		 * @param bool $autoConnect
-		 *
 		 * @return bool
 		 */
-		public function setActiveMysqlServerId($id, $autoConnect = true)
+		public function setActiveMysqliServerId($id = -1, $autoConnect = false)
 		{
-			if(isset($this->_mysqlServers[$id]))
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqliServers[$id]))
 			{
-				$this->_activeMysqlServerId = $id;
+				$this->_activeMysqliServerId = $id;
 
 				if($autoConnect === true)
 				{
-					$this->_mysqlServers[$id]->connect();
+					$this->_mysqliServers[$id]->connect();
 				}
 
-				return true;
+				$return = true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return $return;
 		}
 
 		/**
-		 * @param $id
+		 * Returns the current active mysql server id (using Mysqli).
 		 *
+		 * @access public
 		 * @return int
 		 */
-		public function mysqlAffectedRows($id = -1)
+		public function getActiveMysqliServerId()
 		{
-			$id = ($id===-1?$this->_activeMysqlServerId:$id);
-
-			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->affectedRows():0);
+			return $this->_activeMysqliServerId;
 		}
 
 		/**
-		 * @param $id
+		 * Returns the current active mysql server object (using Mysqli).
 		 *
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|Pz_Mysqli_Server
+		 */
+		public function mysqliActiveObject($id = -1)
+		{
+			$id = ($id===-1?$this->getActiveMysqliServerId():$id);
+
+			return (isset($this->_mysqliServers[$id])?$this->_mysqliServers[$id]:false);
+		}
+
+		/**
+		 * Returns the interaction object for mysqli.
+		 *
+		 * @access public
+		 * @return bool|Pz_Mysqli_Interactions
+		 */
+		public function mysqliInteract()
+		{
+			return $this->getPzInteraction('mysqli');
+		}
+
+		/**
+		 * Resolves the proper mysql server object id based on input.
+		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return int
 		 */
-		public function mysqlInsertId($id = -1)
+		public function decideActiveMySqliId($id)
 		{
-			$id = ($id===-1?$this->_activeMysqlServerId:$id);
-
-			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->insertId():0);
+			return ($id===-1?$this->getActiveMysqliServerId():$id);
 		}
 
 		/**
-		 * @param $dbName
-		 * @param $id
+		 * Disconnects all registered Memcache servers (using Memcached).
 		 *
-		 * @return bool
-		 */
-		public function mysqlSelectDatabase($dbName, $id = -1)
-		{
-			$id = ($id===-1?$this->_activeMysqlServerId:$id);
-
-			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->selectDatabase($dbName):false);
-		}
-
-		/**
-		 * @param      $user
-		 * @param      $password
-		 * @param null $dbName
-		 * @param      $id
+		 * You have the option to not have them unregistered with Pz after being disconnected.
 		 *
-		 * @return bool
-		 */
-		public function mysqlChangeUser($user, $password, $dbName = NULL, $id = -1)
-		{
-			$id = ($id===-1?$this->_activeMysqlServerId:$id);
-
-			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->changeUser($user, $password, $dbName):false);
-		}
-
-		/**
-		 * @param $id
-		 *
-		 * @return bool
-		 */
-		public function mysqlActiveObject($id = -1)
-		{
-			$id = ($id===-1?$this->_activeMysqlServerId:$id);
-
-			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]->returnMysqliObj():false);
-		}
-
-		/*
-		 *
-		 * Memcache(d)
-		 *
-		 */
-
-		/**
+		 * @access public
 		 * @param bool $removeAlso
 		 */
 		public function disconnectAllMemcachedServers($removeAlso = true)
@@ -1075,6 +879,11 @@
 		}
 
 		/**
+		 * Disconnects all registered Memcache servers (using Memcache).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param bool $removeAlso
 		 */
 		public function disconnectAllMemcacheServers($removeAlso = true)
@@ -1096,6 +905,13 @@
 		}
 
 		/**
+		 * Disconnects a particular memcache server (using Memcached).
+		 *
+		 * If a specific id is not given, the current active memcache server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
@@ -1111,7 +927,7 @@
 				{
 					$this->_memcachedServers[$id]->disconnect();
 
-					$this->debuggerLog('mcdDisconnectionsInc');
+					$this->debugger('mcdDisconnectionsInc');
 
 					if($this->_activeMemcachedServerId === $id)
 					{
@@ -1122,6 +938,13 @@
 		}
 
 		/**
+		 * Disconnects a particular memcache server (using Memcache).
+		 *
+		 * If a specific id is not given, the current active memcache server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
 		 * @param int  $id
 		 * @param bool $removeAlso
 		 */
@@ -1137,7 +960,7 @@
 				{
 					$this->_memcacheServers[$id]->disconnect();
 
-					$this->debuggerLog('mcDisconnectionsInc');
+					$this->debugger('mcDisconnectionsInc');
 
 					if($this->_activeMemcacheServerId === $id)
 					{
@@ -1148,9 +971,15 @@
 		}
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
+		 * Registers a memcache server with Pz (using Memcached).
 		 *
+		 * By default, the memcache server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a memcache server with Pz (using Memcached).
+		 *
+		 * @access public
+		 * @param string $mcIp
+		 * @param string|int $mcPort
 		 * @return mixed
 		 */
 		public function addMemcachedServer($mcIp, $mcPort)
@@ -1159,23 +988,31 @@
 
 			$newId = max(array_keys($this->_memcachedServers));
 
-			if($this->getSetting('auto_assign_active_memcache_server') === true)
+			if($this->getSetting('memcache_auto_assign_active_server') === true)
 			{
 				$this->_activeMemcachedServerId = $newId;
 			}
 
-			if($this->getSetting('auto_connect_memcache_servers') === true)
+			if($this->getSetting('memcache_auto_connect_server') === true)
 			{
-				$this->memcachedConnect($newId, $this->getSetting('auto_assign_active_memcache_server'));
+				$this->memcachedConnect($newId, $this->getSetting('memcache_auto_assign_active_server'));
 			}
+
+			$this->_loadPzInteraction('memcached', 'Pz_Memcached_Interactions');
 
 			return $newId;
 		}
 
 		/**
-		 * @param $mcIp
-		 * @param $mcPort
+		 * Registers a memcache server with Pz (using Memcache).
 		 *
+		 * By default, the memcache server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a memcache server with Pz (using Memcache).
+		 *
+		 * @access public
+		 * @param string $mcIp
+		 * @param string|int $mcPort
 		 * @return mixed
 		 */
 		public function addMemcacheServer($mcIp, $mcPort)
@@ -1184,22 +1021,30 @@
 
 			$newId = max(array_keys($this->_memcacheServers));
 
-			if($this->getSetting('auto_assign_active_memcache_server') === true)
+			if($this->getSetting('memcache_auto_assign_active_server') === true)
 			{
 				$this->_activeMemcacheServerId = $newId;
 			}
 
-			if($this->getSetting('auto_connect_memcache_servers') === true)
+			if($this->getSetting('memcache_auto_connect_server') === true)
 			{
-				$this->memcacheConnect($newId, $this->getSetting('auto_assign_active_memcache_server'));
+				$this->memcacheConnect($newId, $this->getSetting('memcache_auto_assign_active_server'));
 			}
+
+			$this->_loadPzInteraction('memcache', 'Pz_Memcache_Interactions');
 
 			return $newId;
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a memcache server with Pz (using Memcached).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
 		public function removeMemcachedServer($id)
@@ -1210,7 +1055,7 @@
 			{
 				$this->_memcachedServers[$id]->disconnect();
 
-				$this->debuggerLog('mcdDisconnectionsInc');
+				$this->debugger('mcdDisconnectionsInc');
 
 				unset($this->_memcachedServers[$id]);
 
@@ -1226,8 +1071,14 @@
 		}
 
 		/**
-		 * @param $id
+		 * Unregisters a memcache server with Pz (using Memcache).
 		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
 		 * @return bool
 		 */
 		public function removeMemcacheServer($id)
@@ -1238,7 +1089,7 @@
 			{
 				$this->_memcacheServers[$id]->disconnect();
 
-				$this->debuggerLog('mcDisconnectionsInc');
+				$this->debugger('mcDisconnectionsInc');
 
 				unset($this->_memcacheServers[$id]);
 
@@ -1254,9 +1105,11 @@
 		}
 
 		/**
-		 * @param      $servierId
-		 * @param bool $setAsActive
+		 * Connects to the memcache server (using Memcached).
 		 *
+		 * @access public
+		 * @param int $servierId
+		 * @param bool $setAsActive
 		 * @return bool
 		 */
 		public function memcachedConnect($servierId = -1, $setAsActive = false)
@@ -1267,7 +1120,7 @@
 				{
 					if($this->_memcachedServers[$servierId]->connect())
 					{
-						$this->debuggerLog('mcdConnectionsInc');
+						$this->debugger('mcdConnectionsInc');
 
 						if($setAsActive === true)
 						{
@@ -1278,7 +1131,7 @@
 					}
 					else
 					{
-						$this->addToLog($this->_pzLoggerObjectMemcached, 'Failed to connect to Memcached server with id#'.$servierId.'.');
+						$this->addToLog($this->getPzObject('loggers_memcached'), 'Failed to connect to Memcached server with id#'.$servierId.'.');
 
 						return false;
 					}
@@ -1295,9 +1148,11 @@
 		}
 
 		/**
-		 * @param      $servierId
-		 * @param bool $setAsActive
+		 * Connects to the memcache server (using Memcache).
 		 *
+		 * @access public
+		 * @param int $servierId
+		 * @param bool $setAsActive
 		 * @return bool
 		 */
 		public function memcacheConnect($servierId = -1, $setAsActive = false)
@@ -1308,7 +1163,7 @@
 				{
 					if($this->_memcacheServers[$servierId]->connect())
 					{
-						$this->debuggerLog('mcConnectionsInc');
+						$this->debugger('mcConnectionsInc');
 
 						if($setAsActive === true)
 						{
@@ -1319,7 +1174,7 @@
 					}
 					else
 					{
-						$this->addToLog($this->_pzLoggerObjectMemcache, 'Failed to connect to Memcache server with id#'.$servierId.'.');
+						$this->addToLog($this->getPzObject('loggers_memcache'), 'Failed to connect to Memcache server with id#'.$servierId.'.');
 
 						return false;
 					}
@@ -1336,329 +1191,13 @@
 		}
 
 		/**
-		 * @param      $key
-		 * @param      $value
-		 * @param int  $expires
-		 * @param bool $deleteLock
-		 * @param bool $checkFirst
+		 * Sets the active memcache server id (using Memcached).
 		 *
-		 * @return bool
-		 */
-		public function mcdWrite($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true)
-		{
-			if($this->_activeMemcachedServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcachedServers[$this->_activeMemcachedServerId]->isConnected() === false)
-				{
-					if($this->memcachedConnect($this->_activeMemcachedServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkFirst === true)
-				{
-					$replace = $this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->replace($key, (is_scalar($value)?(string)$value:$value), $expires);
-
-					$this->debuggerLog('mcdWritesInc');
-
-					if($replace === false)
-					{
-						$return = $this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->add($key, (is_scalar($value)?(string)$value:$value), $expires);
-
-						$this->debuggerLog('mcdWritesInc');
-					}
-					else
-					{
-						$return = true;
-					}
-				}
-				else
-				{
-					if($this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->add($key, (is_scalar($value)?(string)$value:$value), $expires) === true)
-					{
-						$this->debuggerLog('mcdWritesInc');
-
-						if((is_scalar($value)?(string)$value:$value) == $this->mcdRead($key))
-						{
-							$return = true;
-						}
-						else
-						{
-							$return = false;
-						}
-					}
-					else
-					{
-						$return = false;
-					}
-				}
-
-				if($deleteLock === true)
-				{
-					$this->mcdDelete($key.'_pzLock');
-				}
-
-				return $return;
-			}
-		}
-
-		/**
-		 * @param $key
-		 * @param bool $checkLock
-		 * @return mixed
-		 */
-		public function mcdRead($key, $checkLock = false)
-		{
-			if($this->_activeMemcachedServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcachedServers[$this->_activeMemcachedServerId]->isConnected() === false)
-				{
-					if($this->memcachedConnect($this->_activeMemcachedServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->debuggerLog('mcdReadsInc');
-
-					return $this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->get($key);
-				}
-				else
-				{
-					while($this->mcdWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->mcdRead($key);
-				}
-			}
-		}
-
-		/**
-		 * @param      $key
-		 * @param bool $checkLock
+		 * By default, this method will not auto connect to the memcache server.
 		 *
-		 * @return mixed
-		 */
-		public function mcdDelete($key, $checkLock = false)
-		{
-			if($this->_activeMemcachedServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcachedServers[$this->_activeMemcachedServerId]->isConnected() === false)
-				{
-					if($this->memcachedConnect($this->_activeMemcachedServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->delete($key);
-
-					$this->debuggerLog('mcdDeletesInc');
-
-					if(substr($key, -7) !== '_pzLock')
-					{
-						$this->_memcachedServers[$this->_activeMemcachedServerId]->returnMemcachedObj()->delete($key.'_pzLock');
-
-						$this->debuggerLog('mcdDeletesInc');
-					}
-
-					return true;
-				}
-				else
-				{
-					while($this->mcdWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->mcdDelete($key);
-				}
-			}
-		}
-
-		/**
-		 * @param      $key
-		 * @param      $value
-		 * @param int  $expires
-		 * @param bool $deleteLock
-		 * @param bool $checkFirst
-		 *
-		 * @return bool
-		 */
-		public function mcWrite($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true)
-		{
-			if($this->_activeMemcacheServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcacheServers[$this->_activeMemcacheServerId]->isConnected() === false)
-				{
-					if($this->memcacheConnect($this->_activeMemcacheServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkFirst === true)
-				{
-					$replace = $this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->replace($key, (is_scalar($value)?(string)$value:$value), MEMCACHE_COMPRESSED, $expires);
-
-					$this->debuggerLog('mcWritesInc');
-
-					if($replace === false)
-					{
-						$return = $this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->add($key, (is_scalar($value)?(string)$value:$value), MEMCACHE_COMPRESSED, $expires);
-
-						$this->debuggerLog('mcWritesInc');
-					}
-					else
-					{
-						$return = true;
-					}
-				}
-				else
-				{
-					if($this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->add($key, (is_scalar($value)?(string)$value:$value), MEMCACHE_COMPRESSED, $expires) === true)
-					{
-						$this->debuggerLog('mcWritesInc');
-
-						if((is_scalar($value)?(string)$value:$value) == $this->mcRead($key))
-						{
-							$return = true;
-						}
-						else
-						{
-							$return = false;
-						}
-					}
-					else
-					{
-						$return = false;
-					}
-				}
-
-				if($deleteLock === true)
-				{
-					$this->mcDelete($key.'_pzLock');
-				}
-
-				return $return;
-			}
-		}
-
-		/**
-		 * @param $key
-		 * @param bool $checkLock
-		 * @return mixed
-		 */
-		public function mcRead($key, $checkLock = false)
-		{
-			if($this->_activeMemcacheServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcacheServers[$this->_activeMemcacheServerId]->isConnected() === false)
-				{
-					if($this->memcacheConnect($this->_activeMemcacheServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->debuggerLog('mcReadsInc');
-
-					return $this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->get($key);
-				}
-				else
-				{
-					while($this->mcWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->mcRead($key);
-				}
-			}
-		}
-
-		/**
-		 * @param      $key
-		 * @param bool $checkLock
-		 *
-		 * @return mixed
-		 */
-		public function mcDelete($key, $checkLock = false)
-		{
-			if($this->_activeMemcacheServerId == -1)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->_memcacheServers[$this->_activeMemcacheServerId]->isConnected() === false)
-				{
-					if($this->memcacheConnect($this->_activeMemcacheServerId) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->delete($key);
-
-					$this->debuggerLog('mcDeletesInc');
-
-					if(substr($key, -7) !== '_pzLock')
-					{
-						$this->_memcacheServers[$this->_activeMemcacheServerId]->returnMemcacheObj()->delete($key.'_pzLock');
-
-						$this->debuggerLog('mcDeletesInc');
-					}
-
-					return true;
-				}
-				else
-				{
-					while($this->mcWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->mcDelete($key);
-				}
-			}
-		}
-
-		/**
-		 * @param      $id
+		 * @access public
+		 * @param int $id
 		 * @param bool $autoConnect
-		 *
 		 * @return bool
 		 */
 		public function setActiveMemcachedServerId($id, $autoConnect = true)
@@ -1681,9 +1220,13 @@
 		}
 
 		/**
-		 * @param      $id
-		 * @param bool $autoConnect
+		 * Sets the active memcache server id (using Memcache).
 		 *
+		 * By default, this method will not auto connect to the memcache server.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @param bool $autoConnect
 		 * @return bool
 		 */
 		public function setActiveMemcacheServerId($id, $autoConnect = true)
@@ -1705,390 +1248,146 @@
 			}
 		}
 
-		/*
-		 *
-		 * APC
-		 *
-		 */
-
 		/**
-		 * @param      $key
-		 * @param      $value
-		 * @param int  $expires
-		 * @param bool $deleteLock
-		 * @param bool $deleteOnExist
+		 * Returns the current active memcache server id (using Memcached).
 		 *
-		 * @return bool
+		 * @access public
+		 * @return int
 		 */
-		public function apcWrite($key, $value, $expires = 0, $deleteLock = false, $deleteOnExist = true)
+		public function getActiveMemcachedServerId()
 		{
-			if(apc_add($key, (is_scalar($value)?(string)$value:$value), $expires) === true)
-			{
-				$this->debuggerLog('apcWritesInc');
-
-				if((is_scalar($value)?(string)$value:$value) == $this->apcRead($key))
-				{
-					$return = true;
-				}
-				else
-				{
-					$return = false;
-				}
-			}
-			else
-			{
-				if($deleteOnExist === true)
-				{
-					$this->apcDelete($key, true);
-
-					$return = $this->apcWrite($key, $value, $expires, $deleteLock);
-				}
-				else
-				{
-					$return = false;
-				}
-			}
-
-			if($deleteLock === true)
-			{
-				$this->apcDelete($key.'_pzLock');
-			}
-
-			return $return;
+			return $this->_activeMemcachedServerId;
 		}
 
 		/**
-		 * @param $key
-		 * @param bool $checkLock
-		 * @return mixed
+		 * Returns the current active memcache server id (using Memcache).
+		 *
+		 * @access public
+		 * @return int
 		 */
-		public function apcRead($key, $checkLock = false)
+		public function getActiveMemcacheServerId()
 		{
-			if($checkLock === false)
-			{
-				$this->debuggerLog('apcReadsInc');
-
-				return apc_fetch($key);
-			}
-			else
-			{
-				while($this->apcWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-				{
-					usleep(mt_rand(1000,500000));
-				}
-
-				return $this->apcRead($key);
-			}
+			return $this->_activeMemcacheServerId;
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
+		 * Returns the interaction object for memcached.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @return bool|Pz_Memcached_Interactions
 		 */
-		public function apcDelete($key, $checkLock = false)
+		public function memcachedInteract()
 		{
-			if($checkLock === false)
-			{
-				apc_delete($key);
-
-				$this->debuggerLog('apcDeletesInc');
-
-				if(substr($key, -7) !== '_pzLock')
-				{
-					apc_delete($key.'_pzLock');
-
-					$this->debuggerLog('apcDeletesInc');
-				}
-
-				return true;
-			}
-			else
-			{
-				while($this->apcWrite($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
-				{
-					usleep(mt_rand(1000,500000));
-				}
-
-				return $this->apcDelete($key);
-			}
-		}
-
-		/*
-		 *
-		 * SHARED MEMORY
-		 *
-		 */
-
-		/**
-		 * @param $keyname
-		 *
-		 * @return string
-		 */
-		private function _shmKeyToHex($keyname)
-		{
-			return bin2hex($keyname);
+			return $this->getPzInteraction('memcached');
 		}
 
 		/**
-		 * @param $value
+		 * Returns the interaction object for memcache.
 		 *
-		 * @return string
+		 * @access public
+		 * @return bool|Pz_Memcache_Interactions
 		 */
-		private function _shmValueToString($value)
+		public function memcacheInteract()
 		{
-			if(is_scalar($value))
-			{
-				return (string)$value;
-			}
-			else
-			{
-				return serialize($value);
-			}
+			return $this->getPzInteraction('memcache');
 		}
 
 		/**
-		 * @param $value
+		 * Resolves the proper memcached server object id based on input.
 		 *
-		 * @return string
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return int
 		 */
-		private function _shmStringToValue($value)
+		public function decideActiveMemcachedId($id)
 		{
-			$validValue = @unserialize($value);
-
-			if($validValue !== false)
-			{
-				return $validValue;
-			}
-			else
-			{
-				return $value;
-			}
+			return ($id===-1?$this->getActiveMemcachedServerId():$id);
 		}
 
 		/**
-		 * @param      $key
-		 * @param      $value
-		 * @param bool $deleteLock
-		 * @param bool $deleteOnExist
+		 * Resolves the proper memcache server object id based on input.
 		 *
-		 * @return bool
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return int
 		 */
-		public function shmWrite($key, $value, $deleteLock = false, $deleteOnExist = true)
+		public function decideActiveMemcacheId($id)
 		{
-			$validKey = $this->_shmKeyToHex($key);
-			$validValue = $this->_shmValueToString($value);
-
-			$shm_id = @shmop_open($validKey, 'a', 0644, 0);
-
-			if(!empty($shm_id))
-			{
-				if($deleteOnExist === true)
-				{
-					$this->debuggerLog('shmDeletesInc');
-
-					shmop_delete($shm_id);
-
-					shmop_close($shm_id);
-
-					$return = $this->shmWrite($key, $value, $deleteLock, $deleteOnExist);
-				}
-				else
-				{
-					$return = false;
-				}
-			}
-			else
-			{
-				$shm_id = shmop_open($validKey, "c", 0644, strlen($validValue));
-				shmop_write($shm_id, $validValue, 0);
-
-				shmop_close($shm_id);
-
-				if($deleteLock === true)
-				{
-					$validKey = $this->_shmKeyToHex($key.'_pzLock');
-
-					$shm_id = @shmop_open($validKey, 'a', 0644, 0);
-
-					if(!empty($shm_id))
-					{
-						$this->debuggerLog('shmDeletesInc');
-
-						shmop_delete($shm_id);
-					}
-
-					shmop_close($shm_id);
-				}
-
-				$return = true;
-			}
-
-			return $return;
+			return ($id===-1?$this->getActiveMemcacheServerId():$id);
 		}
 
 		/**
-		 * @param $key
-		 * @param bool $checkLock
-		 * @return mixed
+		 * Returns the current active memcache server object (using Memcached).
+		 *
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|Pz_Memcached_Server
 		 */
-		public function shmRead($key, $checkLock = false)
+		public function memcachedActiveObject($id = -1)
 		{
-			$validKey = $this->_shmKeyToHex($key);
+			$id = ($id===-1?$this->getActiveMemcachedServerId():$id);
 
-			if($checkLock === false)
-			{
-				$shm_id = @shmop_open($validKey, 'a', 0644, 0);
-
-				if(!empty($shm_id))
-				{
-					$this->debuggerLog('shmReadsInc');
-
-					$data = shmop_read($shm_id, 0, shmop_size($shm_id));
-
-					shmop_close($shm_id);
-
-					return $this->_shmStringToValue($data);
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				while($this->shmWrite($key.'_pzLock', mt_rand(1,2000000000), false, false) === false)
-				{
-					usleep(mt_rand(1000,500000));
-				}
-
-				return $this->shmRead($key);
-			}
+			return (isset($this->_memcachedServers[$id])?$this->_memcachedServers[$id]->returnMemcachedObj():false);
 		}
 
 		/**
-		 * @param      $key
-		 * @param bool $checkLock
+		 * Returns the current active memcache server object (using Memcache).
 		 *
-		 * @return mixed
+		 * If an id is specified, then the specified mysler server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|Pz_Memcache_Server
 		 */
-		public function shmDelete($key, $checkLock = false)
+		public function memcacheActiveObject($id = -1)
 		{
-			$validKey = $this->_shmKeyToHex($key);
+			$id = ($id===-1?$this->getActiveMemcacheServerId():$id);
 
-			if($checkLock === false)
-			{
-				$shm_id = @shmop_open($validKey, 'a', 0644, 0);
-
-				if(!empty($shm_id))
-				{
-					$this->debuggerLog('shmDeletesInc');
-
-					shmop_delete($shm_id);
-
-					shmop_close($shm_id);
-
-					if(substr($key, -7) !== '_pzLock')
-					{
-						$validKey = $this->_shmKeyToHex($key.'_pzLock');
-
-						$shm_id = @shmop_open($validKey, 'a', 0644, 0);
-
-						if(!empty($shm_id))
-						{
-							$this->debuggerLog('shmDeletesInc');
-
-							shmop_delete($shm_id);
-
-							shmop_close($shm_id);
-						}
-					}
-
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				while($this->shmWrite($key.'_pzLock', mt_rand(1,2000000000), false, false) === false)
-				{
-					usleep(mt_rand(1000,500000));
-				}
-
-				return $this->shmDelete($key);
-			}
-		}
-
-		/*
-		 *
-		 * LOCAL CACHE
-		 *
-		 */
-
-		/**
-		 * @param      $key
-		 * @param      $value
-		 * @param bool $deleteOnExist
-		 *
-		 * @return bool
-		 */
-		public function lcWrite($key, $value, $deleteOnExist = true)
-		{
-			if(isset($this->_localCache[$key]) && $deleteOnExist === false)
-			{
-				return false;
-			}
-			else
-			{
-				$this->_localCache[$key] = $value;
-
-				$this->debuggerLog('lcWritesInc');
-
-				return true;
-			}
+			return (isset($this->_memcacheServers[$id])?$this->_memcacheServers[$id]->returnMemcacheObj():false);
 		}
 
 		/**
-		 * @param $key
+		 * Returns the interaction object for APC.
 		 *
-		 * @return bool
+		 * @access public
+		 * @return bool|Pz_APC_Interactions
 		 */
-		public function lcRead($key)
+		public function apcInteract()
 		{
-			if(isset($this->_localCache[$key]))
-			{
-				$this->debuggerLog('lcReadsInc');
+			$this->_loadPzInteraction('apc', 'Pz_APC_Interactions');
 
-				return $this->_localCache[$key];
-			}
-			else
-			{
-				return false;
-			}
+			return $this->getPzInteraction('apc');
 		}
 
 		/**
-		 * @param $key
+		 * Returns the interaction object for Shared Memory.
 		 *
-		 * @return bool
+		 * @access public
+		 * @return bool|Pz_SHM_Interactions
 		 */
-		public function lcDelete($key)
+		public function shmInteract()
 		{
-			if(isset($this->_localCache[$key]))
-			{
-				unset($this->_localCache[$key]);
+			$this->_loadPzInteraction('shm', 'Pz_SHM_Interactions');
 
-				$this->debuggerLog('lcDeletesInc');
+			return $this->getPzInteraction('shm');
+		}
 
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+		/**
+		 * Returns the interaction object for Local Cache.
+		 *
+		 * @access public
+		 * @return bool|Pz_LocalCache_Interactions
+		 */
+		public function lcInteract()
+		{
+			$this->_loadPzInteraction('localcache', 'Pz_LocalCache_Interactions');
+
+			return $this->getPzInteraction('localcache');
 		}
 	}

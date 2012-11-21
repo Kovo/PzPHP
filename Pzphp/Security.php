@@ -19,34 +19,35 @@
 
 			if(PZ_SECURITY_HASH_TABLE !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
 			}
 
 			if(PZ_SECURITY_SALT !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptSalt(PZ_SECURITY_SALT);
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptSalt(PZ_SECURITY_SALT);
 			}
 
 			if(PZ_SECURITY_POISON_CONSTRAINTS !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
 			}
 
 			if(PZ_SECURITY_REHASH_DEPTH !== '')
 			{
-				$this->pzphp()->pz()->getSecurityObject()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
 			}
 		}
 
 		/**
-		 * @param     $length
-		 * @param int $type
+		 * @param      $length
+		 * @param int  $type
+		 * @param bool $regenerateString
 		 *
-		 * @return mixed
+		 * @return string
 		 */
-		public function createCode($length, $type = Pz_Security::ALPHANUMERIC)
+		public function createCode($length, $type = Pz_Helper_String::ALPHANUMERIC, $regenerateString = true)
 		{
-			return $this->pzphp()->pz()->createCode($length, $type);
+			return Pz_Helper_String::createCode($length, $type, $regenerateString);
 		}
 
 		/**
@@ -56,7 +57,7 @@
 		 */
 		public function twoWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::TWO_WAY));
+			return $this->pzphp()->pz()->pzSecurity()->encrypt($value, array(Pz_Security::TWO_WAY));
 		}
 
 		/**
@@ -66,7 +67,7 @@
 		 */
 		public function twoWayDecrypt($value)
 		{
-			return $this->pzphp()->pz()->decrypt($value, array(Pz_Security::DE_POISON));
+			return $this->pzphp()->pz()->pzSecurity()->decrypt($value, array(Pz_Security::DE_POISON));
 		}
 
 		/**
@@ -76,7 +77,7 @@
 		 */
 		public function oneWayEncrypt($value)
 		{
-			return $this->pzphp()->pz()->encrypt($value, array(Pz_Security::ONE_WAY));
+			return $this->pzphp()->pz()->pzSecurity()->encrypt($value, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -87,7 +88,7 @@
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::ONE_WAY));
+			return $this->pzphp()->pz()->pzSecurity()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::ONE_WAY));
 		}
 
 		/**
@@ -98,28 +99,6 @@
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
-			return $this->pzphp()->pz()->getSecurityObject()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::TWO_WAY));
-		}
-
-		/**
-		 * @param     $value
-		 * @param int $decimalPlaces
-		 *
-		 * @return mixed
-		 */
-		public function sanitizeNumeric($value, $decimalPlaces = 0)
-		{
-			return $this->pzphp()->pz()->sanitize($value, true, $decimalPlaces);
-		}
-
-		/**
-		 * @param     $value
-		 * @param int $cleanMethod
-		 *
-		 * @return mixed
-		 */
-		public function sanitizeString($value, $cleanMethod = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
-		{
-			return $this->pzphp()->pz()->sanitize($value, false, 0, $cleanMethod);
+			return $this->pzphp()->pz()->pzSecurity()->compareHashes($unhashedValue, $hashedComparisonValue, array(Pz_Security::TWO_WAY));
 		}
 	}

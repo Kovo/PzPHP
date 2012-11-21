@@ -21,7 +21,7 @@
 		 */
 		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
 		{
-			return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
+			return $this->pzphp()->pz()->addMysqliServer($username, $password, $dbname, $host, $port);
 		}
 
 		/**
@@ -29,7 +29,7 @@
 		 */
 		public function dbObject()
 		{
-			return $this->pzphp()->pz()->mysqlActiveObject();
+			return $this->pzphp()->pz()->mysqliActiveObject();
 		}
 
 		/**
@@ -37,7 +37,7 @@
 		 */
 		public function insertId()
 		{
-			return $this->pzphp()->pz()->mysqlInsertId();
+			return $this->pzphp()->pz()->mysqliInteract()->mysqliInsertId();
 		}
 
 		/**
@@ -45,7 +45,7 @@
 		 */
 		public function affectedRows()
 		{
-			return $this->pzphp()->pz()->mysqlAffectedRows();
+			return $this->pzphp()->pz()->mysqliInteract()->mysqliAffectedRows();
 		}
 
 		/**
@@ -96,7 +96,7 @@
 		 */
 		public function changeDatabase($name)
 		{
-			return $this->pzphp()->pz()->mysqlSelectDatabase($name);
+			return $this->pzphp()->pz()->mysqliInteract()->mysqliSelectDatabase($name);
 		}
 
 		/**
@@ -108,7 +108,7 @@
 		 */
 		public function changeUser($user, $password, $dbName = NULL)
 		{
-			return $this->pzphp()->pz()->mysqlChangeUser($user, $password, $dbName);
+			return $this->pzphp()->pz()->mysqliInteract()->mysqliChangeUser($user, $password, $dbName);
 		}
 
 		/**
@@ -118,7 +118,7 @@
 		 */
 		public function select($query)
 		{
-			return $this->pzphp()->pz()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqliInteract()->read($query);
 		}
 
 		/**
@@ -128,7 +128,7 @@
 		 */
 		public function set($query)
 		{
-			return $this->pzphp()->pz()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqliInteract()->read($query);
 		}
 
 		/**
@@ -138,7 +138,7 @@
 		 */
 		public function optimize($query)
 		{
-			return $this->pzphp()->pz()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqliInteract()->read($query);
 		}
 
 		/**
@@ -148,7 +148,7 @@
 		 */
 		public function check($query)
 		{
-			return $this->pzphp()->pz()->mysqlRead($query);
+			return $this->pzphp()->pz()->mysqliInteract()->read($query);
 		}
 
 		/**
@@ -158,7 +158,7 @@
 		 */
 		public function insert($query)
 		{
-			return $this->pzphp()->pz()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqliInteract()->write($query);
 		}
 
 		/**
@@ -168,7 +168,7 @@
 		 */
 		public function delete($query)
 		{
-			return $this->pzphp()->pz()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqliInteract()->write($query);
 		}
 
 		/**
@@ -178,7 +178,7 @@
 		 */
 		public function update($query)
 		{
-			return $this->pzphp()->pz()->mysqlWrite($query);
+			return $this->pzphp()->pz()->mysqliInteract()->write($query);
 		}
 
 		/**
@@ -189,7 +189,7 @@
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 2)
 		{
-			return $this->pzphp()->pz()->sanitize($value, true, $decimalPlaces);
+			return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces);
 		}
 
 		/**
@@ -200,6 +200,6 @@
 		 */
 		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			return $this->pzphp()->pz()->sanitize($value, false, 2, $cleanHtmlLevel);
+			return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
 		}
 	}

@@ -6,14 +6,19 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzPHP_Cache
+	 * @package PzPHP
+	 */
+	/**
+	 * The Cache class gives you a layer of abstraction to access the caching options in the Pz Library.
+	 *
+	 * The Cache class is agnostic to the type of caching (if any) you have configured PzPHP to use.
 	 */
 	class PzPHP_Cache extends PzPHP_Wrapper
 	{
 		/**
 		 * @var int
 		 */
-		private $_cachingMethod = CACHE_MODE_NO_CACHING;
+		private $_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
 
 		/**
 		 * @var bool
@@ -29,7 +34,7 @@
 
 		private function _verifyIfCachingEnabled()
 		{
-			if(CACHING_MODE !== CACHE_MODE_NO_CACHING)
+			if(PZPHP_CACHING_MODE !== PZPHP_CACHE_MODE_NO_CACHING)
 			{
 				$this->_cachingEnabled = true;
 			}
@@ -40,27 +45,27 @@
 		 *
 		 * @return int
 		 */
-		public function setCachingMethod($method = CACHING_MODE)
+		public function setCachingMethod($method = PZPHP_CACHING_MODE)
 		{
 			switch($method)
 			{
-				case CACHE_MODE_APC:
-					$this->_cachingMethod = CACHE_MODE_APC;
+				case PZPHP_CACHE_MODE_APC:
+					$this->_cachingMethod = PZPHP_CACHE_MODE_APC;
 					break;
-				case CACHE_MODE_MEMCACHE:
-					$this->_cachingMethod = CACHE_MODE_MEMCACHE;
+				case PZPHP_CACHE_MODE_MEMCACHE:
+					$this->_cachingMethod = PZPHP_CACHE_MODE_MEMCACHE;
 					break;
-				case CACHE_MODE_MEMCACHED:
-					$this->_cachingMethod = CACHE_MODE_MEMCACHED;
+				case PZPHP_CACHE_MODE_MEMCACHED:
+					$this->_cachingMethod = PZPHP_CACHE_MODE_MEMCACHED;
 					break;
-				case CACHE_MODE_SHARED_MEMORY:
-					$this->_cachingMethod = CACHE_MODE_SHARED_MEMORY;
+				case PZPHP_CACHE_MODE_SHARED_MEMORY:
+					$this->_cachingMethod = PZPHP_CACHE_MODE_SHARED_MEMORY;
 					break;
-				case CACHE_MODE_LOCALCACHE:
-					$this->_cachingMethod = CACHE_MODE_LOCALCACHE;
+				case PZPHP_CACHE_MODE_LOCALCACHE:
+					$this->_cachingMethod = PZPHP_CACHE_MODE_LOCALCACHE;
 					break;
 				default:
-					$this->_cachingMethod = CACHE_MODE_NO_CACHING;
+					$this->_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
 			}
 
 			return $this->_cachingMethod;
@@ -94,9 +99,9 @@
 			{
 				switch($this->cacheMethod())
 				{
-					case CACHE_MODE_MEMCACHE:
+					case PZPHP_CACHE_MODE_MEMCACHE:
 						return $this->pzphp()->pz()->addMemcacheServer($mcIp, $mcPort);
-					case CACHE_MODE_MEMCACHED:
+					case PZPHP_CACHE_MODE_MEMCACHED:
 						return $this->pzphp()->pz()->addMemcachedServer($mcIp, $mcPort);
 					default:
 						return false;
@@ -121,16 +126,16 @@
 			{
 				switch($this->cacheMethod())
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcRead($keyName);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcRead($keyName);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdRead($keyName);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmRead($keyName);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcRead($keyName);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->read($keyName);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->read($keyName);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->read($keyName);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->read($keyName);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->read($keyName);
 					default:
 						return false;
 				}
@@ -154,16 +159,16 @@
 			{
 				switch($this->cacheMethod())
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcRead($keyName, true);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcRead($keyName, true);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdRead($keyName, true);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmRead($keyName, true);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcRead($keyName);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->read($keyName, true);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, true);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, true);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->read($keyName, true);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->read($keyName);
 					default:
 						return false;
 				}
@@ -189,16 +194,16 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, false, true);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, false, true);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, false, true);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmWrite($keyName, $value, false, true);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcWrite($keyName, $value, true);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->write($keyName, $value, $expires, false, true);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, false, true);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, false, true);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->write($keyName, $value, false, true);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->write($keyName, $value, true);
 					default:
 						return false;
 				}
@@ -224,16 +229,16 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcWrite($keyName, $value, $expires, true, true);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcWrite($keyName, $value, $expires, true, true);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdWrite($keyName, $value, $expires, true, true);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmWrite($keyName, $value, true, true);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcWrite($keyName, $value, true);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->write($keyName, $value, $expires, true, true);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, true, true);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, true, true);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->write($keyName, $value, true, true);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->write($keyName, $value, true);
 					default:
 						return false;
 				}
@@ -257,16 +262,16 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcDelete($keyName, false);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcDelete($keyName, false);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdDelete($keyName, false);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmDelete($keyName, false);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcDelete($keyName);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->delete($keyName, false);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, false);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, false);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->delete($keyName, false);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->delete($keyName);
 					default:
 						return false;
 				}
@@ -290,16 +295,16 @@
 			{
 				switch($this->_cachingMethod)
 				{
-					case CACHE_MODE_APC:
-						return $this->pzphp()->pz()->apcDelete($keyName, true);
-					case CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->mcDelete($keyName, true);
-					case CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->mcdDelete($keyName, true);
-					case CACHE_MODE_SHARED_MEMORY:
-						return $this->pzphp()->pz()->shmDelete($keyName, true);
-					case CACHE_MODE_LOCALCACHE:
-						return $this->pzphp()->pz()->lcDelete($keyName);
+					case PZPHP_CACHE_MODE_APC:
+						return $this->pzphp()->pz()->apcInteract()->delete($keyName, true);
+					case PZPHP_CACHE_MODE_MEMCACHE:
+						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, true);
+					case PZPHP_CACHE_MODE_MEMCACHED:
+						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, true);
+					case PZPHP_CACHE_MODE_SHARED_MEMORY:
+						return $this->pzphp()->pz()->shmInteract()->delete($keyName, true);
+					case PZPHP_CACHE_MODE_LOCALCACHE:
+						return $this->pzphp()->pz()->lcInteract()->delete($keyName);
 					default:
 						return false;
 				}
