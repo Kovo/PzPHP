@@ -1,4 +1,5 @@
 ###ENVIRONMENT VARAIBLES
+SetEnv ENV local
 SetEnv BOOTSTRAP_SCRIPT bootstrap.php
 
 ###BASIC CONFIG

@@ -45,6 +45,8 @@
 		 */
 		function __construct()
 		{
+			$this->_warmupDirectories();
+
 			$this->_registeredModules['Pz_Core'] = new Pz_Core($this->_extractPzCoreSettings());
 
 			$this->registerModule('PzPHP_Cache');
@@ -52,6 +54,34 @@
 			$this->registerModule('PzPHP_Security');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
+		}
+
+		/**
+		 * Checks to make sure key directories exist, and if they don't, create them.
+		 *
+		 * @access private
+		 */
+		private function _warmupDirectories()
+		{
+			if(!is_dir(PZPHP_TRANSLATIONS_DIR))
+			{
+				mkdir(PZPHP_TRANSLATIONS_DIR, 0774, true);
+			}
+
+			if(!is_dir(PZPHP_CSS_DIR))
+			{
+				mkdir(PZPHP_CSS_DIR, 0774, true);
+			}
+
+			if(!is_dir(PZPHP_JS_DIR))
+			{
+				mkdir(PZPHP_JS_DIR, 0774, true);
+			}
+
+			if(!is_dir(PZPHP_IMAGES_DIR))
+			{
+				mkdir(PZPHP_IMAGES_DIR, 0774, true);
+			}
 		}
 
 		/**

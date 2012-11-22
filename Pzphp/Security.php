@@ -6,11 +6,17 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzPHP_Security
+	 * @package PzPHP
+	 */
+	/**
+	 * The security class gives you methods that allow you to create one-way, or two-way encryptions, among other things.
 	 */
 	class PzPHP_Security extends PzPHP_Wrapper
 	{
 		/**
+		 * The init method takes care of applying custom security rules (if any).
+		 *
+		 * @access public
 		 * @param PzPHP_Core $PzphpCore
 		 */
 		public function init(PzPHP_Core $PzphpCore)
@@ -39,10 +45,12 @@
 		}
 
 		/**
-		 * @param      $length
+		 * Create a randomly generated string of characters.
+		 *
+		 * @access public
+		 * @param int $length
 		 * @param int  $type
 		 * @param bool $regenerateString
-		 *
 		 * @return string
 		 */
 		public function createCode($length, $type = Pz_Helper_String::ALPHANUMERIC, $regenerateString = true)
@@ -51,8 +59,10 @@
 		}
 
 		/**
-		 * @param $value
+		 * Takes a string and creates a decryptable encryption.
 		 *
+		 * @access public
+		 * @param string $value
 		 * @return mixed
 		 */
 		public function twoWayEncrypt($value)
@@ -61,8 +71,10 @@
 		}
 
 		/**
-		 * @param $value
+		 * Decrypts a string that was encrypted using the two-way method.
 		 *
+		 * @access public
+		 * @param strng $value
 		 * @return mixed
 		 */
 		public function twoWayDecrypt($value)
@@ -71,8 +83,12 @@
 		}
 
 		/**
-		 * @param $value
+		 * Creates a strong one-way encryption/hash.
 		 *
+		 * This will generate a 44 character long hash by default (unless you have provided custom security rules (see init())).
+		 *
+		 * @access public
+		 * @param string $value
 		 * @return mixed
 		 */
 		public function oneWayEncrypt($value)
@@ -81,9 +97,11 @@
 		}
 
 		/**
-		 * @param $unhashedValue
-		 * @param $hashedComparisonValue
+		 * Compare a string to a one-way hash string.
 		 *
+		 * @access public
+		 * @param string $unhashedValue
+		 * @param string $hashedComparisonValue
 		 * @return mixed
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
@@ -92,9 +110,11 @@
 		}
 
 		/**
-		 * @param $unhashedValue
-		 * @param $hashedComparisonValue
+		 * Compare a string to a two-way encrypted string.
 		 *
+		 * @access public
+		 * @param string $unhashedValue
+		 * @param string $hashedComparisonValue
 		 * @return mixed
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
