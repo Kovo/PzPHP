@@ -6,17 +6,22 @@
 	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package PzPHP_Db
+	 * @package PzPHP
+	 */
+	/**
+	 * The database class allows you to send queries to a database server, run through results, and a lot more.
 	 */
 	class PzPHP_Db extends PzPHP_Wrapper
 	{
 		/**
-		 * @param        $username
-		 * @param        $password
-		 * @param        $dbname
+		 * Add a Mysql server to the pool.
+		 *
+		 * @access public
+		 * @param string $username
+		 * @param string $password
+		 * @param string $dbname
 		 * @param string $host
 		 * @param int    $port
-		 *
 		 * @return mixed
 		 */
 		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
@@ -25,6 +30,9 @@
 		}
 
 		/**
+		 * Returns the active mysqli object.
+		 *
+		 * @access public
 		 * @return bool|mysqli
 		 */
 		public function dbObject()
@@ -33,6 +41,9 @@
 		}
 
 		/**
+		 * Gets the last insert id.
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function insertId()
@@ -41,6 +52,9 @@
 		}
 
 		/**
+		 * Gets the affected rows count from the last insert/delete/update/etc query.
+		 *
+		 * @access public
 		 * @return int
 		 */
 		public function affectedRows()
@@ -49,8 +63,10 @@
 		}
 
 		/**
-		 * @param $object
+		 * Gets the returned rows count for the mysqli_result object.
 		 *
+		 * @access public
+		 * @param $object
 		 * @return int
 		 */
 		public function returnedRows($object)
@@ -59,8 +75,10 @@
 		}
 
 		/**
-		 * @param $object
+		 * Gets the next row from the mysqli_result object in an associative array.
 		 *
+		 * @access public
+		 * @param $object
 		 * @return bool
 		 */
 		public function fetchNextRowAssoc($object)
@@ -69,8 +87,10 @@
 		}
 
 		/**
-		 * @param $object
+		 * Gets the next row from the mysqli_result object in a numerated array.
 		 *
+		 * @access public
+		 * @param $object
 		 * @return bool
 		 */
 		public function fetchNextRowEnum($object)
@@ -79,6 +99,9 @@
 		}
 
 		/**
+		 * Clears the result set if a valid result object is provided.
+		 *
+		 * @access public
 		 * @param $object
 		 */
 		public function freeResult($object)
@@ -90,8 +113,10 @@
 		}
 
 		/**
-		 * @param $name
+		 * Changes the current database.
 		 *
+		 * @access public
+		 * @param string $name
 		 * @return bool
 		 */
 		public function changeDatabase($name)
@@ -100,10 +125,12 @@
 		}
 
 		/**
-		 * @param      $user
-		 * @param      $password
-		 * @param null $dbName
+		 * Changes the current mysql user.
 		 *
+		 * @access public
+		 * @param string $user
+		 * @param string $password
+		 * @param null|string $dbName
 		 * @return bool
 		 */
 		public function changeUser($user, $password, $dbName = NULL)
@@ -112,9 +139,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle a select query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function select($query)
 		{
@@ -122,9 +151,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle a set query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function set($query)
 		{
@@ -132,9 +163,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle an optimize query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function optimize($query)
 		{
@@ -142,9 +175,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle a check query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function check($query)
 		{
@@ -152,9 +187,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle an insert query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function insert($query)
 		{
@@ -162,9 +199,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle a delete query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function delete($query)
 		{
@@ -172,9 +211,11 @@
 		}
 
 		/**
-		 * @param $query
+		 * Expects to handle an update query.
 		 *
-		 * @return mixed
+		 * @access public
+		 * @param $query
+		 * @return bool|mysqli_result
 		 */
 		public function update($query)
 		{
@@ -182,9 +223,11 @@
 		}
 
 		/**
-		 * @param     $value
-		 * @param int $decimalPlaces
+		 * Expects to be passed a numeric value to make sure it is safe.
 		 *
+		 * @access public
+		 * @param mixed $value
+		 * @param int $decimalPlaces
 		 * @return mixed
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 2)
@@ -193,9 +236,11 @@
 		}
 
 		/**
-		 * @param     $value
-		 * @param int $cleanHtmlLevel
+		 * Expects to be passed a non-numeric value to make sure it is safe.
 		 *
+		 * @access public
+		 * @param mixed $value
+		 * @param int $cleanHtmlLevel
 		 * @return mixed
 		 */
 		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
