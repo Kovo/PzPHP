@@ -63,7 +63,7 @@
 		 *
 		 * @access public
 		 * @param string $value
-		 * @return mixed
+		 * @return string
 		 */
 		public function twoWayEncrypt($value)
 		{
@@ -75,7 +75,7 @@
 		 *
 		 * @access public
 		 * @param strng $value
-		 * @return mixed
+		 * @return string
 		 */
 		public function twoWayDecrypt($value)
 		{
@@ -89,7 +89,7 @@
 		 *
 		 * @access public
 		 * @param string $value
-		 * @return mixed
+		 * @return string
 		 */
 		public function oneWayEncrypt($value)
 		{
@@ -102,7 +102,7 @@
 		 * @access public
 		 * @param string $unhashedValue
 		 * @param string $hashedComparisonValue
-		 * @return mixed
+		 * @return bool
 		 */
 		public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{
@@ -115,7 +115,7 @@
 		 * @access public
 		 * @param string $unhashedValue
 		 * @param string $hashedComparisonValue
-		 * @return mixed
+		 * @return bool
 		 */
 		public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)
 		{

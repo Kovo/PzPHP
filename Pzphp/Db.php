@@ -13,6 +13,60 @@
 	 */
 	class PzPHP_Db extends PzPHP_Wrapper
 	{
+		const PDO = 'IS_PDO';
+
+		/**
+		 * The established database module to use.
+		 *
+		 * @access private
+		 * @var int
+		 */
+		private $_databaseMethod = PZPHP_DATABASE_MYSQLI;
+
+		/**
+		 * If databaseMethod is PDO, this varaible defines which one.
+		 *
+		 * @access private
+		 * @var int
+		 */
+		private $_pdoType = -1;
+
+		/**
+		 * The contstruct sets the database method (module) to be used.
+		 */
+		function __construct()
+		{
+			$this->setDatabaseMethod();
+		}
+
+		/**
+		 * Sets the chosen database method locally, and then returns its identifier.
+		 *
+		 * @access public
+		 * @param int $method
+		 * @return int
+		 */
+		public function setDatabaseMethod($method = PZPHP_DATABASE_MODE)
+		{
+			switch($method)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					$this->_databaseMethod = PZPHP_DATABASE_MYSQLI;
+					break;
+				case PZPHP_DATABASE_MYSQL:
+					$this->_databaseMethod = PZPHP_DATABASE_MYSQL;
+					break;
+				case (PZPHP_DATABASE_PDO_CUBRID||PZPHP_DATABASE_PDO_MSSQL||PZPHP_DATABASE_PDO_FIREBIRD||PZPHP_DATABASE_PDO_IBM||PZPHP_DATABASE_PDO_INFORMIX||PZPHP_DATABASE_PDO_MYSQL||PZPHP_DATABASE_PDO_MSSQL05PLUS||PZPHP_DATABASE_PDO_ORACLE||PZPHP_DATABASE_PDO_ODBC||PZPHP_DATABASE_PDO_POSTGRESQL||PZPHP_DATABASE_PDO_SQLITE||PZPHP_DATABASE_PDO_4D):
+					$this->_databaseMethod = self::PDO;
+					$this->_pdoType = $method;
+					break;
+				default:
+					$this->_databaseMethod = PZPHP_DATABASE_MYSQLI;
+			}
+
+			return $this->_databaseMethod;
+		}
+
 		/**
 		 * Add a Mysql server to the pool.
 		 *
@@ -26,18 +80,38 @@
 		 */
 		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
 		{
-			return $this->pzphp()->pz()->addMysqliServer($username, $password, $dbname, $host, $port);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->addMysqliServer($username, $password, $dbname, $host, $port);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
+				case self::PDO:
+					return $this->pzphp()->pz()->addPDOServer($username, $password, $this->_pdoType, $dbname, $host, $port);
+				default:
+					return false;
+			}
 		}
 
 		/**
 		 * Returns the active mysqli object.
 		 *
 		 * @access public
-		 * @return bool|mysqli
+		 * @return bool|mysqli|pdo|mysql
 		 */
 		public function dbObject()
 		{
-			return $this->pzphp()->pz()->mysqliActiveObject();
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliActiveObject();
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlActiveObject();
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoActiveObject();
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -48,7 +122,17 @@
 		 */
 		public function insertId()
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->mysqliInsertId();
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->insertId();
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->mysqlInsertId();
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->pdoInsertId();
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -59,7 +143,17 @@
 		 */
 		public function affectedRows()
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->mysqliAffectedRows();
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->affectedRows();
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqliInteract()->mysqlAffectedRows();
+				case self::PDO:
+					return $this->pzphp()->pz()->mysqliInteract()->pdoAffectedRows();
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -71,7 +165,17 @@
 		 */
 		public function returnedRows($object)
 		{
-			return (is_object($object)?$object->num_rows:0);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return (is_object($object)?$object->num_rows:0);
+				case PZPHP_DATABASE_MYSQL:
+					return (is_object($object)?$object->num_rows:0);
+				case self::PDO:
+					return (is_object($object)?$object->num_rows:0);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -83,7 +187,17 @@
 		 */
 		public function fetchNextRowAssoc($object)
 		{
-			return (is_object($object)?$object->fetch_assoc():false);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return (is_object($object)?$object->fetch_assoc():false);
+				case PZPHP_DATABASE_MYSQL:
+					return (is_object($object)?$object->fetch_assoc():false);
+				case self::PDO:
+					return (is_object($object)?$object->fetch_assoc():false);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -95,7 +209,17 @@
 		 */
 		public function fetchNextRowEnum($object)
 		{
-			return (is_object($object)?$object->fetch_row():false);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return (is_object($object)?$object->fetch_row():false);
+				case PZPHP_DATABASE_MYSQL:
+					return (is_object($object)?$object->fetch_row():false);
+				case self::PDO:
+					return (is_object($object)?$object->fetch_row():false);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -106,10 +230,25 @@
 		 */
 		public function freeResult($object)
 		{
-			if(is_object($object) && method_exists($object, 'close'))
+			switch($this->_databaseMethod)
 			{
-				$object->close();
+				case PZPHP_DATABASE_MYSQLI:
+					if(is_object($object) && method_exists($object, 'close'))
+					{
+						$object->close();
+					}
+				case PZPHP_DATABASE_MYSQL:
+					if(is_object($object) && method_exists($object, 'close'))
+					{
+						$object->close();
+					}
+				case self::PDO:
+					if(is_object($object) && method_exists($object, 'close'))
+					{
+						$object->close();
+					}
 			}
+
 		}
 
 		/**
@@ -121,7 +260,17 @@
 		 */
 		public function changeDatabase($name)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->mysqliSelectDatabase($name);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->selectDatabase($name);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->mysqlSelectDatabase($name);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->pdoSelectDatabase($name);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -135,7 +284,17 @@
 		 */
 		public function changeUser($user, $password, $dbName = NULL)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->mysqliChangeUser($user, $password, $dbName);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->changeUser($user, $password, $dbName);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->mysqlChangeUser($user, $password, $dbName);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->pdoChangeUser($user, $password, $dbName);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -147,7 +306,17 @@
 		 */
 		public function select($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->read($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->read($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -159,7 +328,17 @@
 		 */
 		public function set($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->read($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->read($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -171,7 +350,17 @@
 		 */
 		public function optimize($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->read($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->read($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -183,7 +372,17 @@
 		 */
 		public function check($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->read($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->read($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -195,7 +394,17 @@
 		 */
 		public function insert($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->write($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->write($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -207,7 +416,17 @@
 		 */
 		public function delete($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->write($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->write($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -219,7 +438,17 @@
 		 */
 		public function update($query)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->write($query);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->write($query);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -232,7 +461,17 @@
 		 */
 		public function sanitizeNumeric($value, $decimalPlaces = 2)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, true, $decimalPlaces);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, true, $decimalPlaces);
+				default:
+					return false;
+			}
 		}
 
 		/**
@@ -245,6 +484,16 @@
 		 */
 		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
-			return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+				default:
+					return false;
+			}
 		}
 	}

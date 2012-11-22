@@ -88,11 +88,11 @@
 					}
 				}
 
-				$firstIntervalDelay = $this->pzCore()->getSetting('mysql_write_retry_first_interval_delay');
-				$secondIntervalDelay = $this->pzCore()->getSetting('mysql_write_retry_second_interval_delay');
+				$firstIntervalDelay = $this->pzCore()->getSetting('db_write_retry_first_interval_delay');
+				$secondIntervalDelay = $this->pzCore()->getSetting('db_write_retry_second_interval_delay');
 
-				$firstIntervalRetries = $this->pzCore()->getSetting('mysql_write_retry_first_interval_retries');
-				$secondIntervalRetries = $this->pzCore()->getSetting('mysql_write_retry_second_interval_retries');
+				$firstIntervalRetries = $this->pzCore()->getSetting('db_write_retry_first_interval_retries');
+				$secondIntervalRetries = $this->pzCore()->getSetting('db_write_retry_second_interval_retries');
 
 				$retryCodes = array(
 					1213, //Deadlock found when trying to get lock
@@ -200,7 +200,7 @@
 		 * @param int $id
 		 * @return int
 		 */
-		public function mysqliAffectedRows($id = -1)
+		public function affectedRows($id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 
@@ -214,7 +214,7 @@
 		 * @param int $id
 		 * @return int
 		 */
-		public function mysqliInsertId($id = -1)
+		public function insertId($id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 
@@ -229,7 +229,7 @@
 		 * @param int $id
 		 * @return bool
 		 */
-		public function mysqliSelectDatabase($dbName, $id = -1)
+		public function selectDatabase($dbName, $id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 
@@ -246,7 +246,7 @@
 		 * @param int $id
 		 * @return bool
 		 */
-		public function mysqliChangeUser($user, $password, $dbName = NULL, $id = -1)
+		public function changeUser($user, $password, $dbName = NULL, $id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 
