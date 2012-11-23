@@ -75,10 +75,14 @@
 		 * @param string $password
 		 * @param string $dbname
 		 * @param string $host
-		 * @param int    $port
+		 * @param int $port
+		 * @param array $dbDriverOptions
+		 * @param string $server
+		 * @param string $protocol
+		 * @param string $socket
 		 * @return mixed
 		 */
-		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306)
+		public function addServer($username, $password, $dbname, $host = 'localhost', $port = 3306, $dbDriverOptions = array(), $server = '', $protocol = '', $socket = '')
 		{
 			switch($this->_databaseMethod)
 			{
@@ -87,7 +91,7 @@
 				case PZPHP_DATABASE_MYSQL:
 					return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
 				case self::PDO:
-					return $this->pzphp()->pz()->addPDOServer($username, $password, $this->_pdoType, $dbname, $host, $port);
+					return $this->pzphp()->pz()->addPDOServer($username, $password, $this->_pdoType, $dbname, $host, $port, $dbDriverOptions, $server, $protocol, $socket);
 				default:
 					return false;
 			}
@@ -127,9 +131,9 @@
 				case PZPHP_DATABASE_MYSQLI:
 					return $this->pzphp()->pz()->mysqliInteract()->insertId();
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->mysqlInsertId();
+					return $this->pzphp()->pz()->mysqlInteract()->insertId();
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->pdoInsertId();
+					return $this->pzphp()->pz()->pdoInteract()->insertId();
 				default:
 					return false;
 			}
@@ -139,18 +143,19 @@
 		 * Gets the affected rows count from the last insert/delete/update/etc query.
 		 *
 		 * @access public
+		 * @var PDOStatement|null $queryObject
 		 * @return int
 		 */
-		public function affectedRows()
+		public function affectedRows(PDOStatement $queryObject = NULL)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
 					return $this->pzphp()->pz()->mysqliInteract()->affectedRows();
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqliInteract()->mysqlAffectedRows();
+					return $this->pzphp()->pz()->mysqliInteract()->affectedRows();
 				case self::PDO:
-					return $this->pzphp()->pz()->mysqliInteract()->pdoAffectedRows();
+					return $this->pzphp()->pz()->pdoInteract()->affectedRows($queryObject);
 				default:
 					return false;
 			}
