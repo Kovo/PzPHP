@@ -20,10 +20,10 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '3.8.1';
+		const VERSION = '3.9.1';
 
 		/**
-		 * A multi-dimensional array that will old various object instances.
+		 * A multi-dimensional array that will hold various object instances.
 		 *
 		 * Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.
 		 *
@@ -392,7 +392,8 @@
 		 *
 		 * @access public
 		 * @param string $name
-		 * @param string $value
+		 * @param object $value
+		 * @return object
 		 */
 		public function setPzObject($name, $value)
 		{
@@ -406,6 +407,8 @@
 			{
 				$this->_pzObjects[$explodeName[0]] = $value;
 			}
+
+			return $value;
 		}
 
 		/**
@@ -413,7 +416,7 @@
 		 *
 		 * @access public
 		 * @param string $name
-		 * @return mixed
+		 * @return object
 		 */
 		public function getPzObject($name)
 		{
@@ -1207,12 +1210,16 @@
 		 * @param string $dbName
 		 * @param string $dbHost
 		 * @param int    $dbPort
+		 * @param array    $dbDriverOptions
+		 * @param string    $server
+		 * @param string    $protocol
+		 * @param string    $socket
 		 * @param bool   $preventAutoAssign
 		 * @return mixed
 		 */
-		public function addPDOServer($dbUser, $dbPassword, $dbType, $dbName = '', $dbHost = 'localhost', $dbPort = 3306, $preventAutoAssign = false)
+		public function addPDOServer($dbUser, $dbPassword, $dbType, $dbName = '', $dbHost = 'localhost', $dbPort = 0, $dbDriverOptions = array(), $server, $protocol, $socket, $preventAutoAssign = false)
 		{
-			$this->_pdoServers[] = new Pz_PDO_Server($dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $this->getSetting('db_connect_retry_attempts'), $this->getSetting('db_connect_retry_delay'));
+			$this->_pdoServers[] = new Pz_PDO_Server($dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $this->getSetting('db_connect_retry_attempts'), $this->getSetting('db_connect_retry_delay'), $dbDriverOptions, $server, $protocol, $socket);
 
 			$newId = max(array_keys($this->_pdoServers));
 

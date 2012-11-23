@@ -26,15 +26,20 @@
 	define('PZPHP_DATABASE_MYSQL', 1);
 	define('PZPHP_DATABASE_PDO_CUBRID', 'cubrid');
 	define('PZPHP_DATABASE_PDO_MSSQL', 'mssql');
+	define('PZPHP_DATABASE_PDO_SYBASE', 'sybase');
+	define('PZPHP_DATABASE_PDO_DBLIB', 'dblib');
 	define('PZPHP_DATABASE_PDO_FIREBIRD', 'firebird');
 	define('PZPHP_DATABASE_PDO_IBM', 'ibm');
 	define('PZPHP_DATABASE_PDO_INFORMIX', 'informix');
 	define('PZPHP_DATABASE_PDO_MYSQL', 'mysql');
-	define('PZPHP_DATABASE_PDO_MSSQL05PLUS', 'mssql05plus');
-	define('PZPHP_DATABASE_PDO_ORACLE', 'oracle');
+	define('PZPHP_DATABASE_PDO_SQLSRV', 'sqlsrv');
+	define('PZPHP_DATABASE_PDO_ORACLE', 'oci');
 	define('PZPHP_DATABASE_PDO_ODBC', 'odbc');
-	define('PZPHP_DATABASE_PDO_POSTGRESQL', 'postgresql');
+	define('PZPHP_DATABASE_PDO_ODBC_IBMDB2', 'odbcibmdb2');
+	define('PZPHP_DATABASE_PDO_ODBC_MSACCSS', 'odbcmsaccss');
+	define('PZPHP_DATABASE_PDO_POSTGRESQL', 'pgsql');
 	define('PZPHP_DATABASE_PDO_SQLITE', 'sqlite');
+	define('PZPHP_DATABASE_PDO_SQLITE2', 'sqlite2');
 	define('PZPHP_DATABASE_PDO_4D', '4d');
 
 	/*
