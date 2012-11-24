@@ -20,10 +20,10 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '3.8.0';
+		const VERSION = '3.9.2';
 
 		/**
-		 * A multi-dimensional array that will old various object instances.
+		 * A multi-dimensional array that will hold various object instances.
 		 *
 		 * Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.
 		 *
@@ -36,6 +36,7 @@
 			'loggers' => array(
 				'mysql' => NULL,
 				'mysqli' => NULL,
+				'pdo' => NULL,
 				'memcache' => NULL,
 				'memcached' => NULL
 			),
@@ -56,6 +57,7 @@
 		private $_pzInteractions = array(
 			'mysql' => NULL,
 			'mysqli' => NULL,
+			'pdo' => NULL,
 			'memcache' => NULL,
 			'memcached' => NULL,
 			'apc' => NULL,
@@ -72,20 +74,20 @@
 		 * @var array
 		 */
 		private $_settings = array(
-			#mysql(i)
-			'mysql_connect_retry_attempts' => 1,
-			'mysql_connect_retry_delay' => 2,
-			'mysql_auto_connect_server' => false,
-			'mysql_auto_assign_active_server' => true,
-			'mysql_write_retry_first_interval_delay' => 3000000,
-			'mysql_write_retry_second_interval_delay' => 500000,
-			'mysql_write_retry_first_interval_retries' => 3,
-			'mysql_write_retry_second_interval_retries' => 6,
-			#memcache(d)
-			'memcache_connect_retry_attempts' => 1,
-			'memcache_connect_retry_delay' => 2,
-			'memcache_auto_connect_server' => false,
-			'memcache_auto_assign_active_server' => true,
+			#databases
+			'db_connect_retry_attempts' => 1,
+			'db_connect_retry_delay' => 2,
+			'db_auto_connect_server' => false,
+			'db_auto_assign_active_server' => true,
+			'db_write_retry_first_interval_delay' => 3000000,
+			'db_write_retry_second_interval_delay' => 500000,
+			'db_write_retry_first_interval_retries' => 3,
+			'db_write_retry_second_interval_retries' => 6,
+			#caches
+			'cache_connect_retry_attempts' => 1,
+			'cache_connect_retry_delay' => 2,
+			'cache_auto_connect_server' => false,
+			'cache_auto_assign_active_server' => true,
 			#whitelisting
 			'whitelist_ip_check' => false,
 			'whitelist_ips' => array(), //array or string (can be comma separated)
@@ -128,6 +130,8 @@
 			'debug_memcache_error_log_file_name' => 'MEMCACHE_ERRORS',
 			'debug_memcached_log_errors' => true,
 			'debug_memcached_error_log_file_name' => 'MEMCACHED_ERRORS',
+			'debug_pdo_log_errors' => true,
+			'debug_pdo_error_log_file_name' => 'PDO_ERRORS',
 			'debug_log_php_errors' => true,
 			'debug_php_error_log_file_name' => 'PHP_ERRORS',
 			'debug_php_display_errors' => false
@@ -168,6 +172,24 @@
 		 * @var int
 		 */
 		private $_activeMysqliServerId = -1;
+
+		/**
+		 * An array where pdo server objects are stored.
+		 *
+		 * They keys in this array also act as the id for the particular pdo server object.
+		 *
+		 * @access private
+		 * @var array
+		 */
+		private $_pdoServers = array();
+
+		/**
+		 * The active pdo server id.
+		 *
+		 * @access private
+		 * @var int
+		 */
+		private $_activePDOServerId = -1;
 
 		/**
 		 * An array where memcached server objects are stored.
@@ -287,8 +309,16 @@
 				if($this->getSetting('debug_mysql_log_errors'))
 				{
 					$this->setPzObject(
-						'loggers_mysqli',
+						'loggers_mysql',
 						new Pz_Logger('', $this->getSetting('debug_mysql_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'))
+					);
+				}
+
+				if($this->getSetting('debug_pdo_log_errors'))
+				{
+					$this->setPzObject(
+						'loggers_pdo',
+						new Pz_Logger('', $this->getSetting('debug_pdo_error_log_file_name'), $this->getSetting('debug_log_file_auto_rotate'), $this->getSetting('debug_delete_log_files_after_x_days'))
 					);
 				}
 
@@ -362,7 +392,8 @@
 		 *
 		 * @access public
 		 * @param string $name
-		 * @param string $value
+		 * @param object $value
+		 * @return object
 		 */
 		public function setPzObject($name, $value)
 		{
@@ -376,6 +407,8 @@
 			{
 				$this->_pzObjects[$explodeName[0]] = $value;
 			}
+
+			return $value;
 		}
 
 		/**
@@ -383,7 +416,7 @@
 		 *
 		 * @access public
 		 * @param string $name
-		 * @return mixed
+		 * @return object
 		 */
 		public function getPzObject($name)
 		{
@@ -681,18 +714,18 @@
 		 */
 		public function addMysqliServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306, $preventAutoAssign = false)
 		{
-			$this->_mysqliServers[] = new Pz_Mysqli_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('mysql_connect_retry_attempts'), $this->getSetting('mysql_connect_retry_delay'));
+			$this->_mysqliServers[] = new Pz_Mysqli_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('db_connect_retry_attempts'), $this->getSetting('db_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_mysqliServers));
 
-			if($this->getSetting('mysql_auto_assign_active_server') === true && $preventAutoAssign === false)
+			if($this->getSetting('db_auto_assign_active_server') === true && $preventAutoAssign === false)
 			{
 				$this->_activeMysqliServerId = $newId;
 			}
 
-			if($this->getSetting('mysql_auto_connect_server') === true)
+			if($this->getSetting('db_auto_connect_server') === true)
 			{
-				$this->mysqliConnect($newId, $this->getSetting('mysql_auto_assign_active_server'));
+				$this->mysqliConnect($newId, $this->getSetting('db_auto_assign_active_server'));
 			}
 
 			$this->_loadPzInteraction('mysqli', 'Pz_Mysqli_Interactions');
@@ -763,7 +796,7 @@
 				}
 				else
 				{
-					$this->addToLog($this->getPzObject('loggers_mysqli'), 'Failed to connect to MySQL server with id#'.$id.'.');
+					$this->addToLog($this->getPzObject('loggers_mysql'), 'Failed to connect to MySQL server with id#'.$id.'.');
 				}
 			}
 
@@ -850,6 +883,511 @@
 		public function decideActiveMySqliId($id)
 		{
 			return ($id===-1?$this->getActiveMysqliServerId():$id);
+		}
+
+		/**
+		 * Disconnects all registered Mysql servers (using Mysql).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
+		 * @param bool $removeAlso
+		 */
+		public function disconnectAllMysqlServers($removeAlso = true)
+		{
+			if(count($this->_mysqlServers) > 0)
+			{
+				foreach($this->_mysqlServers as $id => $mysqlObj)
+				{
+					if($removeAlso === true)
+					{
+						$this->removeMysqlServer($id);
+					}
+					else
+					{
+						$this->disconnectMysqlServer($id, false);
+					}
+				}
+			}
+		}
+
+		/**
+		 * Disconnects a particular mysql server (using Mysql).
+		 *
+		 * If a specific id is not given, the current active mysqli server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $removeAlso
+		 */
+		public function disconnectMysqlServer($id = -1, $removeAlso = true)
+		{
+			$id = ($id===-1?$this->getActiveMysqlServerId():$id);
+
+			if(isset($this->_mysqlServers[$id]))
+			{
+				if($removeAlso === true)
+				{
+					$this->removeMysqlServer($id);
+				}
+				else
+				{
+					$this->_mysqlServers[$id]->disconnect();
+
+					$this->debugger('mysqlDisconnectionsInc');
+
+					if($this->_activeMysqlServerId === $id)
+					{
+						$this->_activeMysqlServerId = -1;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Registers a mysql server with Pz (using Mysql).
+		 *
+		 * By default, the mysql server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a mysql server object with Pz (using Mysql).
+		 *
+		 * @access public
+		 * @param string $dbUser
+		 * @param string $dbPassword
+		 * @param string $dbName
+		 * @param string $dbHost
+		 * @param int    $dbPort
+		 * @param bool   $preventAutoAssign
+		 * @return mixed
+		 */
+		public function addMysqlServer($dbUser, $dbPassword, $dbName = '', $dbHost = 'localhost', $dbPort = 3306, $preventAutoAssign = false)
+		{
+			$this->_mysqlServers[] = new Pz_Mysql_Server($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $this->getSetting('db_connect_retry_attempts'), $this->getSetting('db_connect_retry_delay'));
+
+			$newId = max(array_keys($this->_mysqlServers));
+
+			if($this->getSetting('db_auto_assign_active_server') === true && $preventAutoAssign === false)
+			{
+				$this->_activeMysqlServerId = $newId;
+			}
+
+			if($this->getSetting('db_auto_connect_server') === true)
+			{
+				$this->mysqlConnect($newId, $this->getSetting('db_auto_assign_active_server'));
+			}
+
+			$this->_loadPzInteraction('mysql', 'Pz_Mysql_Interactions');
+
+			return $newId;
+		}
+
+		/**
+		 * Unregisters a mysql server object with Pz (using Mysql).
+		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool
+		 */
+		public function removeMysqlServer($id = -1)
+		{
+			$id = ($id===-1?$this->getActiveMysqlServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqlServers[$id]) && is_object($this->_mysqlServers[$id]))
+			{
+				$this->_mysqlServers[$id]->disconnect();
+
+				$this->debugger('mysqlDisconnectionsInc');
+
+				unset($this->_mysqlServers[$id]);
+
+				if($this->_activeMysqlServerId === $id)
+				{
+					$this->_activeMysqlServerId = -1;
+				}
+
+				$return = true;
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Connects to the mysql server (using Mysql).
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $setAsActive
+		 * @return bool
+		 */
+		public function mysqlConnect($id = -1, $setAsActive = false)
+		{
+			$id = ($id===-1?$this->getActiveMysqlServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqlServers[$id]))
+			{
+				if($this->_mysqlServers[$id]->connect())
+				{
+					$this->debugger('mysqlConnectionsInc');
+
+					if($setAsActive === true)
+					{
+						$this->_activeMysqlServerId = $id;
+					}
+
+					$return = true;
+				}
+				else
+				{
+					$this->addToLog($this->getPzObject('loggers_mysql'), 'Failed to connect to MySQL server with id#'.$id.'.');
+				}
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Sets the active mysql server id (using Mysql).
+		 *
+		 * By default, this method will not auto connect to the mysql server.
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $autoConnect
+		 * @return bool
+		 */
+		public function setActiveMysqlServerId($id = -1, $autoConnect = false)
+		{
+			$id = ($id===-1?$this->getActiveMysqlServerId():$id);
+			$return = false;
+
+			if(isset($this->_mysqlServers[$id]))
+			{
+				$this->_activeMysqlServerId = $id;
+
+				if($autoConnect === true)
+				{
+					$this->_mysqlServers[$id]->connect();
+				}
+
+				$return = true;
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Returns the current active mysql server id (using Mysql).
+		 *
+		 * @access public
+		 * @return int
+		 */
+		public function getActiveMysqlServerId()
+		{
+			return $this->_activeMysqlServerId;
+		}
+
+		/**
+		 * Returns the current active mysql server object (using Mysql).
+		 *
+		 * If an id is specified, then the specified mysql server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|Pz_Mysql_Server
+		 */
+		public function mysqlActiveObject($id = -1)
+		{
+			$id = ($id===-1?$this->getActiveMysqlServerId():$id);
+
+			return (isset($this->_mysqlServers[$id])?$this->_mysqlServers[$id]:false);
+		}
+
+		/**
+		 * Returns the interaction object for mysql.
+		 *
+		 * @access public
+		 * @return bool|Pz_Mysql_Interactions
+		 */
+		public function mysqlInteract()
+		{
+			return $this->getPzInteraction('mysql');
+		}
+
+		/**
+		 * Resolves the proper mysql server object id based on input.
+		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return int
+		 */
+		public function decideActiveMySqlId($id)
+		{
+			return ($id===-1?$this->getActiveMysqlServerId():$id);
+		}
+
+		/**
+		 * Disconnects all registered database servers (using PDO).
+		 *
+		 * You have the option to not have them unregistered with Pz after being disconnected.
+		 *
+		 * @access public
+		 * @param bool $removeAlso
+		 */
+		public function disconnectAllPDOServers($removeAlso = true)
+		{
+			if(count($this->_pdoServers) > 0)
+			{
+				foreach($this->_pdoServers as $id => $pdoObj)
+				{
+					if($removeAlso === true)
+					{
+						$this->removePDOServer($id);
+					}
+					else
+					{
+						$this->disconnectPDOServer($id, false);
+					}
+				}
+			}
+		}
+
+		/**
+		 * Disconnects a particular database server (using PDO).
+		 *
+		 * If a specific id is not given, the current active PDO server object will be disconnected.
+		 *
+		 * You have the option to not have it unregistered with Pz after being disconnected.
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $removeAlso
+		 */
+		public function disconnectPDOServer($id = -1, $removeAlso = true)
+		{
+			$id = ($id===-1?$this->getActivePDOServerId():$id);
+
+			if(isset($this->_pdoServers[$id]))
+			{
+				if($removeAlso === true)
+				{
+					$this->removePDOServer($id);
+				}
+				else
+				{
+					$this->_pdoServers[$id]->disconnect();
+
+					$this->debugger('pdoDisconnectionsInc');
+
+					if($this->_activePDOServerId === $id)
+					{
+						$this->_activePDOServerId = -1;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Registers a database server with Pz (using PDO).
+		 *
+		 * By default, the database server is not connected to until you send a specific command to it (like a query).
+		 *
+		 * This method handles everything that is needed to register a database server object with Pz (using PDO).
+		 *
+		 * @access public
+		 * @param string $dbUser
+		 * @param string $dbPassword
+		 * @param string $dbType
+		 * @param string $dbName
+		 * @param string $dbHost
+		 * @param int    $dbPort
+		 * @param array    $dbDriverOptions
+		 * @param string    $server
+		 * @param string    $protocol
+		 * @param string    $socket
+		 * @param bool   $preventAutoAssign
+		 * @return mixed
+		 */
+		public function addPDOServer($dbUser, $dbPassword, $dbType, $dbName = '', $dbHost = 'localhost', $dbPort = 0, $dbDriverOptions = array(), $server, $protocol, $socket, $preventAutoAssign = false)
+		{
+			$this->_pdoServers[] = new Pz_PDO_Server($dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $this->getSetting('db_connect_retry_attempts'), $this->getSetting('db_connect_retry_delay'), $dbDriverOptions, $server, $protocol, $socket);
+
+			$newId = max(array_keys($this->_pdoServers));
+
+			if($this->getSetting('db_auto_assign_active_server') === true && $preventAutoAssign === false)
+			{
+				$this->_activePDOServerId = $newId;
+			}
+
+			if($this->getSetting('db_auto_connect_server') === true)
+			{
+				$this->pdoConnect($newId, $this->getSetting('db_auto_assign_active_server'));
+			}
+
+			$this->_loadPzInteraction('pdo', 'Pz_PDO_Interactions');
+
+			return $newId;
+		}
+
+		/**
+		 * Unregisters a database server object with Pz (using PDO).
+		 *
+		 * If no specific server is specified, the active server object will be used.
+		 *
+		 * This method will disconnect from the server automatically.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool
+		 */
+		public function removePDOServer($id = -1)
+		{
+			$id = ($id===-1?$this->getActivePDOServerId():$id);
+			$return = false;
+
+			if(isset($this->_pdoServers[$id]) && is_object($this->_pdoServers[$id]))
+			{
+				$this->_pdoServers[$id]->disconnect();
+
+				$this->debugger('pdoDisconnectionsInc');
+
+				unset($this->_pdoServers[$id]);
+
+				if($this->_activePDOServerId === $id)
+				{
+					$this->_activePDOServerId = -1;
+				}
+
+				$return = true;
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Connects to the database server (using PDO).
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $setAsActive
+		 * @return bool
+		 */
+		public function pdoConnect($id = -1, $setAsActive = false)
+		{
+			$id = ($id===-1?$this->getActivePDOServerId():$id);
+			$return = false;
+
+			if(isset($this->_pdoServers[$id]))
+			{
+				if($this->_pdoServers[$id]->connect())
+				{
+					$this->debugger('pdoConnectionsInc');
+
+					if($setAsActive === true)
+					{
+						$this->_activePDOServerId = $id;
+					}
+
+					$return = true;
+				}
+				else
+				{
+					$this->addToLog($this->getPzObject('loggers_pdo'), 'Failed to connect to database server with id#'.$id.'.');
+				}
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Sets the active database server id (using PDO).
+		 *
+		 * By default, this method will not auto connect to the database server.
+		 *
+		 * @access public
+		 * @param int  $id
+		 * @param bool $autoConnect
+		 * @return bool
+		 */
+		public function setActivePDOServerId($id = -1, $autoConnect = false)
+		{
+			$id = ($id===-1?$this->getActivePDOServerId():$id);
+			$return = false;
+
+			if(isset($this->_pdoServers[$id]))
+			{
+				$this->_activePDOServerId = $id;
+
+				if($autoConnect === true)
+				{
+					$this->_pdoServers[$id]->connect();
+				}
+
+				$return = true;
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Returns the current active database server id (using PDO).
+		 *
+		 * @access public
+		 * @return int
+		 */
+		public function getActivePDOServerId()
+		{
+			return $this->_activePDOServerId;
+		}
+
+		/**
+		 * Returns the current active database server object (using PDO).
+		 *
+		 * If an id is specified, then the specified database server object will be returned instead.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|Pz_PDO_Server
+		 */
+		public function pdoActiveObject($id = -1)
+		{
+			$id = ($id===-1?$this->getActivePDOServerId():$id);
+
+			return (isset($this->_pdoServers[$id])?$this->_pdoServers[$id]:false);
+		}
+
+		/**
+		 * Returns the interaction object for the PDO.
+		 *
+		 * @access public
+		 * @return bool|Pz_PDO_Interactions
+		 */
+		public function pdoInteract()
+		{
+			return $this->getPzInteraction('pdo');
+		}
+
+		/**
+		 * Resolves the proper database server object id based on input.
+		 *
+		 * If the input id is -1, then the active id is returned, else, the id is returned.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return int
+		 */
+		public function decideActivePDOId($id)
+		{
+			return ($id===-1?$this->getActivePDOServerId():$id);
 		}
 
 		/**
@@ -984,18 +1522,18 @@
 		 */
 		public function addMemcachedServer($mcIp, $mcPort)
 		{
-			$this->_memcachedServers[] = new Pz_Memcached_Server($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
+			$this->_memcachedServers[] = new Pz_Memcached_Server($mcIp, $mcPort, $this->getSetting('cache_connect_retry_attempts'), $this->getSetting('cache_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_memcachedServers));
 
-			if($this->getSetting('memcache_auto_assign_active_server') === true)
+			if($this->getSetting('cache_auto_assign_active_server') === true)
 			{
 				$this->_activeMemcachedServerId = $newId;
 			}
 
-			if($this->getSetting('memcache_auto_connect_server') === true)
+			if($this->getSetting('cache_auto_connect_server') === true)
 			{
-				$this->memcachedConnect($newId, $this->getSetting('memcache_auto_assign_active_server'));
+				$this->memcachedConnect($newId, $this->getSetting('cache_auto_assign_active_server'));
 			}
 
 			$this->_loadPzInteraction('memcached', 'Pz_Memcached_Interactions');
@@ -1017,18 +1555,18 @@
 		 */
 		public function addMemcacheServer($mcIp, $mcPort)
 		{
-			$this->_memcacheServers[] = new Pz_Memcache_Server($mcIp, $mcPort, $this->getSetting('memcache_connect_retry_attempts'), $this->getSetting('memcache_connect_retry_delay'));
+			$this->_memcacheServers[] = new Pz_Memcache_Server($mcIp, $mcPort, $this->getSetting('cache_connect_retry_attempts'), $this->getSetting('cache_connect_retry_delay'));
 
 			$newId = max(array_keys($this->_memcacheServers));
 
-			if($this->getSetting('memcache_auto_assign_active_server') === true)
+			if($this->getSetting('cache_auto_assign_active_server') === true)
 			{
 				$this->_activeMemcacheServerId = $newId;
 			}
 
-			if($this->getSetting('memcache_auto_connect_server') === true)
+			if($this->getSetting('cache_auto_connect_server') === true)
 			{
-				$this->memcacheConnect($newId, $this->getSetting('memcache_auto_assign_active_server'));
+				$this->memcacheConnect($newId, $this->getSetting('cache_auto_assign_active_server'));
 			}
 
 			$this->_loadPzInteraction('memcache', 'Pz_Memcache_Interactions');

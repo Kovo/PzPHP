@@ -115,14 +115,14 @@
 		*
 		* Do not pass an entire query string to this function, only the individual varaibles that make up the string should be passed.
 		* @access public
-		* @param mysqli $dbLinkRes
+		* @param mysqli|resource|null $dbLinkRes
 		* @param mixed $value
 		* @param bool $mustBeNumeric
 		* @param int $decimalPlaces
 		* @param int $cleanall
 		* @return array|float|int|mixed|string
 		*/
-		public function cleanQuery(mysqli $dbLinkRes, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function cleanQuery($dbLinkRes, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
 			if(is_array($value) === false)
 			{
@@ -147,7 +147,14 @@
 				$value = $this->cleanHTML($value, $cleanall); //clean html stuff
 
 				//good old php function as last defense
-				$value = $dbLinkRes->real_escape_string($value);
+				if(is_object($dbLinkRes))
+				{
+					$value = $dbLinkRes->real_escape_string($value);
+				}
+				elseif(is_resource($dbLinkRes))
+				{
+					$value = mysql_real_escape_string($value, $dbLinkRes);
+				}
 
 				//we are done!
 				return $value;

@@ -31,6 +31,9 @@
 			'mysql_queries' => 0,
 			'mysql_read_queries' => 0,
 			'mysql_write_queries' => 0,
+			'pdo_queries' => 0,
+			'pdo_read_queries' => 0,
+			'pdo_write_queries' => 0,
 			'mc_writes' => 0,
 			'mc_deletes' => 0,
 			'mc_reads' => 0,
@@ -48,12 +51,15 @@
 			'lc_reads' => 0,
 			'includes' => 0,
 			'mysql_connections' => 0,
+			'pdo_connections' => 0,
 			'mc_connections' => 0,
 			'mcd_connections' => 0,
 			'mysql_disconnections' => 0,
+			'pdo_disconnections' => 0,
 			'mc_disconnections' => 0,
 			'mcd_disconnections' => 0,
 			'mysql_queries_executed' => array(),
+			'pdo_queries_executed' => array(),
 			'start_memory_usage' => 0,
 			'start_memory_real_usage' => 0,
 			'start_peak_memory_usage' => 0,
@@ -176,6 +182,16 @@
 		}
 
 		/**
+		 * Calculate total queries.
+		 *
+		 * @access public
+		 */
+		public function calculatePDOQueries()
+		{
+			$this->_statistics['pdo_queries'] = $this->_statistics['pdo_read_queries']+$this->_statistics['pdo_write_queries'];
+		}
+
+		/**
 		 * Calculate total execution time.
 		 *
 		 * @access public
@@ -229,6 +245,26 @@
 		public function mysqlWritesInc()
 		{
 			$this->_statistics['mysql_write_queries']++;
+		}
+
+		/**
+		 * Increase pdo reads by 1.
+		 *
+		 * @access public
+		 */
+		public function pdoReadsInc()
+		{
+			$this->_statistics['pdo_read_queries']++;
+		}
+
+		/**
+		 * Increase pdo writes by 1.
+		 *
+		 * @access public
+		 */
+		public function pdoWritesInc()
+		{
+			$this->_statistics['pdo_write_queries']++;
 		}
 
 		/**
@@ -402,6 +438,26 @@
 		}
 
 		/**
+		 * Increase pdo connections by 1.
+		 *
+		 * @access public
+		 */
+		public function pdoConnectionsInc()
+		{
+			$this->_statistics['pdo_connections']++;
+		}
+
+		/**
+		 * Increase pdo disconnections by 1.
+		 *
+		 * @access public
+		 */
+		public function pdoDisconnectionsInc()
+		{
+			$this->_statistics['pdo_disconnections']++;
+		}
+
+		/**
 		 * Increase mc connections by 1.
 		 *
 		 * @access public
@@ -452,6 +508,16 @@
 		}
 
 		/**
+		 * @param $query
+		 *
+		 * logs actual query strings
+		 */
+		public function pdoLogQuery($query)
+		{
+			$this->_statistics['pdo_queries_executed'][] = $query;
+		}
+
+		/**
 		 * Calcualtes, logs, displays debugger info.
 		 *
 		 * @access public
@@ -463,6 +529,7 @@
 			$this->calculateMemoryUsage();
 			$this->calculateIncludes();
 			$this->calculateMysqlQueries();
+			$this->calculatePDOQueries();
 
 			if($this->_logToDb === true)
 			{
@@ -506,9 +573,12 @@
 
 			$html .= '<div style="float:left;width:20%;font-size:15px;"><div style="padding:10px 10px 0;"> <strong>Pz Debugger</strong></div></div>';
 
-			$statisticshtml = 'Queries: '.$this->_statistics['mysql_queries'].'\n\n';
-			$statisticshtml .= 'Read Queries: '.$this->_statistics['mysql_read_queries'].'\n\n';
-			$statisticshtml .= 'Write Queries: '.$this->_statistics['mysql_write_queries'].'\n\n\n\n';
+			$statisticshtml = 'Mysql Queries: '.$this->_statistics['mysql_queries'].'\n\n';
+			$statisticshtml .= 'Mysql Read Queries: '.$this->_statistics['mysql_read_queries'].'\n\n';
+			$statisticshtml .= 'Mysql Write Queries: '.$this->_statistics['mysql_write_queries'].'\n\n\n\n';
+			$statisticshtml .= 'PDO Queries: '.$this->_statistics['pdo_queries'].'\n\n';
+			$statisticshtml .= 'PDO Read Queries: '.$this->_statistics['pdo_read_queries'].'\n\n';
+			$statisticshtml .= 'PDO Write Queries: '.$this->_statistics['pdo_write_queries'].'\n\n\n\n';
 			$statisticshtml .= 'MC Writes: '.$this->_statistics['mc_writes'].'\n\n';
 			$statisticshtml .= 'MC Deletes: '.$this->_statistics['mc_deletes'].'\n\n';
 			$statisticshtml .= 'MC Reads: '.$this->_statistics['mc_reads'].'\n\n\n\n';
@@ -526,6 +596,8 @@
 			$statisticshtml .= 'LC Reads: '.$this->_statistics['lc_reads'].'\n\n\n\n';
 			$statisticshtml .= 'MySql Conn: '.$this->_statistics['mysql_connections'].'\n\n';
 			$statisticshtml .= 'MySql Disconn: '.$this->_statistics['mysql_disconnections'].'\n\n\n\n';
+			$statisticshtml .= 'PDO Conn: '.$this->_statistics['pdo_connections'].'\n\n';
+			$statisticshtml .= 'PDO Disconn: '.$this->_statistics['pdo_disconnections'].'\n\n\n\n';
 			$statisticshtml .= 'MC Conn: '.$this->_statistics['mc_connections'].'\n\n';
 			$statisticshtml .= 'MC Disconn: '.$this->_statistics['mc_disconnections'].'\n\n';
 			$statisticshtml .= 'MCD Conn: '.$this->_statistics['mcd_connections'].'\n\n';

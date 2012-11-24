@@ -27,12 +27,21 @@
 		 * Takes in the class name, and constructs the path to the class file using PEAR naming conventions.
 		 *
 		 * @access private
-		 * @param string $className
+		 * @param $className
+		 * @throws Exception
 		 */
 		private function loader($className)
 		{
 			$fileNameParts = explode('_', $className);
+			$fileName = BASE_CLASS_DIR.implode('/', $fileNameParts).'.php';
 
-			include BASE_CLASS_DIR.implode('/', $fileNameParts).'.php';
+			if(file_exists($fileName))
+			{
+				include $fileName;
+			}
+			else
+			{
+				throw new Exception('Failed to load "'.$className.'"! File "'.$fileName.'" does not exist!');
+			}
 		}
 	}

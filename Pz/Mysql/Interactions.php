@@ -11,9 +11,9 @@
 	 * @package Pz Library
 	 */
 	/**
-	 * The interaction class for communicating with mysql using mysqli.
+	 * The interaction class for communicating with mysql using mysql.
 	 */
-	class Pz_Mysqli_Interactions extends Pz_Abstract_Generic
+	class Pz_Mysql_Interactions extends Pz_Abstract_Generic
 	{
 		/**
 		 * Expects to handle read related queries.
@@ -21,27 +21,27 @@
 		 * @access public
 		 * @param string $query
 		 * @param int $id
-		 * @return bool|mysqli_result
+		 * @return bool|resource
 		 */
 		public function read($query, $id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			if($this->pzCore()->mysqliActiveObject($id) === false)
+			if($this->pzCore()->mysqlActiveObject($id) === false)
 			{
 				return false;
 			}
 			else
 			{
-				if($this->pzCore()->mysqliActiveObject($id)->isConnected() === false)
+				if($this->pzCore()->mysqlActiveObject($id)->isConnected() === false)
 				{
-					if($this->pzCore()->mysqliConnect($id) === false)
+					if($this->pzCore()->mysqlConnect($id) === false)
 					{
 						return false;
 					}
 				}
 
-				$result = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->query($query);
+				$result = mysql_query($query, $this->pzCore()->mysqlActiveObject($id)->returnMysqlRes());
 
 				if(!$result && strtoupper(substr($query,0,6)) === 'SELECT')
 				{
@@ -68,21 +68,21 @@
 		 * @access public
 		 * @param string $query
 		 * @param int $id
-		 * @return bool|mysqli_result
+		 * @return bool|resource
 		 */
 		public function write($query, $id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			if($this->pzCore()->mysqliActiveObject($id) === false)
+			if($this->pzCore()->mysqlActiveObject($id) === false)
 			{
 				return false;
 			}
 			else
 			{
-				if($this->pzCore()->mysqliActiveObject($id)->isConnected() === false)
+				if($this->pzCore()->mysqlActiveObject($id)->isConnected() === false)
 				{
-					if($this->pzCore()->mysqliConnect($id) === false)
+					if($this->pzCore()->mysqlConnect($id) === false)
 					{
 						return false;
 					}
@@ -109,9 +109,9 @@
 					$retryFlag = 0;
 
 					// Write query (UPDATE, INSERT)
-					$result = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->query($query);
-					$mysqlErrno = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->errno;
-					$mysqlError = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->error;
+					$result = mysql_query($query, $this->pzCore()->mysqlActiveObject($id)->returnMysqlRes());
+					$mysqlErrno = mysql_errno($this->pzCore()->mysqlActiveObject($id)->returnMysqlRes());
+					$mysqlError = mysql_error($this->pzCore()->mysqlActiveObject($id)->returnMysqlRes());
 
 					$this->pzCore()->debugger('mysqlWritesInc');
 					$this->pzCore()->debugger('mysqlLogQuery', array($query));
@@ -202,9 +202,9 @@
 		 */
 		public function affectedRows($id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->affectedRows():0);
+			return ($this->pzCore()->mysqlActiveObject($id)?$this->pzCore()->mysqlActiveObject($id)->affectedRows():0);
 		}
 
 		/**
@@ -216,9 +216,9 @@
 		 */
 		public function insertId($id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->insertId():0);
+			return ($this->pzCore()->mysqlActiveObject($id)?$this->pzCore()->mysqlActiveObject($id)->insertId():0);
 		}
 
 		/**
@@ -231,9 +231,9 @@
 		 */
 		public function selectDatabase($dbName, $id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->selectDatabase($dbName):false);
+			return ($this->pzCore()->mysqlActiveObject($id)?$this->pzCore()->mysqlActiveObject($id)->selectDatabase($dbName):false);
 		}
 
 		/**
@@ -248,9 +248,9 @@
 		 */
 		public function changeUser($user, $password, $dbName = NULL, $id = -1)
 		{
-			$id = $this->pzCore()->decideActiveMySqliId($id);
+			$id = $this->pzCore()->decideActiveMySqlId($id);
 
-			return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->changeUser($user, $password, $dbName):false);
+			return ($this->pzCore()->mysqlActiveObject($id)?$this->pzCore()->mysqlActiveObject($id)->changeUser($user, $password, $dbName):false);
 		}
 
 		/**
@@ -267,7 +267,7 @@
 		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
 		{
 			return $this->pzCore()->pzSecurity()->cleanQuery(
-				$this->pzCore()->mysqliActiveObject($this->pzCore()->decideActiveMySqliId($id))->returnMysqliObj(),
+				$this->pzCore()->mysqlActiveObject($id)->returnMysqlRes(),
 				$value,
 				$mustBeNumeric,
 				$decimalPlaces,

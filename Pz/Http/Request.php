@@ -321,8 +321,15 @@
 
 					if($rule)
 					{
+						$array = array_map('trim', explode('/', $rule));
+
+						if(!isset($array[1]))
+						{
+							$array[1] = $array[0];
+						}
+
 						list($precedence, $tokens) = $this->acceptHeaderOptions($ruleSet);
-						list($mainOption, $subOption) = array_map('trim', explode('/', $rule));
+						list($mainOption, $subOption) = $array;
 
 						$return[] = array(
 							'main_type' => $mainOption,
