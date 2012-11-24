@@ -124,7 +124,7 @@
 			}
 		}
 
-		/*
+		/**
 		 * Check if the visitors IP is blacklisted (if enabled).
 		 *
 		 * @static
