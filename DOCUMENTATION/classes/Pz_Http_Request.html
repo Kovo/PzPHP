@@ -1,0 +1,689 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Pz_Http_Request</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: Sets Pz Core object and starts gathering request data."><span class="description">Sets Pz Core object and starts gathering request data.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_acceptHeaderOptions" title="acceptHeaderOptions :: Breaks-apart the accept header value."><span class="description">Breaks-apart the accept header value.</span><pre>acceptHeaderOptions()</pre></a></li>
+<li class="method public "><a href="#method_cleanQueryString" title="cleanQueryString :: Cleans a raw query string."><span class="description">Cleans a raw query string.</span><pre>cleanQueryString()</pre></a></li>
+<li class="method public "><a href="#method_clientIpAddress" title="clientIpAddress :: Returns the client IP address."><span class="description">Returns the client IP address.</span><pre>clientIpAddress()</pre></a></li>
+<li class="method public "><a href="#method_cookie" title="cookie :: Returns a value from the COOKIE super global."><span class="description">Returns a value from the COOKIE super global.</span><pre>cookie()</pre></a></li>
+<li class="method public "><a href="#method_files" title="files :: Returns a value from the FILES super global."><span class="description">Returns a value from the FILES super global.</span><pre>files()</pre></a></li>
+<li class="method public "><a href="#method_get" title="get :: Returns a value from the GET super global."><span class="description">Returns a value from the GET super global.</span><pre>get()</pre></a></li>
+<li class="method public "><a href="#method_getCharsets" title="getCharsets :: Returns this requests accepted charsets."><span class="description">Returns this requests accepted charsets.</span><pre>getCharsets()</pre></a></li>
+<li class="method public "><a href="#method_getEncodings" title="getEncodings :: Returns this requests accepted encodings."><span class="description">Returns this requests accepted encodings.</span><pre>getEncodings()</pre></a></li>
+<li class="method public "><a href="#method_getLanguages" title="getLanguages :: Returns this requests accepted languages."><span class="description">Returns this requests accepted languages.</span><pre>getLanguages()</pre></a></li>
+<li class="method public "><a href="#method_getMediaTypes" title="getMediaTypes :: Returns this requests accepted media types."><span class="description">Returns this requests accepted media types.</span><pre>getMediaTypes()</pre></a></li>
+<li class="method public "><a href="#method_getReferer" title="getReferer :: Returns this request's referer url (if any)."><span class="description">Returns this request's referer url (if any).</span><pre>getReferer()</pre></a></li>
+<li class="method public inherited"><a href="#method_init" title="init :: The init method sets the Pz_Core object."><span class="description">The init method sets the Pz_Core object.</span><pre>init()</pre></a></li>
+<li class="method public "><a href="#method_isAjax" title="isAjax :: Returns true or false depending on if the current request is ajax."><span class="description">Returns true or false depending on if the current request is ajax.</span><pre>isAjax()</pre></a></li>
+<li class="method public "><a href="#method_isSecure" title="isSecure :: Returns true or false depending on if this request is secure or not."><span class="description">Returns true or false depending on if this request is secure or not.</span><pre>isSecure()</pre></a></li>
+<li class="method public "><a href="#method_parseAcceptHeader" title="parseAcceptHeader :: Parses any kind of accept header and extracts its data."><span class="description">Parses any kind of accept header and extracts its data.</span><pre>parseAcceptHeader()</pre></a></li>
+<li class="method public "><a href="#method_post" title="post :: Returns a value from the POST super global."><span class="description">Returns a value from the POST super global.</span><pre>post()</pre></a></li>
+<li class="method public inherited"><a href="#method_pzCore" title="pzCore :: Returns the Pz_Core instance."><span class="description">Returns the Pz_Core instance.</span><pre>pzCore()</pre></a></li>
+<li class="method public "><a href="#method_server" title="server :: Returns a value from the SERVER super global."><span class="description">Returns a value from the SERVER super global.</span><pre>server()</pre></a></li>
+<li class="method public "><a href="#method_serverIpAddress" title="serverIpAddress :: Returns the server's IP address/"><span class="description">Returns the server's IP address/</span><pre>serverIpAddress()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private "><a href="#method__detectAjax" title="_detectAjax :: Detects if current request is an ajax call."><span class="description">Detects if current request is an ajax call.</span><pre>_detectAjax()</pre></a></li>
+<li class="method private "><a href="#method__detectCharsets" title="_detectCharsets :: Reads header information for charsets and extracts them."><span class="description">Reads header information for charsets and extracts them.</span><pre>_detectCharsets()</pre></a></li>
+<li class="method private "><a href="#method__detectEncodings" title="_detectEncodings :: Reads header information for accepted encodings and extracts them."><span class="description">Reads header information for accepted encodings and extracts them.</span><pre>_detectEncodings()</pre></a></li>
+<li class="method private "><a href="#method__detectHttps" title="_detectHttps :: Detects whether https is being used."><span class="description">Detects whether https is being used.</span><pre>_detectHttps()</pre></a></li>
+<li class="method private "><a href="#method__detectLanguages" title="_detectLanguages :: Reads header information for accepted languages and extracts them."><span class="description">Reads header information for accepted languages and extracts them.</span><pre>_detectLanguages()</pre></a></li>
+<li class="method private "><a href="#method__detectMediaTypes" title="_detectMediaTypes :: Reads header information for media types and extracts them."><span class="description">Reads header information for media types and extracts them.</span><pre>_detectMediaTypes()</pre></a></li>
+<li class="method private "><a href="#method__detectQueryString" title="_detectQueryString :: Detects and cleans the query string (if any)."><span class="description">Detects and cleans the query string (if any).</span><pre>_detectQueryString()</pre></a></li>
+<li class="method private "><a href="#method__detectReferer" title="_detectReferer :: Detects the referer url (if any)."><span class="description">Detects the referer url (if any).</span><pre>_detectReferer()</pre></a></li>
+<li class="method private "><a href="#method__populateRequestParameters" title="_populateRequestParameters :: Gathers various information about the request and stores it."><span class="description">Gathers various information about the request and stores it.</span><pre>_populateRequestParameters()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul><li class="property protected inherited"><a href="#property__pzCoreObject" title="$_pzCoreObject :: Stores an instance of Pz_Core."><span class="description"></span><pre>$_pzCoreObject</pre></a></li></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__charsets" title="$_charsets :: The different accepted charsets."><span class="description"></span><pre>$_charsets</pre></a></li>
+<li class="property private "><a href="#property__encodings" title="$_encodings :: The different accepted encodings."><span class="description"></span><pre>$_encodings</pre></a></li>
+<li class="property private "><a href="#property__isAjax" title="$_isAjax :: Whether the current request is an AJAX request or not."><span class="description"></span><pre>$_isAjax</pre></a></li>
+<li class="property private "><a href="#property__languages" title="$_languages :: The different accepted languages."><span class="description"></span><pre>$_languages</pre></a></li>
+<li class="property private "><a href="#property__mediaTypes" title="$_mediaTypes :: The different accepted media types."><span class="description"></span><pre>$_mediaTypes</pre></a></li>
+<li class="property private "><a href="#property__queryString" title="$_queryString :: The query string (if any) associated with this request."><span class="description"></span><pre>$_queryString</pre></a></li>
+<li class="property private "><a href="#property__referer" title="$_referer :: The referer url for this request."><span class="description"></span><pre>$_referer</pre></a></li>
+<li class="property private "><a href="#property__secure" title="$_secure :: Whether this request is being sent over https."><span class="description"></span><pre>$_secure</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Pz_Http_Request"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Pz_Http_Request.html">Pz_Http_Request</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">The Request class allows you to learn about the essentials of the current request.</p>
+<div class="details">
+<div class="long_description"></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Sets Pz Core object and starts gathering request data.</h2>
+<pre>__construct(\Pz_Core $PzCore) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$PzCore</h4>
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_acceptHeaderOptions"></a><div class="element clickable method public method_acceptHeaderOptions" data-toggle="collapse" data-target=".method_acceptHeaderOptions .collapse">
+<h2>Breaks-apart the accept header value.</h2>
+<pre>acceptHeaderOptions($ruleSet) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$ruleSet</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_cleanQueryString"></a><div class="element clickable method public method_cleanQueryString" data-toggle="collapse" data-target=".method_cleanQueryString .collapse">
+<h2>Cleans a raw query string.</h2>
+<pre>cleanQueryString($queryString) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$queryString</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_clientIpAddress"></a><div class="element clickable method public method_clientIpAddress" data-toggle="collapse" data-target=".method_clientIpAddress .collapse">
+<h2>Returns the client IP address.</h2>
+<pre>clientIpAddress() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_cookie"></a><div class="element clickable method public method_cookie" data-toggle="collapse" data-target=".method_cookie .collapse">
+<h2>Returns a value from the COOKIE super global.</h2>
+<pre>cookie($varname) : null | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$varname</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_files"></a><div class="element clickable method public method_files" data-toggle="collapse" data-target=".method_files .collapse">
+<h2>Returns a value from the FILES super global.</h2>
+<pre>files($varname) : null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$varname</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>null</code></div>
+</div></div>
+</div>
+<a id="method_get"></a><div class="element clickable method public method_get" data-toggle="collapse" data-target=".method_get .collapse">
+<h2>Returns a value from the GET super global.</h2>
+<pre>get($varname) : null | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$varname</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_getCharsets"></a><div class="element clickable method public method_getCharsets" data-toggle="collapse" data-target=".method_getCharsets .collapse">
+<h2>Returns this requests accepted charsets.</h2>
+<pre>getCharsets() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_getEncodings"></a><div class="element clickable method public method_getEncodings" data-toggle="collapse" data-target=".method_getEncodings .collapse">
+<h2>Returns this requests accepted encodings.</h2>
+<pre>getEncodings() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_getLanguages"></a><div class="element clickable method public method_getLanguages" data-toggle="collapse" data-target=".method_getLanguages .collapse">
+<h2>Returns this requests accepted languages.</h2>
+<pre>getLanguages() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_getMediaTypes"></a><div class="element clickable method public method_getMediaTypes" data-toggle="collapse" data-target=".method_getMediaTypes .collapse">
+<h2>Returns this requests accepted media types.</h2>
+<pre>getMediaTypes() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_getReferer"></a><div class="element clickable method public method_getReferer" data-toggle="collapse" data-target=".method_getReferer .collapse">
+<h2>Returns this request's referer url (if any).</h2>
+<pre>getReferer() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_init"></a><div class="element clickable method public method_init" data-toggle="collapse" data-target=".method_init .collapse">
+<h2>The init method sets the Pz_Core object.</h2>
+<pre>init(\Pz_Core $PzCore) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::init()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$PzCore</h4>
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_isAjax"></a><div class="element clickable method public method_isAjax" data-toggle="collapse" data-target=".method_isAjax .collapse">
+<h2>Returns true or false depending on if the current request is ajax.</h2>
+<pre>isAjax() : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_isSecure"></a><div class="element clickable method public method_isSecure" data-toggle="collapse" data-target=".method_isSecure .collapse">
+<h2>Returns true or false depending on if this request is secure or not.</h2>
+<pre>isSecure() : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_parseAcceptHeader"></a><div class="element clickable method public method_parseAcceptHeader" data-toggle="collapse" data-target=".method_parseAcceptHeader .collapse">
+<h2>Parses any kind of accept header and extracts its data.</h2>
+<pre>parseAcceptHeader($header) : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$header</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_post"></a><div class="element clickable method public method_post" data-toggle="collapse" data-target=".method_post .collapse">
+<h2>Returns a value from the POST super global.</h2>
+<pre>post($varname) : null | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$varname</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_pzCore"></a><div class="element clickable method public method_pzCore" data-toggle="collapse" data-target=".method_pzCore .collapse">
+<h2>Returns the Pz_Core instance.</h2>
+<pre>pzCore() : null | <a href="../classes/Pz_Core.html">\Pz_Core</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::pzCore()</td>
+</tr>
+</table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_server"></a><div class="element clickable method public method_server" data-toggle="collapse" data-target=".method_server .collapse">
+<h2>Returns a value from the SERVER super global.</h2>
+<pre>server($varname) : null | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$varname</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_serverIpAddress"></a><div class="element clickable method public method_serverIpAddress" data-toggle="collapse" data-target=".method_serverIpAddress .collapse">
+<h2>Returns the server's IP address/</h2>
+<pre>serverIpAddress() : null | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method__detectAjax"></a><div class="element clickable method private method__detectAjax" data-toggle="collapse" data-target=".method__detectAjax .collapse">
+<h2>Detects if current request is an ajax call.</h2>
+<pre>_detectAjax() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectCharsets"></a><div class="element clickable method private method__detectCharsets" data-toggle="collapse" data-target=".method__detectCharsets .collapse">
+<h2>Reads header information for charsets and extracts them.</h2>
+<pre>_detectCharsets() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectEncodings"></a><div class="element clickable method private method__detectEncodings" data-toggle="collapse" data-target=".method__detectEncodings .collapse">
+<h2>Reads header information for accepted encodings and extracts them.</h2>
+<pre>_detectEncodings() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectHttps"></a><div class="element clickable method private method__detectHttps" data-toggle="collapse" data-target=".method__detectHttps .collapse">
+<h2>Detects whether https is being used.</h2>
+<pre>_detectHttps() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectLanguages"></a><div class="element clickable method private method__detectLanguages" data-toggle="collapse" data-target=".method__detectLanguages .collapse">
+<h2>Reads header information for accepted languages and extracts them.</h2>
+<pre>_detectLanguages() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectMediaTypes"></a><div class="element clickable method private method__detectMediaTypes" data-toggle="collapse" data-target=".method__detectMediaTypes .collapse">
+<h2>Reads header information for media types and extracts them.</h2>
+<pre>_detectMediaTypes() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectQueryString"></a><div class="element clickable method private method__detectQueryString" data-toggle="collapse" data-target=".method__detectQueryString .collapse">
+<h2>Detects and cleans the query string (if any).</h2>
+<pre>_detectQueryString() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__detectReferer"></a><div class="element clickable method private method__detectReferer" data-toggle="collapse" data-target=".method__detectReferer .collapse">
+<h2>Detects the referer url (if any).</h2>
+<pre>_detectReferer() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__populateRequestParameters"></a><div class="element clickable method private method__populateRequestParameters" data-toggle="collapse" data-target=".method__populateRequestParameters .collapse">
+<h2>Gathers various information about the request and stores it.</h2>
+<pre>_populateRequestParameters() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__pzCoreObject"> </a><div class="element clickable property protected property__pzCoreObject" data-toggle="collapse" data-target=".property__pzCoreObject .collapse">
+<h2></h2>
+<pre>$_pzCoreObject : null | <a href="../classes/Pz_Core.html">\Pz_Core</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>protected</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::$$_pzCoreObject</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__charsets"> </a><div class="element clickable property private property__charsets" data-toggle="collapse" data-target=".property__charsets .collapse">
+<h2></h2>
+<pre>$_charsets : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__encodings"> </a><div class="element clickable property private property__encodings" data-toggle="collapse" data-target=".property__encodings .collapse">
+<h2></h2>
+<pre>$_encodings : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__isAjax"> </a><div class="element clickable property private property__isAjax" data-toggle="collapse" data-target=".property__isAjax .collapse">
+<h2></h2>
+<pre>$_isAjax : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__languages"> </a><div class="element clickable property private property__languages" data-toggle="collapse" data-target=".property__languages .collapse">
+<h2></h2>
+<pre>$_languages : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__mediaTypes"> </a><div class="element clickable property private property__mediaTypes" data-toggle="collapse" data-target=".property__mediaTypes .collapse">
+<h2></h2>
+<pre>$_mediaTypes : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__queryString"> </a><div class="element clickable property private property__queryString" data-toggle="collapse" data-target=".property__queryString .collapse">
+<h2></h2>
+<pre>$_queryString : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__referer"> </a><div class="element clickable property private property__referer" data-toggle="collapse" data-target=".property__referer .collapse">
+<h2></h2>
+<pre>$_referer : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__secure"> </a><div class="element clickable property private property__secure" data-toggle="collapse" data-target=".property__secure .collapse">
+<h2></h2>
+<pre>$_secure : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \PzPHP_Core</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: The construct registers the core modules of PzPHP, including Pz_Core."><span class="description">The construct registers the core modules of PzPHP, including Pz_Core.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_cache" title="cache :: Returns the instance of PzPHP_Cache."><span class="description">Returns the instance of PzPHP_Cache.</span><pre>cache()</pre></a></li>
+<li class="method public "><a href="#method_changeVariable" title="changeVariable :: Change a registered variable's value."><span class="description">Change a registered variable's value.</span><pre>changeVariable()</pre></a></li>
+<li class="method public "><a href="#method_db" title="db :: Returns the instance of PzPHP_Db."><span class="description">Returns the instance of PzPHP_Db.</span><pre>db()</pre></a></li>
+<li class="method public "><a href="#method_getVariable" title="getVariable :: Returns a registered varaible."><span class="description">Returns a registered varaible.</span><pre>getVariable()</pre></a></li>
+<li class="method public "><a href="#method_localize" title="localize :: Returns the instance of PzPHP_Locale."><span class="description">Returns the instance of PzPHP_Locale.</span><pre>localize()</pre></a></li>
+<li class="method public "><a href="#method_module" title="module :: Returns the instance of the specified module."><span class="description">Returns the instance of the specified module.</span><pre>module()</pre></a></li>
+<li class="method public "><a href="#method_pz" title="pz :: Returns the instance of Pz_Core."><span class="description">Returns the instance of Pz_Core.</span><pre>pz()</pre></a></li>
+<li class="method public "><a href="#method_registerModule" title="registerModule :: Registers a module with PzPHP."><span class="description">Registers a module with PzPHP.</span><pre>registerModule()</pre></a></li>
+<li class="method public "><a href="#method_registerVariable" title="registerVariable :: Registers a variable that can be accessed via any module."><span class="description">Registers a variable that can be accessed via any module.</span><pre>registerVariable()</pre></a></li>
+<li class="method public "><a href="#method_security" title="security :: Returns the instance of PzPHP_Security."><span class="description">Returns the instance of PzPHP_Security.</span><pre>security()</pre></a></li>
+<li class="method public "><a href="#method_unregisterVariable" title="unregisterVariable :: Unregisters a registered variable."><span class="description">Unregisters a registered variable.</span><pre>unregisterVariable()</pre></a></li>
+<li class="method public "><a href="#method_variableExists" title="variableExists :: Returns true or false depending on if specified variable is registered or not."><span class="description">Returns true or false depending on if specified variable is registered or not.</span><pre>variableExists()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private "><a href="#method__extractPzCoreSettings" title="_extractPzCoreSettings :: Extracts all pz related constants to pass to Pz_Core."><span class="description">Extracts all pz related constants to pass to Pz_Core.</span><pre>_extractPzCoreSettings()</pre></a></li>
+<li class="method private "><a href="#method__warmupDirectories" title="_warmupDirectories :: Checks to make sure key directories exist, and if they don't, create them."><span class="description">Checks to make sure key directories exist, and if they don't, create them.</span><pre>_warmupDirectories()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__registeredModules" title="$_registeredModules :: An array of registered modules and their instances."><span class="description"></span><pre>$_registeredModules</pre></a></li>
+<li class="property private "><a href="#property__registeredVariables" title="$_registeredVariables :: An array of registered variables accessible to all modules."><span class="description"></span><pre>$_registeredVariables</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul><li class="constant  "><a href="#constant_VERSION" title="VERSION :: The version of PzPHP."><span class="description">The version of PzPHP.</span><pre>VERSION</pre></a></li></ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\PzPHP_Core"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/PzPHP_Core.html">PzPHP_Core</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">The PzPHP core class is the central registry for modules, and allows quick access to them.</p>
+<div class="details">
+<div class="long_description"><p>The PzPHP core class also allows you to register variables that can later be accessed in modules.</p></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>The construct registers the core modules of PzPHP, including Pz_Core.</h2>
+<pre>__construct() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"><p>The construct also registers PzPHP's version with Pz_Core.</p></div></div></div>
+</div>
+<a id="method_cache"></a><div class="element clickable method public method_cache" data-toggle="collapse" data-target=".method_cache .collapse">
+<h2>Returns the instance of PzPHP_Cache.</h2>
+<pre>cache() : <a href="../classes/PzPHP_Cache.html">\PzPHP_Cache</a> | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/PzPHP_Cache.html">\PzPHP_Cache</a></code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_changeVariable"></a><div class="element clickable method public method_changeVariable" data-toggle="collapse" data-target=".method_changeVariable .collapse">
+<h2>Change a registered variable's value.</h2>
+<pre>changeVariable($variableName, $variableValue) : null | mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$variableName</h4></div>
+<div class="subelement argument"><h4>$variableValue</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>mixed</code>
+</div>
+</div></div>
+</div>
+<a id="method_db"></a><div class="element clickable method public method_db" data-toggle="collapse" data-target=".method_db .collapse">
+<h2>Returns the instance of PzPHP_Db.</h2>
+<pre>db() : <a href="../classes/PzPHP_Db.html">\PzPHP_Db</a> | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/PzPHP_Db.html">\PzPHP_Db</a></code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_getVariable"></a><div class="element clickable method public method_getVariable" data-toggle="collapse" data-target=".method_getVariable .collapse">
+<h2>Returns a registered varaible.</h2>
+<pre>getVariable(string $variableName) : null | mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variableName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>mixed</code>
+</div>
+</div></div>
+</div>
+<a id="method_localize"></a><div class="element clickable method public method_localize" data-toggle="collapse" data-target=".method_localize .collapse">
+<h2>Returns the instance of PzPHP_Locale.</h2>
+<pre>localize() : <a href="../classes/PzPHP_Locale.html">\PzPHP_Locale</a> | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/PzPHP_Locale.html">\PzPHP_Locale</a></code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_module"></a><div class="element clickable method public method_module" data-toggle="collapse" data-target=".method_module .collapse">
+<h2>Returns the instance of the specified module.</h2>
+<pre>module(string $moduleName) : null | mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The module gets instantiated at this step if it has not already.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$moduleName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>mixed</code>
+</div>
+</div></div>
+</div>
+<a id="method_pz"></a><div class="element clickable method public method_pz" data-toggle="collapse" data-target=".method_pz .collapse">
+<h2>Returns the instance of Pz_Core.</h2>
+<pre>pz() : <a href="../classes/Pz_Core.html">\Pz_Core</a> | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_registerModule"></a><div class="element clickable method public method_registerModule" data-toggle="collapse" data-target=".method_registerModule .collapse">
+<h2>Registers a module with PzPHP.</h2>
+<pre>registerModule(string $moduleName) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>It does not get instantiated at this step.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$moduleName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_registerVariable"></a><div class="element clickable method public method_registerVariable" data-toggle="collapse" data-target=".method_registerVariable .collapse">
+<h2>Registers a variable that can be accessed via any module.</h2>
+<pre>registerVariable(string $variableName, mixed $variableValue) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variableName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$variableValue</h4>
+<code>mixed</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_security"></a><div class="element clickable method public method_security" data-toggle="collapse" data-target=".method_security .collapse">
+<h2>Returns the instance of PzPHP_Security.</h2>
+<pre>security() : <a href="../classes/PzPHP_Security.html">\PzPHP_Security</a> | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/PzPHP_Security.html">\PzPHP_Security</a></code><code>null</code>
+</div>
+</div></div>
+</div>
+<a id="method_unregisterVariable"></a><div class="element clickable method public method_unregisterVariable" data-toggle="collapse" data-target=".method_unregisterVariable .collapse">
+<h2>Unregisters a registered variable.</h2>
+<pre>unregisterVariable(string $variableName) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variableName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_variableExists"></a><div class="element clickable method public method_variableExists" data-toggle="collapse" data-target=".method_variableExists .collapse">
+<h2>Returns true or false depending on if specified variable is registered or not.</h2>
+<pre>variableExists(string $variableName) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variableName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method__extractPzCoreSettings"></a><div class="element clickable method private method__extractPzCoreSettings" data-toggle="collapse" data-target=".method__extractPzCoreSettings .collapse">
+<h2>Extracts all pz related constants to pass to Pz_Core.</h2>
+<pre>_extractPzCoreSettings() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method__warmupDirectories"></a><div class="element clickable method private method__warmupDirectories" data-toggle="collapse" data-target=".method__warmupDirectories .collapse">
+<h2>Checks to make sure key directories exist, and if they don't, create them.</h2>
+<pre>_warmupDirectories() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__registeredModules"> </a><div class="element clickable property private property__registeredModules" data-toggle="collapse" data-target=".property__registeredModules .collapse">
+<h2></h2>
+<pre>$_registeredModules : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__registeredVariables"> </a><div class="element clickable property private property__registeredVariables" data-toggle="collapse" data-target=".property__registeredVariables .collapse">
+<h2></h2>
+<pre>$_registeredVariables : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_VERSION"> </a><div class="element clickable constant  constant_VERSION" data-toggle="collapse" data-target=".constant_VERSION .collapse">
+<h2>The version of PzPHP.</h2>
+<pre>VERSION : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>

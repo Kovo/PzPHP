@@ -1,0 +1,1813 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Pz_Core</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: Boot-up process for the Pz Library."><span class="description">Boot-up process for the Pz Library.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method___destruct" title="__destruct :: Disconnects any active connection to a mysql or memcache server, as well as tell the debugger to run its finalize step (if enabled)."><span class="description">Disconnects any active connection to a mysql or memcache server, as well as tell the debugger to run its finalize step (if enabled).</span><pre>__destruct()</pre></a></li>
+<li class="method public "><a href="#method_addMemcacheServer" title="addMemcacheServer :: Registers a memcache server with Pz (using Memcache)."><span class="description">Registers a memcache server with Pz (using Memcache).</span><pre>addMemcacheServer()</pre></a></li>
+<li class="method public "><a href="#method_addMemcachedServer" title="addMemcachedServer :: Registers a memcache server with Pz (using Memcached)."><span class="description">Registers a memcache server with Pz (using Memcached).</span><pre>addMemcachedServer()</pre></a></li>
+<li class="method public "><a href="#method_addMysqlServer" title="addMysqlServer :: Registers a mysql server with Pz (using Mysql)."><span class="description">Registers a mysql server with Pz (using Mysql).</span><pre>addMysqlServer()</pre></a></li>
+<li class="method public "><a href="#method_addMysqliServer" title="addMysqliServer :: Registers a mysql server with Pz (using Mysqli)."><span class="description">Registers a mysql server with Pz (using Mysqli).</span><pre>addMysqliServer()</pre></a></li>
+<li class="method public "><a href="#method_addPDOServer" title="addPDOServer :: Registers a database server with Pz (using PDO)."><span class="description">Registers a database server with Pz (using PDO).</span><pre>addPDOServer()</pre></a></li>
+<li class="method public "><a href="#method_addToLog" title="addToLog :: Adds a custom log entry to a specified log file (via a logger object)."><span class="description">Adds a custom log entry to a specified log file (via a logger object).</span><pre>addToLog()</pre></a></li>
+<li class="method public "><a href="#method_apcInteract" title="apcInteract :: Returns the interaction object for APC."><span class="description">Returns the interaction object for APC.</span><pre>apcInteract()</pre></a></li>
+<li class="method public "><a href="#method_compressOutput" title="compressOutput :: Method that compresses buffered output (started with ob_start())."><span class="description">Method that compresses buffered output (started with ob_start()).</span><pre>compressOutput()</pre></a></li>
+<li class="method public "><a href="#method_debugger" title="debugger :: Executes a method inside the debugger object (if it exists)."><span class="description">Executes a method inside the debugger object (if it exists).</span><pre>debugger()</pre></a></li>
+<li class="method public "><a href="#method_decideActiveMemcacheId" title="decideActiveMemcacheId :: Resolves the proper memcache server object id based on input."><span class="description">Resolves the proper memcache server object id based on input.</span><pre>decideActiveMemcacheId()</pre></a></li>
+<li class="method public "><a href="#method_decideActiveMemcachedId" title="decideActiveMemcachedId :: Resolves the proper memcached server object id based on input."><span class="description">Resolves the proper memcached server object id based on input.</span><pre>decideActiveMemcachedId()</pre></a></li>
+<li class="method public "><a href="#method_decideActiveMySqlId" title="decideActiveMySqlId :: Resolves the proper mysql server object id based on input."><span class="description">Resolves the proper mysql server object id based on input.</span><pre>decideActiveMySqlId()</pre></a></li>
+<li class="method public "><a href="#method_decideActiveMySqliId" title="decideActiveMySqliId :: Resolves the proper mysql server object id based on input."><span class="description">Resolves the proper mysql server object id based on input.</span><pre>decideActiveMySqliId()</pre></a></li>
+<li class="method public "><a href="#method_decideActivePDOId" title="decideActivePDOId :: Resolves the proper database server object id based on input."><span class="description">Resolves the proper database server object id based on input.</span><pre>decideActivePDOId()</pre></a></li>
+<li class="method public "><a href="#method_disconnectAllMemcacheServers" title="disconnectAllMemcacheServers :: Disconnects all registered Memcache servers (using Memcache)."><span class="description">Disconnects all registered Memcache servers (using Memcache).</span><pre>disconnectAllMemcacheServers()</pre></a></li>
+<li class="method public "><a href="#method_disconnectAllMemcachedServers" title="disconnectAllMemcachedServers :: Disconnects all registered Memcache servers (using Memcached)."><span class="description">Disconnects all registered Memcache servers (using Memcached).</span><pre>disconnectAllMemcachedServers()</pre></a></li>
+<li class="method public "><a href="#method_disconnectAllMysqlServers" title="disconnectAllMysqlServers :: Disconnects all registered Mysql servers (using Mysql)."><span class="description">Disconnects all registered Mysql servers (using Mysql).</span><pre>disconnectAllMysqlServers()</pre></a></li>
+<li class="method public "><a href="#method_disconnectAllMysqliServers" title="disconnectAllMysqliServers :: Disconnects all registered Mysql servers (using Mysqli)."><span class="description">Disconnects all registered Mysql servers (using Mysqli).</span><pre>disconnectAllMysqliServers()</pre></a></li>
+<li class="method public "><a href="#method_disconnectAllPDOServers" title="disconnectAllPDOServers :: Disconnects all registered database servers (using PDO)."><span class="description">Disconnects all registered database servers (using PDO).</span><pre>disconnectAllPDOServers()</pre></a></li>
+<li class="method public "><a href="#method_disconnectMemcacheServer" title="disconnectMemcacheServer :: Disconnects a particular memcache server (using Memcache)."><span class="description">Disconnects a particular memcache server (using Memcache).</span><pre>disconnectMemcacheServer()</pre></a></li>
+<li class="method public "><a href="#method_disconnectMemcachedServer" title="disconnectMemcachedServer :: Disconnects a particular memcache server (using Memcached)."><span class="description">Disconnects a particular memcache server (using Memcached).</span><pre>disconnectMemcachedServer()</pre></a></li>
+<li class="method public "><a href="#method_disconnectMysqlServer" title="disconnectMysqlServer :: Disconnects a particular mysql server (using Mysql)."><span class="description">Disconnects a particular mysql server (using Mysql).</span><pre>disconnectMysqlServer()</pre></a></li>
+<li class="method public "><a href="#method_disconnectMysqliServer" title="disconnectMysqliServer :: Disconnects a particular mysql server (using Mysqli)."><span class="description">Disconnects a particular mysql server (using Mysqli).</span><pre>disconnectMysqliServer()</pre></a></li>
+<li class="method public "><a href="#method_disconnectPDOServer" title="disconnectPDOServer :: Disconnects a particular database server (using PDO)."><span class="description">Disconnects a particular database server (using PDO).</span><pre>disconnectPDOServer()</pre></a></li>
+<li class="method public "><a href="#method_getActiveMemcacheServerId" title="getActiveMemcacheServerId :: Returns the current active memcache server id (using Memcache)."><span class="description">Returns the current active memcache server id (using Memcache).</span><pre>getActiveMemcacheServerId()</pre></a></li>
+<li class="method public "><a href="#method_getActiveMemcachedServerId" title="getActiveMemcachedServerId :: Returns the current active memcache server id (using Memcached)."><span class="description">Returns the current active memcache server id (using Memcached).</span><pre>getActiveMemcachedServerId()</pre></a></li>
+<li class="method public "><a href="#method_getActiveMysqlServerId" title="getActiveMysqlServerId :: Returns the current active mysql server id (using Mysql)."><span class="description">Returns the current active mysql server id (using Mysql).</span><pre>getActiveMysqlServerId()</pre></a></li>
+<li class="method public "><a href="#method_getActiveMysqliServerId" title="getActiveMysqliServerId :: Returns the current active mysql server id (using Mysqli)."><span class="description">Returns the current active mysql server id (using Mysqli).</span><pre>getActiveMysqliServerId()</pre></a></li>
+<li class="method public "><a href="#method_getActivePDOServerId" title="getActivePDOServerId :: Returns the current active database server id (using PDO)."><span class="description">Returns the current active database server id (using PDO).</span><pre>getActivePDOServerId()</pre></a></li>
+<li class="method public "><a href="#method_getLoggerObject" title="getLoggerObject :: Returns the logger object for a specified subpackage."><span class="description">Returns the logger object for a specified subpackage.</span><pre>getLoggerObject()</pre></a></li>
+<li class="method public "><a href="#method_getPzInteraction" title="getPzInteraction :: Gets a loaded Pz Interaction."><span class="description">Gets a loaded Pz Interaction.</span><pre>getPzInteraction()</pre></a></li>
+<li class="method public "><a href="#method_getPzObject" title="getPzObject :: Gets a registered object from the Pz objects array."><span class="description">Gets a registered object from the Pz objects array.</span><pre>getPzObject()</pre></a></li>
+<li class="method public "><a href="#method_getSetting" title="getSetting :: Gets a Pz setting's value."><span class="description">Gets a Pz setting's value.</span><pre>getSetting()</pre></a></li>
+<li class="method public "><a href="#method_lcInteract" title="lcInteract :: Returns the interaction object for Local Cache."><span class="description">Returns the interaction object for Local Cache.</span><pre>lcInteract()</pre></a></li>
+<li class="method public "><a href="#method_memcacheActiveObject" title="memcacheActiveObject :: Returns the current active memcache server object (using Memcache)."><span class="description">Returns the current active memcache server object (using Memcache).</span><pre>memcacheActiveObject()</pre></a></li>
+<li class="method public "><a href="#method_memcacheConnect" title="memcacheConnect :: Connects to the memcache server (using Memcache)."><span class="description">Connects to the memcache server (using Memcache).</span><pre>memcacheConnect()</pre></a></li>
+<li class="method public "><a href="#method_memcacheInteract" title="memcacheInteract :: Returns the interaction object for memcache."><span class="description">Returns the interaction object for memcache.</span><pre>memcacheInteract()</pre></a></li>
+<li class="method public "><a href="#method_memcachedActiveObject" title="memcachedActiveObject :: Returns the current active memcache server object (using Memcached)."><span class="description">Returns the current active memcache server object (using Memcached).</span><pre>memcachedActiveObject()</pre></a></li>
+<li class="method public "><a href="#method_memcachedConnect" title="memcachedConnect :: Connects to the memcache server (using Memcached)."><span class="description">Connects to the memcache server (using Memcached).</span><pre>memcachedConnect()</pre></a></li>
+<li class="method public "><a href="#method_memcachedInteract" title="memcachedInteract :: Returns the interaction object for memcached."><span class="description">Returns the interaction object for memcached.</span><pre>memcachedInteract()</pre></a></li>
+<li class="method public "><a href="#method_mysqlActiveObject" title="mysqlActiveObject :: Returns the current active mysql server object (using Mysql)."><span class="description">Returns the current active mysql server object (using Mysql).</span><pre>mysqlActiveObject()</pre></a></li>
+<li class="method public "><a href="#method_mysqlConnect" title="mysqlConnect :: Connects to the mysql server (using Mysql)."><span class="description">Connects to the mysql server (using Mysql).</span><pre>mysqlConnect()</pre></a></li>
+<li class="method public "><a href="#method_mysqlInteract" title="mysqlInteract :: Returns the interaction object for mysql."><span class="description">Returns the interaction object for mysql.</span><pre>mysqlInteract()</pre></a></li>
+<li class="method public "><a href="#method_mysqliActiveObject" title="mysqliActiveObject :: Returns the current active mysql server object (using Mysqli)."><span class="description">Returns the current active mysql server object (using Mysqli).</span><pre>mysqliActiveObject()</pre></a></li>
+<li class="method public "><a href="#method_mysqliConnect" title="mysqliConnect :: Connects to the mysql server (using Mysqli)."><span class="description">Connects to the mysql server (using Mysqli).</span><pre>mysqliConnect()</pre></a></li>
+<li class="method public "><a href="#method_mysqliInteract" title="mysqliInteract :: Returns the interaction object for mysqli."><span class="description">Returns the interaction object for mysqli.</span><pre>mysqliInteract()</pre></a></li>
+<li class="method public "><a href="#method_pdoActiveObject" title="pdoActiveObject :: Returns the current active database server object (using PDO)."><span class="description">Returns the current active database server object (using PDO).</span><pre>pdoActiveObject()</pre></a></li>
+<li class="method public "><a href="#method_pdoConnect" title="pdoConnect :: Connects to the database server (using PDO)."><span class="description">Connects to the database server (using PDO).</span><pre>pdoConnect()</pre></a></li>
+<li class="method public "><a href="#method_pdoInteract" title="pdoInteract :: Returns the interaction object for the PDO."><span class="description">Returns the interaction object for the PDO.</span><pre>pdoInteract()</pre></a></li>
+<li class="method public "><a href="#method_pzHttpRequest" title="pzHttpRequest :: Returns the Pz_Http_Request object (also autoloads it if not already loaded)."><span class="description">Returns the Pz_Http_Request object (also autoloads it if not already loaded).</span><pre>pzHttpRequest()</pre></a></li>
+<li class="method public "><a href="#method_pzHttpResponse" title="pzHttpResponse :: Returns the Pz_Http_Response object (also autoloads it if not already loaded)."><span class="description">Returns the Pz_Http_Response object (also autoloads it if not already loaded).</span><pre>pzHttpResponse()</pre></a></li>
+<li class="method public "><a href="#method_pzSecurity" title="pzSecurity :: Returns the Pz_Security object (also autoloads it if not already loaded)."><span class="description">Returns the Pz_Security object (also autoloads it if not already loaded).</span><pre>pzSecurity()</pre></a></li>
+<li class="method public "><a href="#method_removeMemcacheServer" title="removeMemcacheServer :: Unregisters a memcache server with Pz (using Memcache)."><span class="description">Unregisters a memcache server with Pz (using Memcache).</span><pre>removeMemcacheServer()</pre></a></li>
+<li class="method public "><a href="#method_removeMemcachedServer" title="removeMemcachedServer :: Unregisters a memcache server with Pz (using Memcached)."><span class="description">Unregisters a memcache server with Pz (using Memcached).</span><pre>removeMemcachedServer()</pre></a></li>
+<li class="method public "><a href="#method_removeMysqlServer" title="removeMysqlServer :: Unregisters a mysql server object with Pz (using Mysql)."><span class="description">Unregisters a mysql server object with Pz (using Mysql).</span><pre>removeMysqlServer()</pre></a></li>
+<li class="method public "><a href="#method_removeMysqliServer" title="removeMysqliServer :: Unregisters a mysql server object with Pz (using Mysqli)."><span class="description">Unregisters a mysql server object with Pz (using Mysqli).</span><pre>removeMysqliServer()</pre></a></li>
+<li class="method public "><a href="#method_removePDOServer" title="removePDOServer :: Unregisters a database server object with Pz (using PDO)."><span class="description">Unregisters a database server object with Pz (using PDO).</span><pre>removePDOServer()</pre></a></li>
+<li class="method public "><a href="#method_setActiveMemcacheServerId" title="setActiveMemcacheServerId :: Sets the active memcache server id (using Memcache)."><span class="description">Sets the active memcache server id (using Memcache).</span><pre>setActiveMemcacheServerId()</pre></a></li>
+<li class="method public "><a href="#method_setActiveMemcachedServerId" title="setActiveMemcachedServerId :: Sets the active memcache server id (using Memcached)."><span class="description">Sets the active memcache server id (using Memcached).</span><pre>setActiveMemcachedServerId()</pre></a></li>
+<li class="method public "><a href="#method_setActiveMysqlServerId" title="setActiveMysqlServerId :: Sets the active mysql server id (using Mysql)."><span class="description">Sets the active mysql server id (using Mysql).</span><pre>setActiveMysqlServerId()</pre></a></li>
+<li class="method public "><a href="#method_setActiveMysqliServerId" title="setActiveMysqliServerId :: Sets the active mysql server id (using Mysqli)."><span class="description">Sets the active mysql server id (using Mysqli).</span><pre>setActiveMysqliServerId()</pre></a></li>
+<li class="method public "><a href="#method_setActivePDOServerId" title="setActivePDOServerId :: Sets the active database server id (using PDO)."><span class="description">Sets the active database server id (using PDO).</span><pre>setActivePDOServerId()</pre></a></li>
+<li class="method public "><a href="#method_setPzObject" title="setPzObject :: Registers an object in the Pz objects array."><span class="description">Registers an object in the Pz objects array.</span><pre>setPzObject()</pre></a></li>
+<li class="method public "><a href="#method_shmInteract" title="shmInteract :: Returns the interaction object for Shared Memory."><span class="description">Returns the interaction object for Shared Memory.</span><pre>shmInteract()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul><li class="method protected "><a href="#method__loadPzInteraction" title="_loadPzInteraction :: Loads a Pz Interaction for a specific submodule."><span class="description">Loads a Pz Interaction for a specific submodule.</span><pre>_loadPzInteraction()</pre></a></li></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private "><a href="#method__initDebugging" title="_initDebugging :: Begin debugging class, or warm-up logs."><span class="description">Begin debugging class, or warm-up logs.</span><pre>_initDebugging()</pre></a></li>
+<li class="method private "><a href="#method__initMisc" title="_initMisc :: Any other functions that need to be executed at start-up are called here."><span class="description">Any other functions that need to be executed at start-up are called here.</span><pre>_initMisc()</pre></a></li>
+<li class="method private "><a href="#method__initServerSecurity" title="_initServerSecurity :: Begin basic server security checks (if enabled)."><span class="description">Begin basic server security checks (if enabled).</span><pre>_initServerSecurity()</pre></a></li>
+<li class="method private "><a href="#method__initSettings" title="_initSettings :: Apply any custom settings for Pz before anything else gets started."><span class="description">Apply any custom settings for Pz before anything else gets started.</span><pre>_initSettings()</pre></a></li>
+<li class="method private "><a href="#method__serverSecurityNeeded" title="_serverSecurityNeeded :: Returns true if server security is needed/enabled."><span class="description">Returns true if server security is needed/enabled.</span><pre>_serverSecurityNeeded()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__activeMemcacheServerId" title="$_activeMemcacheServerId :: The active memcache server id."><span class="description"></span><pre>$_activeMemcacheServerId</pre></a></li>
+<li class="property private "><a href="#property__activeMemcachedServerId" title="$_activeMemcachedServerId :: The active memcached server id."><span class="description"></span><pre>$_activeMemcachedServerId</pre></a></li>
+<li class="property private "><a href="#property__activeMysqlServerId" title="$_activeMysqlServerId :: The active mysql server id."><span class="description"></span><pre>$_activeMysqlServerId</pre></a></li>
+<li class="property private "><a href="#property__activeMysqliServerId" title="$_activeMysqliServerId :: The active mysqli server id."><span class="description"></span><pre>$_activeMysqliServerId</pre></a></li>
+<li class="property private "><a href="#property__activePDOServerId" title="$_activePDOServerId :: The active pdo server id."><span class="description"></span><pre>$_activePDOServerId</pre></a></li>
+<li class="property private "><a href="#property__memcacheServers" title="$_memcacheServers :: An array where memcache server objects are stored."><span class="description"></span><pre>$_memcacheServers</pre></a></li>
+<li class="property private "><a href="#property__memcachedServers" title="$_memcachedServers :: An array where memcached server objects are stored."><span class="description"></span><pre>$_memcachedServers</pre></a></li>
+<li class="property private "><a href="#property__mysqlServers" title="$_mysqlServers :: An array where mysql server objects are stored."><span class="description"></span><pre>$_mysqlServers</pre></a></li>
+<li class="property private "><a href="#property__mysqliServers" title="$_mysqliServers :: An array where mysqli server objects are stored."><span class="description"></span><pre>$_mysqliServers</pre></a></li>
+<li class="property private "><a href="#property__pdoServers" title="$_pdoServers :: An array where pdo server objects are stored."><span class="description"></span><pre>$_pdoServers</pre></a></li>
+<li class="property private "><a href="#property__pzInteractions" title="$_pzInteractions :: An array that holds interaction objects."><span class="description"></span><pre>$_pzInteractions</pre></a></li>
+<li class="property private "><a href="#property__pzObjects" title="$_pzObjects :: A multi-dimensional array that will hold various object instances."><span class="description"></span><pre>$_pzObjects</pre></a></li>
+<li class="property private "><a href="#property__settings" title="$_settings :: Pz's main settings array"><span class="description"></span><pre>$_settings</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul><li class="constant  "><a href="#constant_VERSION" title="VERSION :: Defines the version of Pz Library."><span class="description">Defines the version of Pz Library.</span><pre>VERSION</pre></a></li></ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Pz_Core"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Pz_Core.html">Pz_Core</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">The core class for Pz Library where most other functionality is accessed from.</p>
+<div class="details">
+<div class="long_description"></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Boot-up process for the Pz Library.</h2>
+<pre>__construct(array $settings) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This is where settings are set (if any custom settings are provided), debugging is started (if enabled), and security checks are executed (if need be).</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$settings</h4>
+<code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method___destruct"></a><div class="element clickable method public method___destruct" data-toggle="collapse" data-target=".method___destruct .collapse">
+<h2>Disconnects any active connection to a mysql or memcache server, as well as tell the debugger to run its finalize step (if enabled).</h2>
+<pre>__destruct() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"><p>The destruct procedure allows you to avoid having to manually disconnect your mysql or memcache servers.</p>
+
+<p>Of course, you can choose to disconnect them at any time before this destruct procedure.</p></div></div></div>
+</div>
+<a id="method_addMemcacheServer"></a><div class="element clickable method public method_addMemcacheServer" data-toggle="collapse" data-target=".method_addMemcacheServer .collapse">
+<h2>Registers a memcache server with Pz (using Memcache).</h2>
+<pre>addMemcacheServer(string $mcIp, string | int $mcPort) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, the memcache server is not connected to until you send a specific command to it (like a query).</p>
+
+<p>This method handles everything that is needed to register a memcache server with Pz (using Memcache).</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$mcIp</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$mcPort</h4>
+<code>string</code><code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_addMemcachedServer"></a><div class="element clickable method public method_addMemcachedServer" data-toggle="collapse" data-target=".method_addMemcachedServer .collapse">
+<h2>Registers a memcache server with Pz (using Memcached).</h2>
+<pre>addMemcachedServer(string $mcIp, string | int $mcPort) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, the memcache server is not connected to until you send a specific command to it (like a query).</p>
+
+<p>This method handles everything that is needed to register a memcache server with Pz (using Memcached).</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$mcIp</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$mcPort</h4>
+<code>string</code><code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_addMysqlServer"></a><div class="element clickable method public method_addMysqlServer" data-toggle="collapse" data-target=".method_addMysqlServer .collapse">
+<h2>Registers a mysql server with Pz (using Mysql).</h2>
+<pre>addMysqlServer(string $dbUser, string $dbPassword, string $dbName, string $dbHost, int $dbPort, bool $preventAutoAssign) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, the mysql server is not connected to until you send a specific command to it (like a query).</p>
+
+<p>This method handles everything that is needed to register a mysql server object with Pz (using Mysql).</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dbUser</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPassword</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbHost</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPort</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$preventAutoAssign</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_addMysqliServer"></a><div class="element clickable method public method_addMysqliServer" data-toggle="collapse" data-target=".method_addMysqliServer .collapse">
+<h2>Registers a mysql server with Pz (using Mysqli).</h2>
+<pre>addMysqliServer(string $dbUser, string $dbPassword, string $dbName, string $dbHost, int $dbPort, bool $preventAutoAssign) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, the mysql server is not connected to until you send a specific command to it (like a query).</p>
+
+<p>This method handles everything that is needed to register a mysql server object with Pz (using Mysqli).</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dbUser</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPassword</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbHost</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPort</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$preventAutoAssign</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_addPDOServer"></a><div class="element clickable method public method_addPDOServer" data-toggle="collapse" data-target=".method_addPDOServer .collapse">
+<h2>Registers a database server with Pz (using PDO).</h2>
+<pre>addPDOServer(string $dbUser, string $dbPassword, string $dbType, string $dbName, string $dbHost, int $dbPort, array $dbDriverOptions, string $server, string $protocol, string $socket, bool $preventAutoAssign) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, the database server is not connected to until you send a specific command to it (like a query).</p>
+
+<p>This method handles everything that is needed to register a database server object with Pz (using PDO).</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dbUser</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPassword</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbType</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbHost</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPort</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$dbDriverOptions</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$server</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$protocol</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$socket</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$preventAutoAssign</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_addToLog"></a><div class="element clickable method public method_addToLog" data-toggle="collapse" data-target=".method_addToLog .collapse">
+<h2>Adds a custom log entry to a specified log file (via a logger object).</h2>
+<pre>addToLog(<a href="../classes/Pz_Logger.html">\Pz_Logger</a> $logObject, string $message) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$logObject</h4>
+<code><a href="../classes/Pz_Logger.html">\Pz_Logger</a></code>
+</div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_apcInteract"></a><div class="element clickable method public method_apcInteract" data-toggle="collapse" data-target=".method_apcInteract .collapse">
+<h2>Returns the interaction object for APC.</h2>
+<pre>apcInteract() : bool | <a href="../classes/Pz_APC_Interactions.html">\Pz_APC_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_APC_Interactions.html">\Pz_APC_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_compressOutput"></a><div class="element clickable method public method_compressOutput" data-toggle="collapse" data-target=".method_compressOutput .collapse">
+<h2>Method that compresses buffered output (started with ob_start()).</h2>
+<pre>compressOutput(string $buffer) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>HTML code is compressed to one line, with whitespaces removed.</p>
+
+<p>Sections of the html can be ignored from compression using:</p>
+
+<p><!--compress-html--><!--compress-html no compression-->
+...HTML and code that wont be compressed goes here...
+<!--compress-html--></p>
+
+<p>When compressing output, make sure not to use unclosed comments in inline javascript and css  (i.e. //comment here... )</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$buffer</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_debugger"></a><div class="element clickable method public method_debugger" data-toggle="collapse" data-target=".method_debugger .collapse">
+<h2>Executes a method inside the debugger object (if it exists).</h2>
+<pre>debugger(string $methodName, array $param) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$methodName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$param</h4>
+<code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_decideActiveMemcacheId"></a><div class="element clickable method public method_decideActiveMemcacheId" data-toggle="collapse" data-target=".method_decideActiveMemcacheId .collapse">
+<h2>Resolves the proper memcache server object id based on input.</h2>
+<pre>decideActiveMemcacheId(int $id) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the input id is -1, then the active id is returned, else, the id is returned.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_decideActiveMemcachedId"></a><div class="element clickable method public method_decideActiveMemcachedId" data-toggle="collapse" data-target=".method_decideActiveMemcachedId .collapse">
+<h2>Resolves the proper memcached server object id based on input.</h2>
+<pre>decideActiveMemcachedId(int $id) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the input id is -1, then the active id is returned, else, the id is returned.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_decideActiveMySqlId"></a><div class="element clickable method public method_decideActiveMySqlId" data-toggle="collapse" data-target=".method_decideActiveMySqlId .collapse">
+<h2>Resolves the proper mysql server object id based on input.</h2>
+<pre>decideActiveMySqlId(int $id) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the input id is -1, then the active id is returned, else, the id is returned.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_decideActiveMySqliId"></a><div class="element clickable method public method_decideActiveMySqliId" data-toggle="collapse" data-target=".method_decideActiveMySqliId .collapse">
+<h2>Resolves the proper mysql server object id based on input.</h2>
+<pre>decideActiveMySqliId(int $id) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the input id is -1, then the active id is returned, else, the id is returned.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_decideActivePDOId"></a><div class="element clickable method public method_decideActivePDOId" data-toggle="collapse" data-target=".method_decideActivePDOId .collapse">
+<h2>Resolves the proper database server object id based on input.</h2>
+<pre>decideActivePDOId(int $id) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the input id is -1, then the active id is returned, else, the id is returned.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_disconnectAllMemcacheServers"></a><div class="element clickable method public method_disconnectAllMemcacheServers" data-toggle="collapse" data-target=".method_disconnectAllMemcacheServers .collapse">
+<h2>Disconnects all registered Memcache servers (using Memcache).</h2>
+<pre>disconnectAllMemcacheServers(bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You have the option to not have them unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectAllMemcachedServers"></a><div class="element clickable method public method_disconnectAllMemcachedServers" data-toggle="collapse" data-target=".method_disconnectAllMemcachedServers .collapse">
+<h2>Disconnects all registered Memcache servers (using Memcached).</h2>
+<pre>disconnectAllMemcachedServers(bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You have the option to not have them unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectAllMysqlServers"></a><div class="element clickable method public method_disconnectAllMysqlServers" data-toggle="collapse" data-target=".method_disconnectAllMysqlServers .collapse">
+<h2>Disconnects all registered Mysql servers (using Mysql).</h2>
+<pre>disconnectAllMysqlServers(bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You have the option to not have them unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectAllMysqliServers"></a><div class="element clickable method public method_disconnectAllMysqliServers" data-toggle="collapse" data-target=".method_disconnectAllMysqliServers .collapse">
+<h2>Disconnects all registered Mysql servers (using Mysqli).</h2>
+<pre>disconnectAllMysqliServers(bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You have the option to not have them unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectAllPDOServers"></a><div class="element clickable method public method_disconnectAllPDOServers" data-toggle="collapse" data-target=".method_disconnectAllPDOServers .collapse">
+<h2>Disconnects all registered database servers (using PDO).</h2>
+<pre>disconnectAllPDOServers(bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You have the option to not have them unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectMemcacheServer"></a><div class="element clickable method public method_disconnectMemcacheServer" data-toggle="collapse" data-target=".method_disconnectMemcacheServer .collapse">
+<h2>Disconnects a particular memcache server (using Memcache).</h2>
+<pre>disconnectMemcacheServer(int $id, bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a specific id is not given, the current active memcache server object will be disconnected.</p>
+
+<p>You have the option to not have it unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectMemcachedServer"></a><div class="element clickable method public method_disconnectMemcachedServer" data-toggle="collapse" data-target=".method_disconnectMemcachedServer .collapse">
+<h2>Disconnects a particular memcache server (using Memcached).</h2>
+<pre>disconnectMemcachedServer(int $id, bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a specific id is not given, the current active memcache server object will be disconnected.</p>
+
+<p>You have the option to not have it unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectMysqlServer"></a><div class="element clickable method public method_disconnectMysqlServer" data-toggle="collapse" data-target=".method_disconnectMysqlServer .collapse">
+<h2>Disconnects a particular mysql server (using Mysql).</h2>
+<pre>disconnectMysqlServer(int $id, bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a specific id is not given, the current active mysqli server object will be disconnected.</p>
+
+<p>You have the option to not have it unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectMysqliServer"></a><div class="element clickable method public method_disconnectMysqliServer" data-toggle="collapse" data-target=".method_disconnectMysqliServer .collapse">
+<h2>Disconnects a particular mysql server (using Mysqli).</h2>
+<pre>disconnectMysqliServer(int $id, bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a specific id is not given, the current active mysqli server object will be disconnected.</p>
+
+<p>You have the option to not have it unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_disconnectPDOServer"></a><div class="element clickable method public method_disconnectPDOServer" data-toggle="collapse" data-target=".method_disconnectPDOServer .collapse">
+<h2>Disconnects a particular database server (using PDO).</h2>
+<pre>disconnectPDOServer(int $id, bool $removeAlso) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a specific id is not given, the current active PDO server object will be disconnected.</p>
+
+<p>You have the option to not have it unregistered with Pz after being disconnected.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$removeAlso</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_getActiveMemcacheServerId"></a><div class="element clickable method public method_getActiveMemcacheServerId" data-toggle="collapse" data-target=".method_getActiveMemcacheServerId .collapse">
+<h2>Returns the current active memcache server id (using Memcache).</h2>
+<pre>getActiveMemcacheServerId() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getActiveMemcachedServerId"></a><div class="element clickable method public method_getActiveMemcachedServerId" data-toggle="collapse" data-target=".method_getActiveMemcachedServerId .collapse">
+<h2>Returns the current active memcache server id (using Memcached).</h2>
+<pre>getActiveMemcachedServerId() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getActiveMysqlServerId"></a><div class="element clickable method public method_getActiveMysqlServerId" data-toggle="collapse" data-target=".method_getActiveMysqlServerId .collapse">
+<h2>Returns the current active mysql server id (using Mysql).</h2>
+<pre>getActiveMysqlServerId() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getActiveMysqliServerId"></a><div class="element clickable method public method_getActiveMysqliServerId" data-toggle="collapse" data-target=".method_getActiveMysqliServerId .collapse">
+<h2>Returns the current active mysql server id (using Mysqli).</h2>
+<pre>getActiveMysqliServerId() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getActivePDOServerId"></a><div class="element clickable method public method_getActivePDOServerId" data-toggle="collapse" data-target=".method_getActivePDOServerId .collapse">
+<h2>Returns the current active database server id (using PDO).</h2>
+<pre>getActivePDOServerId() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getLoggerObject"></a><div class="element clickable method public method_getLoggerObject" data-toggle="collapse" data-target=".method_getLoggerObject .collapse">
+<h2>Returns the logger object for a specified subpackage.</h2>
+<pre>getLoggerObject(string $which) : null | \_pzLoggerObjectMysql | \_pzLoggerObjectMysqli | \_pzLoggerObjectMemcache | \_pzLoggerObjectMemcached</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$which</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code>\_pzLoggerObjectMysql</code><code>\_pzLoggerObjectMysqli</code><code>\_pzLoggerObjectMemcache</code><code>\_pzLoggerObjectMemcached</code>
+</div>
+</div></div>
+</div>
+<a id="method_getPzInteraction"></a><div class="element clickable method public method_getPzInteraction" data-toggle="collapse" data-target=".method_getPzInteraction .collapse">
+<h2>Gets a loaded Pz Interaction.</h2>
+<pre>getPzInteraction(string $name) : bool | mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code>mixed</code>
+</div>
+</div></div>
+</div>
+<a id="method_getPzObject"></a><div class="element clickable method public method_getPzObject" data-toggle="collapse" data-target=".method_getPzObject .collapse">
+<h2>Gets a registered object from the Pz objects array.</h2>
+<pre>getPzObject(string $name) : object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>object</code></div>
+</div></div>
+</div>
+<a id="method_getSetting"></a><div class="element clickable method public method_getSetting" data-toggle="collapse" data-target=".method_getSetting .collapse">
+<h2>Gets a Pz setting's value.</h2>
+<pre>getSetting(string $settingName) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$settingName</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_lcInteract"></a><div class="element clickable method public method_lcInteract" data-toggle="collapse" data-target=".method_lcInteract .collapse">
+<h2>Returns the interaction object for Local Cache.</h2>
+<pre>lcInteract() : bool | <a href="../classes/Pz_LocalCache_Interactions.html">\Pz_LocalCache_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_LocalCache_Interactions.html">\Pz_LocalCache_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_memcacheActiveObject"></a><div class="element clickable method public method_memcacheActiveObject" data-toggle="collapse" data-target=".method_memcacheActiveObject .collapse">
+<h2>Returns the current active memcache server object (using Memcache).</h2>
+<pre>memcacheActiveObject(int $id) : bool | <a href="../classes/Pz_Memcache_Server.html">\Pz_Memcache_Server</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If an id is specified, then the specified mysler server object will be returned instead.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Memcache_Server.html">\Pz_Memcache_Server</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_memcacheConnect"></a><div class="element clickable method public method_memcacheConnect" data-toggle="collapse" data-target=".method_memcacheConnect .collapse">
+<h2>Connects to the memcache server (using Memcache).</h2>
+<pre>memcacheConnect(int $servierId, bool $setAsActive) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$servierId</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$setAsActive</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_memcacheInteract"></a><div class="element clickable method public method_memcacheInteract" data-toggle="collapse" data-target=".method_memcacheInteract .collapse">
+<h2>Returns the interaction object for memcache.</h2>
+<pre>memcacheInteract() : bool | <a href="../classes/Pz_Memcache_Interactions.html">\Pz_Memcache_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Memcache_Interactions.html">\Pz_Memcache_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_memcachedActiveObject"></a><div class="element clickable method public method_memcachedActiveObject" data-toggle="collapse" data-target=".method_memcachedActiveObject .collapse">
+<h2>Returns the current active memcache server object (using Memcached).</h2>
+<pre>memcachedActiveObject(int $id) : bool | <a href="../classes/Pz_Memcached_Server.html">\Pz_Memcached_Server</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If an id is specified, then the specified mysler server object will be returned instead.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Memcached_Server.html">\Pz_Memcached_Server</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_memcachedConnect"></a><div class="element clickable method public method_memcachedConnect" data-toggle="collapse" data-target=".method_memcachedConnect .collapse">
+<h2>Connects to the memcache server (using Memcached).</h2>
+<pre>memcachedConnect(int $servierId, bool $setAsActive) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$servierId</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$setAsActive</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_memcachedInteract"></a><div class="element clickable method public method_memcachedInteract" data-toggle="collapse" data-target=".method_memcachedInteract .collapse">
+<h2>Returns the interaction object for memcached.</h2>
+<pre>memcachedInteract() : bool | <a href="../classes/Pz_Memcached_Interactions.html">\Pz_Memcached_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Memcached_Interactions.html">\Pz_Memcached_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_mysqlActiveObject"></a><div class="element clickable method public method_mysqlActiveObject" data-toggle="collapse" data-target=".method_mysqlActiveObject .collapse">
+<h2>Returns the current active mysql server object (using Mysql).</h2>
+<pre>mysqlActiveObject(int $id) : bool | <a href="../classes/Pz_Mysql_Server.html">\Pz_Mysql_Server</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If an id is specified, then the specified mysql server object will be returned instead.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Mysql_Server.html">\Pz_Mysql_Server</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_mysqlConnect"></a><div class="element clickable method public method_mysqlConnect" data-toggle="collapse" data-target=".method_mysqlConnect .collapse">
+<h2>Connects to the mysql server (using Mysql).</h2>
+<pre>mysqlConnect(int $id, bool $setAsActive) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$setAsActive</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_mysqlInteract"></a><div class="element clickable method public method_mysqlInteract" data-toggle="collapse" data-target=".method_mysqlInteract .collapse">
+<h2>Returns the interaction object for mysql.</h2>
+<pre>mysqlInteract() : bool | <a href="../classes/Pz_Mysql_Interactions.html">\Pz_Mysql_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Mysql_Interactions.html">\Pz_Mysql_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_mysqliActiveObject"></a><div class="element clickable method public method_mysqliActiveObject" data-toggle="collapse" data-target=".method_mysqliActiveObject .collapse">
+<h2>Returns the current active mysql server object (using Mysqli).</h2>
+<pre>mysqliActiveObject(int $id) : bool | <a href="../classes/Pz_Mysqli_Server.html">\Pz_Mysqli_Server</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If an id is specified, then the specified mysler server object will be returned instead.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Mysqli_Server.html">\Pz_Mysqli_Server</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_mysqliConnect"></a><div class="element clickable method public method_mysqliConnect" data-toggle="collapse" data-target=".method_mysqliConnect .collapse">
+<h2>Connects to the mysql server (using Mysqli).</h2>
+<pre>mysqliConnect(int $id, bool $setAsActive) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$setAsActive</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_mysqliInteract"></a><div class="element clickable method public method_mysqliInteract" data-toggle="collapse" data-target=".method_mysqliInteract .collapse">
+<h2>Returns the interaction object for mysqli.</h2>
+<pre>mysqliInteract() : bool | <a href="../classes/Pz_Mysqli_Interactions.html">\Pz_Mysqli_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_Mysqli_Interactions.html">\Pz_Mysqli_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pdoActiveObject"></a><div class="element clickable method public method_pdoActiveObject" data-toggle="collapse" data-target=".method_pdoActiveObject .collapse">
+<h2>Returns the current active database server object (using PDO).</h2>
+<pre>pdoActiveObject(int $id) : bool | <a href="../classes/Pz_PDO_Server.html">\Pz_PDO_Server</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If an id is specified, then the specified database server object will be returned instead.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_PDO_Server.html">\Pz_PDO_Server</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pdoConnect"></a><div class="element clickable method public method_pdoConnect" data-toggle="collapse" data-target=".method_pdoConnect .collapse">
+<h2>Connects to the database server (using PDO).</h2>
+<pre>pdoConnect(int $id, bool $setAsActive) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$setAsActive</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_pdoInteract"></a><div class="element clickable method public method_pdoInteract" data-toggle="collapse" data-target=".method_pdoInteract .collapse">
+<h2>Returns the interaction object for the PDO.</h2>
+<pre>pdoInteract() : bool | <a href="../classes/Pz_PDO_Interactions.html">\Pz_PDO_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_PDO_Interactions.html">\Pz_PDO_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pzHttpRequest"></a><div class="element clickable method public method_pzHttpRequest" data-toggle="collapse" data-target=".method_pzHttpRequest .collapse">
+<h2>Returns the Pz_Http_Request object (also autoloads it if not already loaded).</h2>
+<pre>pzHttpRequest() : null | <a href="../classes/Pz_Http_Request.html">\Pz_Http_Request</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Pz_Http_Request.html">\Pz_Http_Request</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pzHttpResponse"></a><div class="element clickable method public method_pzHttpResponse" data-toggle="collapse" data-target=".method_pzHttpResponse .collapse">
+<h2>Returns the Pz_Http_Response object (also autoloads it if not already loaded).</h2>
+<pre>pzHttpResponse() : null | <a href="../classes/Pz_Http_Response.html">\Pz_Http_Response</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Pz_Http_Response.html">\Pz_Http_Response</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pzSecurity"></a><div class="element clickable method public method_pzSecurity" data-toggle="collapse" data-target=".method_pzSecurity .collapse">
+<h2>Returns the Pz_Security object (also autoloads it if not already loaded).</h2>
+<pre>pzSecurity() : null | <a href="../classes/Pz_Security.html">\Pz_Security</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Pz_Security.html">\Pz_Security</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_removeMemcacheServer"></a><div class="element clickable method public method_removeMemcacheServer" data-toggle="collapse" data-target=".method_removeMemcacheServer .collapse">
+<h2>Unregisters a memcache server with Pz (using Memcache).</h2>
+<pre>removeMemcacheServer(int $id) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no specific server is specified, the active server object will be used.</p>
+
+<p>This method will disconnect from the server automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_removeMemcachedServer"></a><div class="element clickable method public method_removeMemcachedServer" data-toggle="collapse" data-target=".method_removeMemcachedServer .collapse">
+<h2>Unregisters a memcache server with Pz (using Memcached).</h2>
+<pre>removeMemcachedServer(int $id) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no specific server is specified, the active server object will be used.</p>
+
+<p>This method will disconnect from the server automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_removeMysqlServer"></a><div class="element clickable method public method_removeMysqlServer" data-toggle="collapse" data-target=".method_removeMysqlServer .collapse">
+<h2>Unregisters a mysql server object with Pz (using Mysql).</h2>
+<pre>removeMysqlServer(int $id) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no specific server is specified, the active server object will be used.</p>
+
+<p>This method will disconnect from the server automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_removeMysqliServer"></a><div class="element clickable method public method_removeMysqliServer" data-toggle="collapse" data-target=".method_removeMysqliServer .collapse">
+<h2>Unregisters a mysql server object with Pz (using Mysqli).</h2>
+<pre>removeMysqliServer(int $id) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no specific server is specified, the active server object will be used.</p>
+
+<p>This method will disconnect from the server automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_removePDOServer"></a><div class="element clickable method public method_removePDOServer" data-toggle="collapse" data-target=".method_removePDOServer .collapse">
+<h2>Unregisters a database server object with Pz (using PDO).</h2>
+<pre>removePDOServer(int $id) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no specific server is specified, the active server object will be used.</p>
+
+<p>This method will disconnect from the server automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setActiveMemcacheServerId"></a><div class="element clickable method public method_setActiveMemcacheServerId" data-toggle="collapse" data-target=".method_setActiveMemcacheServerId .collapse">
+<h2>Sets the active memcache server id (using Memcache).</h2>
+<pre>setActiveMemcacheServerId(int $id, bool $autoConnect) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, this method will not auto connect to the memcache server.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$autoConnect</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setActiveMemcachedServerId"></a><div class="element clickable method public method_setActiveMemcachedServerId" data-toggle="collapse" data-target=".method_setActiveMemcachedServerId .collapse">
+<h2>Sets the active memcache server id (using Memcached).</h2>
+<pre>setActiveMemcachedServerId(int $id, bool $autoConnect) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, this method will not auto connect to the memcache server.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$autoConnect</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setActiveMysqlServerId"></a><div class="element clickable method public method_setActiveMysqlServerId" data-toggle="collapse" data-target=".method_setActiveMysqlServerId .collapse">
+<h2>Sets the active mysql server id (using Mysql).</h2>
+<pre>setActiveMysqlServerId(int $id, bool $autoConnect) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, this method will not auto connect to the mysql server.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$autoConnect</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setActiveMysqliServerId"></a><div class="element clickable method public method_setActiveMysqliServerId" data-toggle="collapse" data-target=".method_setActiveMysqliServerId .collapse">
+<h2>Sets the active mysql server id (using Mysqli).</h2>
+<pre>setActiveMysqliServerId(int $id, bool $autoConnect) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, this method will not auto connect to the mysql server.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$autoConnect</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setActivePDOServerId"></a><div class="element clickable method public method_setActivePDOServerId" data-toggle="collapse" data-target=".method_setActivePDOServerId .collapse">
+<h2>Sets the active database server id (using PDO).</h2>
+<pre>setActivePDOServerId(int $id, bool $autoConnect) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>By default, this method will not auto connect to the database server.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$autoConnect</h4>
+<code>bool</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_setPzObject"></a><div class="element clickable method public method_setPzObject" data-toggle="collapse" data-target=".method_setPzObject .collapse">
+<h2>Registers an object in the Pz objects array.</h2>
+<pre>setPzObject(string $name, object $value) : object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>object</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>object</code></div>
+</div></div>
+</div>
+<a id="method_shmInteract"></a><div class="element clickable method public method_shmInteract" data-toggle="collapse" data-target=".method_shmInteract .collapse">
+<h2>Returns the interaction object for Shared Memory.</h2>
+<pre>shmInteract() : bool | <a href="../classes/Pz_SHM_Interactions.html">\Pz_SHM_Interactions</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code><code><a href="../classes/Pz_SHM_Interactions.html">\Pz_SHM_Interactions</a></code>
+</div>
+</div></div>
+</div>
+<a id="method__loadPzInteraction"></a><div class="element clickable method protected method__loadPzInteraction" data-toggle="collapse" data-target=".method__loadPzInteraction .collapse">
+<h2>Loads a Pz Interaction for a specific submodule.</h2>
+<pre>_loadPzInteraction(string $name, string $className) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>New interactions are passed an instance of Pz_Core in their constructor.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$className</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method__initDebugging"></a><div class="element clickable method private method__initDebugging" data-toggle="collapse" data-target=".method__initDebugging .collapse">
+<h2>Begin debugging class, or warm-up logs.</h2>
+<pre>_initDebugging() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__initMisc"></a><div class="element clickable method private method__initMisc" data-toggle="collapse" data-target=".method__initMisc .collapse">
+<h2>Any other functions that need to be executed at start-up are called here.</h2>
+<pre>_initMisc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__initServerSecurity"></a><div class="element clickable method private method__initServerSecurity" data-toggle="collapse" data-target=".method__initServerSecurity .collapse">
+<h2>Begin basic server security checks (if enabled).</h2>
+<pre>_initServerSecurity() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This will do a domain check, whitelist check, and blacklist check.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__initSettings"></a><div class="element clickable method private method__initSettings" data-toggle="collapse" data-target=".method__initSettings .collapse">
+<h2>Apply any custom settings for Pz before anything else gets started.</h2>
+<pre>_initSettings(array $settings) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$settings</h4>
+<code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method__serverSecurityNeeded"></a><div class="element clickable method private method__serverSecurityNeeded" data-toggle="collapse" data-target=".method__serverSecurityNeeded .collapse">
+<h2>Returns true if server security is needed/enabled.</h2>
+<pre>_serverSecurityNeeded() : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__activeMemcacheServerId"> </a><div class="element clickable property private property__activeMemcacheServerId" data-toggle="collapse" data-target=".property__activeMemcacheServerId .collapse">
+<h2></h2>
+<pre>$_activeMemcacheServerId : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__activeMemcachedServerId"> </a><div class="element clickable property private property__activeMemcachedServerId" data-toggle="collapse" data-target=".property__activeMemcachedServerId .collapse">
+<h2></h2>
+<pre>$_activeMemcachedServerId : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__activeMysqlServerId"> </a><div class="element clickable property private property__activeMysqlServerId" data-toggle="collapse" data-target=".property__activeMysqlServerId .collapse">
+<h2></h2>
+<pre>$_activeMysqlServerId : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__activeMysqliServerId"> </a><div class="element clickable property private property__activeMysqliServerId" data-toggle="collapse" data-target=".property__activeMysqliServerId .collapse">
+<h2></h2>
+<pre>$_activeMysqliServerId : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__activePDOServerId"> </a><div class="element clickable property private property__activePDOServerId" data-toggle="collapse" data-target=".property__activePDOServerId .collapse">
+<h2></h2>
+<pre>$_activePDOServerId : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__memcacheServers"> </a><div class="element clickable property private property__memcacheServers" data-toggle="collapse" data-target=".property__memcacheServers .collapse">
+<h2></h2>
+<pre>$_memcacheServers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>They keys in this array also act as the id for the particular memcache server object.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__memcachedServers"> </a><div class="element clickable property private property__memcachedServers" data-toggle="collapse" data-target=".property__memcachedServers .collapse">
+<h2></h2>
+<pre>$_memcachedServers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>They keys in this array also act as the id for the particular memcached server object.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__mysqlServers"> </a><div class="element clickable property private property__mysqlServers" data-toggle="collapse" data-target=".property__mysqlServers .collapse">
+<h2></h2>
+<pre>$_mysqlServers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>They keys in this array also act as the id for the particular mysql server object.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__mysqliServers"> </a><div class="element clickable property private property__mysqliServers" data-toggle="collapse" data-target=".property__mysqliServers .collapse">
+<h2></h2>
+<pre>$_mysqliServers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>They keys in this array also act as the id for the particular mysqli server object.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__pdoServers"> </a><div class="element clickable property private property__pdoServers" data-toggle="collapse" data-target=".property__pdoServers .collapse">
+<h2></h2>
+<pre>$_pdoServers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>They keys in this array also act as the id for the particular pdo server object.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__pzInteractions"> </a><div class="element clickable property private property__pzInteractions" data-toggle="collapse" data-target=".property__pzInteractions .collapse">
+<h2></h2>
+<pre>$_pzInteractions : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Pz stores interaction objects for class representations of data storage/caching architectures, such as MySQL, Memcache, APC, etc...</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__pzObjects"> </a><div class="element clickable property private property__pzObjects" data-toggle="collapse" data-target=".property__pzObjects .collapse">
+<h2></h2>
+<pre>$_pzObjects : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__settings"> </a><div class="element clickable property private property__settings" data-toggle="collapse" data-target=".property__settings .collapse">
+<h2></h2>
+<pre>$_settings : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>A multi-dimensional array that holds default settings for Pz.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_VERSION"> </a><div class="element clickable constant  constant_VERSION" data-toggle="collapse" data-target=".constant_VERSION .collapse">
+<h2>Defines the version of Pz Library.</h2>
+<pre>VERSION : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Pz_Security</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method_cleanHTML" title="cleanHTML :: Method cleans various HTML related elements from a string."><span class="description">Method cleans various HTML related elements from a string.</span><pre>cleanHTML()</pre></a></li>
+<li class="method public "><a href="#method_cleanQuery" title="cleanQuery :: Function that sanitizes a given query string."><span class="description">Function that sanitizes a given query string.</span><pre>cleanQuery()</pre></a></li>
+<li class="method public inherited"><a href="#method_compareHashes" title="compareHashes :: This method compares two strings (one hashed, one unhashed) to see if they are the same."><span class="description">This method compares two strings (one hashed, one unhashed) to see if they are the same.</span><pre>compareHashes()</pre></a></li>
+<li class="method public inherited"><a href="#method_decrypt" title="decrypt :: Decrypt is used for revealing the original encrypted string."><span class="description">Decrypt is used for revealing the original encrypted string.</span><pre>decrypt()</pre></a></li>
+<li class="method public inherited"><a href="#method_encrypt" title="encrypt :: Encrypt allows you to encrypt or hash a string in a one-way or two-way algorithim."><span class="description">Encrypt allows you to encrypt or hash a string in a one-way or two-way algorithim.</span><pre>encrypt()</pre></a></li>
+<li class="method public inherited"><a href="#method_getChecksum" title="getChecksum :: Will return a string that will include various info about the current setup of this class and relevant php/system settings."><span class="description">Will return a string that will include various info about the current setup of this class and relevant php/system settings.</span><pre>getChecksum()</pre></a></li>
+<li class="method public inherited"><a href="#method_regeneratePzCryptHash" title="regeneratePzCryptHash :: Will dump a new array to replace the defualt $hashTableFrom array."><span class="description">Will dump a new array to replace the defualt $hashTableFrom array.</span><pre>regeneratePzCryptHash()</pre></a></li>
+<li class="method public inherited"><a href="#method_regeneratePzCryptPoisonConstraints" title="regeneratePzCryptPoisonConstraints :: Regenerates a new array of poison constraints to replace the default array."><span class="description">Regenerates a new array of poison constraints to replace the default array.</span><pre>regeneratePzCryptPoisonConstraints()</pre></a></li>
+<li class="method public inherited"><a href="#method_regeneratePzCryptSalt" title="regeneratePzCryptSalt :: Regenerates a new Pz_Crypt salt."><span class="description">Regenerates a new Pz_Crypt salt.</span><pre>regeneratePzCryptSalt()</pre></a></li>
+<li class="method public inherited"><a href="#method_replacePzCryptHash" title="replacePzCryptHash :: Replaces the default Pz_Crypt hash."><span class="description">Replaces the default Pz_Crypt hash.</span><pre>replacePzCryptHash()</pre></a></li>
+<li class="method public inherited"><a href="#method_replacePzCryptPoisonConstraints" title="replacePzCryptPoisonConstraints :: Replaces the default Pz_Crypt poison constraints."><span class="description">Replaces the default Pz_Crypt poison constraints.</span><pre>replacePzCryptPoisonConstraints()</pre></a></li>
+<li class="method public inherited"><a href="#method_replacePzCryptRehashDepth" title="replacePzCryptRehashDepth :: Replaces the default Pz_Crypt rehash depth value."><span class="description">Replaces the default Pz_Crypt rehash depth value.</span><pre>replacePzCryptRehashDepth()</pre></a></li>
+<li class="method public inherited"><a href="#method_replacePzCryptSalt" title="replacePzCryptSalt :: Replaces the default Pz_Crypt salt."><span class="description">Replaces the default Pz_Crypt salt.</span><pre>replacePzCryptSalt()</pre></a></li>
+<li class="method public inherited"><a href="#method_verifyChecksum" title="verifyChecksum :: Verifies a checksum with the current server and configuration."><span class="description">Verifies a checksum with the current server and configuration.</span><pre>verifyChecksum()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private inherited"><a href="#method__depoisonString" title="_depoisonString :: De-poisons a string based on the passed-in poison constraints."><span class="description">De-poisons a string based on the passed-in poison constraints.</span><pre>_depoisonString()</pre></a></li>
+<li class="method private inherited"><a href="#method__poisonString" title="_poisonString :: Poisons a string using the passed-in poison constraints."><span class="description">Poisons a string using the passed-in poison constraints.</span><pre>_poisonString()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private inherited"><a href="#property__hashTableFrom" title="$_hashTableFrom :: This array is used for the source character to be shifted."><span class="description"></span><pre>$_hashTableFrom</pre></a></li>
+<li class="property private inherited"><a href="#property__hashTableTo" title="$_hashTableTo :: This array is used for the character to replace the original character with."><span class="description"></span><pre>$_hashTableTo</pre></a></li>
+<li class="property private inherited"><a href="#property__kHash" title="$_kHash :: Must exist in hash_algos() array."><span class="description"></span><pre>$_kHash</pre></a></li>
+<li class="property private inherited"><a href="#property__kPoisonConstraints" title="$_kPoisonConstraints :: Poison constraints are used when poisoning a hashed or encrypted string."><span class="description"></span><pre>$_kPoisonConstraints</pre></a></li>
+<li class="property private inherited"><a href="#property__kSalt" title="$_kSalt :: It is recommended you change this salt as to distinguish yourself from other Pz_Crypt installations/hashes"><span class="description"></span><pre>$_kSalt</pre></a></li>
+<li class="property private inherited"><a href="#property__kSaltDepth" title="$_kSaltDepth :: How many times should the default/custom salt be hashed by the default hashing algorithm."><span class="description"></span><pre>$_kSaltDepth</pre></a></li>
+<li class="property private inherited"><a href="#property__passPhrase" title="$_passPhrase :: This passphrase is required when generating or verifying environment info."><span class="description"></span><pre>$_passPhrase</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul>
+<li class="constant  "><a href="#constant_CLEAN_HTML_JS_STYLE_COMMENTS" title="CLEAN_HTML_JS_STYLE_COMMENTS :: Clean everything (javascript tags, styling tags, comments, html tags)."><span class="description">Clean everything (javascript tags, styling tags, comments, html tags).</span><pre>CLEAN_HTML_JS_STYLE_COMMENTS</pre></a></li>
+<li class="constant  "><a href="#constant_CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES" title="CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES :: Clean everything (javascript tags, styling tags, comments, html tags, convert all &lt;,&gt; to html entities)."><span class="description">Clean everything (javascript tags, styling tags, comments, html tags, convert all &lt;,&gt; to html entities).</span><pre>CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES</pre></a></li>
+<li class="constant  "><a href="#constant_CLEAN_JS_STYLE_COMMENTS" title="CLEAN_JS_STYLE_COMMENTS :: Clean almost everything (javascript tags, styling tags, comments)."><span class="description">Clean almost everything (javascript tags, styling tags, comments).</span><pre>CLEAN_JS_STYLE_COMMENTS</pre></a></li>
+<li class="constant  "><a href="#constant_CLEAN_NOTHING" title="CLEAN_NOTHING :: Don't clean anything."><span class="description">Don't clean anything.</span><pre>CLEAN_NOTHING</pre></a></li>
+<li class="constant  "><a href="#constant_CLEAN_STYLE_COMMENTS" title="CLEAN_STYLE_COMMENTS :: Clean some things (styling tags, comments)."><span class="description">Clean some things (styling tags, comments).</span><pre>CLEAN_STYLE_COMMENTS</pre></a></li>
+<li class="constant  inherited"><a href="#constant_DE_POISON" title="DE_POISON :: Flag to indicate encrypted string is poisoned."><span class="description">Flag to indicate encrypted string is poisoned.</span><pre>DE_POISON</pre></a></li>
+<li class="constant  inherited"><a href="#constant_HASH" title="HASH :: Custom rules flag array key for override hash."><span class="description">Custom rules flag array key for override hash.</span><pre>HASH</pre></a></li>
+<li class="constant  inherited"><a href="#constant_ONE_WAY" title="ONE_WAY :: Flag for one-way encryption."><span class="description">Flag for one-way encryption.</span><pre>ONE_WAY</pre></a></li>
+<li class="constant  inherited"><a href="#constant_POISON_CONSTRAINTS" title="POISON_CONSTRAINTS :: Custom rules flag array key for override poison constraints."><span class="description">Custom rules flag array key for override poison constraints.</span><pre>POISON_CONSTRAINTS</pre></a></li>
+<li class="constant  inherited"><a href="#constant_SALT" title="SALT :: Custom rules flag array key for override salt."><span class="description">Custom rules flag array key for override salt.</span><pre>SALT</pre></a></li>
+<li class="constant  inherited"><a href="#constant_STRICT" title="STRICT :: Flag for strict hashing/encryption."><span class="description">Flag for strict hashing/encryption.</span><pre>STRICT</pre></a></li>
+<li class="constant  inherited"><a href="#constant_TWO_WAY" title="TWO_WAY :: Flag for two-way encryption."><span class="description">Flag for two-way encryption.</span><pre>TWO_WAY</pre></a></li>
+<li class="constant  inherited"><a href="#constant_UNIQUE_SALT" title="UNIQUE_SALT :: Custom rules flag array key for override unique salt."><span class="description">Custom rules flag array key for override unique salt.</span><pre>UNIQUE_SALT</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Pz_Security"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Pz_Security.html">Pz_Security</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">This class extends Pz_Crypt, and adds some functions that allow you to santize queries and user input.</p>
+<div class="details">
+<div class="long_description"></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_cleanHTML"></a><div class="element clickable method public method_cleanHTML" data-toggle="collapse" data-target=".method_cleanHTML .collapse">
+<h2>Method cleans various HTML related elements from a string.</h2>
+<pre>cleanHTML(string $value, int $cleanall) : mixed | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The type of elements cleaned depends on the $cleanall paramter.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$cleanall</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_cleanQuery"></a><div class="element clickable method public method_cleanQuery" data-toggle="collapse" data-target=".method_cleanQuery .collapse">
+<h2>Function that sanitizes a given query string.</h2>
+<pre>cleanQuery(<a href="http://php.net/manual/en/class.mysqli.php">\mysqli</a> | resource | null $dbLinkRes, mixed $value, bool $mustBeNumeric, int $decimalPlaces, int $cleanall) : array | float | int | mixed | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Do not pass an entire query string to this function, only the individual varaibles that make up the string should be passed.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dbLinkRes</h4>
+<code><a href="http://php.net/manual/en/class.mysqli.php">\mysqli</a></code><code>resource</code><code>null</code>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code>
+</div>
+<div class="subelement argument">
+<h4>$mustBeNumeric</h4>
+<code>bool</code>
+</div>
+<div class="subelement argument">
+<h4>$decimalPlaces</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$cleanall</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>float</code><code>int</code><code>mixed</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_compareHashes"></a><div class="element clickable method public method_compareHashes" data-toggle="collapse" data-target=".method_compareHashes .collapse">
+<h2>This method compares two strings (one hashed, one unhashed) to see if they are the same.</h2>
+<pre>compareHashes(string $inputString, string $comparisonHash, array $flags, array $customRules) : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You can compare both one-way and two-way strings in this way.</p>
+
+<p>The flags array can hold any of the values that the encrypt() method expects.</p>
+
+<p>The custom rules array can hold any of the values that the encrypt() method expects.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::compareHashes()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$inputString</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$comparisonHash</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$customRules</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_decrypt"></a><div class="element clickable method public method_decrypt" data-toggle="collapse" data-target=".method_decrypt .collapse">
+<h2>Decrypt is used for revealing the original encrypted string.</h2>
+<pre>decrypt(string $input, array $flags, array $customRules) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The flags array can hold any of the following (as values):</p>
+
+<p>DE_POISON = de-poison the string first</p>
+
+<p>The custom rules array can hold any of the following (as keys => values):</p>
+
+<p>POISON_CONSTRAINTS => use this only if you overwrote the defualt poison constraints during encryption</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::decrypt()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$input</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$customRules</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_encrypt"></a><div class="element clickable method public method_encrypt" data-toggle="collapse" data-target=".method_encrypt .collapse">
+<h2>Encrypt allows you to encrypt or hash a string in a one-way or two-way algorithim.</h2>
+<pre>encrypt(string $input, array $flags, array $customRules) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The flags array can hold any of the following (as values):</p>
+
+<p>TWO_WAY = default flag sent that tells Pz_Crypt to produce a two-way encryped string. Pz_Crypt uses its own hash and algorithim to produce the ecnrypted string.</p>
+
+<p>ONE_WAY = flag that tells Pz_Crypt to produce a one-way encrypted string. Pz_Crypt uses a special algorithim to encrypt strings</p>
+
+<p>STRICT = hashes produced in ONE_WAY encryption will honor the $kHash property's length and character type. eg. md5 generates 32 hex char hashes, so Pz_Crypt will honor that</p>
+
+<p>The custom rules array can hold any of the following (as key => values):</p>
+
+<p>HASH => overwrite the default hash algorithim set by $kHash. Make the the hash is supported by your system/php build</p>
+
+<p>SALT => if you want to use a custom salt, then include this rule, if you want to use Pz_Crypt's default salt, then do not include this rule</p>
+
+<p>POISON_CONSTRAINTS => If you dont want any poisoning, then provide an empty array. If you want to use Pz_Crypt's default poison constraints, then dont include this rule</p>
+
+<p>UNIQUE_SALT => A unique salt that you want to apply to this password. Unique salts make password has reversal much harder, since crackers must figure out which unique salt was used for each password hash.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::encrypt()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$input</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$customRules</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_getChecksum"></a><div class="element clickable method public method_getChecksum" data-toggle="collapse" data-target=".method_getChecksum .collapse">
+<h2>Will return a string that will include various info about the current setup of this class and relevant php/system settings.</h2>
+<pre>getChecksum(string $passPhrase) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>You should use this once you go production, and store the string somewhere safe.</p>
+
+<p>In the event that you must switch servers, make sure to run that string through the verifyChecksum() method, as to make sure the new system will support all of the encrypted strings you have generated on the previous system.</p>
+
+<p>NOTE: This verification method cannot take into account custom rules you may have passed in to the encrypt method, so do not soley rely on this method to verify compatibility.</p>
+
+<p>NOTE: This verification method will not take into account your passphrase.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::getChecksum()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_regeneratePzCryptHash"></a><div class="element clickable method public method_regeneratePzCryptHash" data-toggle="collapse" data-target=".method_regeneratePzCryptHash .collapse">
+<h2>Will dump a new array to replace the defualt $hashTableFrom array.</h2>
+<pre>regeneratePzCryptHash(string $passPhrase) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::regeneratePzCryptHash()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_regeneratePzCryptPoisonConstraints"></a><div class="element clickable method public method_regeneratePzCryptPoisonConstraints" data-toggle="collapse" data-target=".method_regeneratePzCryptPoisonConstraints .collapse">
+<h2>Regenerates a new array of poison constraints to replace the default array.</h2>
+<pre>regeneratePzCryptPoisonConstraints(string $passPhrase) : mixed | string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::regeneratePzCryptPoisonConstraints()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_regeneratePzCryptSalt"></a><div class="element clickable method public method_regeneratePzCryptSalt" data-toggle="collapse" data-target=".method_regeneratePzCryptSalt .collapse">
+<h2>Regenerates a new Pz_Crypt salt.</h2>
+<pre>regeneratePzCryptSalt(string $passPhrase) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::regeneratePzCryptSalt()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_replacePzCryptHash"></a><div class="element clickable method public method_replacePzCryptHash" data-toggle="collapse" data-target=".method_replacePzCryptHash .collapse">
+<h2>Replaces the default Pz_Crypt hash.</h2>
+<pre>replacePzCryptHash(array $newFromTableHashArray) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::replacePzCryptHash()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$newFromTableHashArray</h4>
+<code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_replacePzCryptPoisonConstraints"></a><div class="element clickable method public method_replacePzCryptPoisonConstraints" data-toggle="collapse" data-target=".method_replacePzCryptPoisonConstraints .collapse">
+<h2>Replaces the default Pz_Crypt poison constraints.</h2>
+<pre>replacePzCryptPoisonConstraints(array $newConstraints) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::replacePzCryptPoisonConstraints()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$newConstraints</h4>
+<code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_replacePzCryptRehashDepth"></a><div class="element clickable method public method_replacePzCryptRehashDepth" data-toggle="collapse" data-target=".method_replacePzCryptRehashDepth .collapse">
+<h2>Replaces the default Pz_Crypt rehash depth value.</h2>
+<pre>replacePzCryptRehashDepth(int $newDepth) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::replacePzCryptRehashDepth()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$newDepth</h4>
+<code>int</code>
+</div>
+</div></div>
+</div>
+<a id="method_replacePzCryptSalt"></a><div class="element clickable method public method_replacePzCryptSalt" data-toggle="collapse" data-target=".method_replacePzCryptSalt .collapse">
+<h2>Replaces the default Pz_Crypt salt.</h2>
+<pre>replacePzCryptSalt(string $passPhrase) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::replacePzCryptSalt()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_verifyChecksum"></a><div class="element clickable method public method_verifyChecksum" data-toggle="collapse" data-target=".method_verifyChecksum .collapse">
+<h2>Verifies a checksum with the current server and configuration.</h2>
+<pre>verifyChecksum(string $checksumString, string $passPhrase) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::verifyChecksum()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$checksumString</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$passPhrase</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method__depoisonString"></a><div class="element clickable method private method__depoisonString" data-toggle="collapse" data-target=".method__depoisonString .collapse">
+<h2>De-poisons a string based on the passed-in poison constraints.</h2>
+<pre>_depoisonString(string $input, array $constraints) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::_depoisonString()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$input</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$constraints</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method__poisonString"></a><div class="element clickable method private method__poisonString" data-toggle="collapse" data-target=".method__poisonString .collapse">
+<h2>Poisons a string using the passed-in poison constraints.</h2>
+<pre>_poisonString(string $input, array $constraints, int $type) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::_poisonString()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$input</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$constraints</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__hashTableFrom"> </a><div class="element clickable property private property__hashTableFrom" data-toggle="collapse" data-target=".property__hashTableFrom .collapse">
+<h2></h2>
+<pre>$_hashTableFrom : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_hashTableFrom</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__hashTableTo"> </a><div class="element clickable property private property__hashTableTo" data-toggle="collapse" data-target=".property__hashTableTo .collapse">
+<h2></h2>
+<pre>$_hashTableTo : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_hashTableTo</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__kHash"> </a><div class="element clickable property private property__kHash" data-toggle="collapse" data-target=".property__kHash .collapse">
+<h2></h2>
+<pre>$_kHash : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_kHash</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__kPoisonConstraints"> </a><div class="element clickable property private property__kPoisonConstraints" data-toggle="collapse" data-target=".property__kPoisonConstraints .collapse">
+<h2></h2>
+<pre>$_kPoisonConstraints : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Poisoning greatly increases the difficulty for crackers to find the original protected string.</p>
+
+<p>Every sub-array has two elements:
+- the first element dictates at which point in the string will the poisoning begin
+- the second element dictates how long the poison will be (all in characters)</p>
+
+<p>It is good to provide constraints for long strings as well, even if you know you wont be feeding Pz_Crypt long strings.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_kPoisonConstraints</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__kSalt"> </a><div class="element clickable property private property__kSalt" data-toggle="collapse" data-target=".property__kSalt .collapse">
+<h2></h2>
+<pre>$_kSalt : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_kSalt</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__kSaltDepth"> </a><div class="element clickable property private property__kSaltDepth" data-toggle="collapse" data-target=".property__kSaltDepth .collapse">
+<h2></h2>
+<pre>$_kSaltDepth : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_kSaltDepth</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__passPhrase"> </a><div class="element clickable property private property__passPhrase" data-toggle="collapse" data-target=".property__passPhrase .collapse">
+<h2></h2>
+<pre>$_passPhrase : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Using a passphrase means it wont be possible for somoene to call the public function from another program, without direct access to the source of this class</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::$$_passPhrase</td>
+</tr>
+</table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_CLEAN_HTML_JS_STYLE_COMMENTS"> </a><div class="element clickable constant  constant_CLEAN_HTML_JS_STYLE_COMMENTS" data-toggle="collapse" data-target=".constant_CLEAN_HTML_JS_STYLE_COMMENTS .collapse">
+<h2>Clean everything (javascript tags, styling tags, comments, html tags).</h2>
+<pre>CLEAN_HTML_JS_STYLE_COMMENTS : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES"> </a><div class="element clickable constant  constant_CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES" data-toggle="collapse" data-target=".constant_CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES .collapse">
+<h2>Clean everything (javascript tags, styling tags, comments, html tags, convert all &lt;,&gt; to html entities).</h2>
+<pre>CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_CLEAN_JS_STYLE_COMMENTS"> </a><div class="element clickable constant  constant_CLEAN_JS_STYLE_COMMENTS" data-toggle="collapse" data-target=".constant_CLEAN_JS_STYLE_COMMENTS .collapse">
+<h2>Clean almost everything (javascript tags, styling tags, comments).</h2>
+<pre>CLEAN_JS_STYLE_COMMENTS : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_CLEAN_NOTHING"> </a><div class="element clickable constant  constant_CLEAN_NOTHING" data-toggle="collapse" data-target=".constant_CLEAN_NOTHING .collapse">
+<h2>Don't clean anything.</h2>
+<pre>CLEAN_NOTHING : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_CLEAN_STYLE_COMMENTS"> </a><div class="element clickable constant  constant_CLEAN_STYLE_COMMENTS" data-toggle="collapse" data-target=".constant_CLEAN_STYLE_COMMENTS .collapse">
+<h2>Clean some things (styling tags, comments).</h2>
+<pre>CLEAN_STYLE_COMMENTS : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_DE_POISON"> </a><div class="element clickable constant  constant_DE_POISON" data-toggle="collapse" data-target=".constant_DE_POISON .collapse">
+<h2>Flag to indicate encrypted string is poisoned.</h2>
+<pre>DE_POISON : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::DE_POISON</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_HASH"> </a><div class="element clickable constant  constant_HASH" data-toggle="collapse" data-target=".constant_HASH .collapse">
+<h2>Custom rules flag array key for override hash.</h2>
+<pre>HASH : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::HASH</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_ONE_WAY"> </a><div class="element clickable constant  constant_ONE_WAY" data-toggle="collapse" data-target=".constant_ONE_WAY .collapse">
+<h2>Flag for one-way encryption.</h2>
+<pre>ONE_WAY : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::ONE_WAY</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_POISON_CONSTRAINTS"> </a><div class="element clickable constant  constant_POISON_CONSTRAINTS" data-toggle="collapse" data-target=".constant_POISON_CONSTRAINTS .collapse">
+<h2>Custom rules flag array key for override poison constraints.</h2>
+<pre>POISON_CONSTRAINTS : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::POISON_CONSTRAINTS</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_SALT"> </a><div class="element clickable constant  constant_SALT" data-toggle="collapse" data-target=".constant_SALT .collapse">
+<h2>Custom rules flag array key for override salt.</h2>
+<pre>SALT : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::SALT</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_STRICT"> </a><div class="element clickable constant  constant_STRICT" data-toggle="collapse" data-target=".constant_STRICT .collapse">
+<h2>Flag for strict hashing/encryption.</h2>
+<pre>STRICT : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::STRICT</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_TWO_WAY"> </a><div class="element clickable constant  constant_TWO_WAY" data-toggle="collapse" data-target=".constant_TWO_WAY .collapse">
+<h2>Flag for two-way encryption.</h2>
+<pre>TWO_WAY : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::TWO_WAY</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_UNIQUE_SALT"> </a><div class="element clickable constant  constant_UNIQUE_SALT" data-toggle="collapse" data-target=".constant_UNIQUE_SALT .collapse">
+<h2>Custom rules flag array key for override unique salt.</h2>
+<pre>UNIQUE_SALT : int</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Crypt::UNIQUE_SALT</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>
