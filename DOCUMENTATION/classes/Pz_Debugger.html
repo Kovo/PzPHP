@@ -1,0 +1,715 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Pz_Debugger</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: Sets the default values for the debugger class."><span class="description">Sets the default values for the debugger class.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_apcDeletesInc" title="apcDeletesInc :: Increase apc deletes by 1."><span class="description">Increase apc deletes by 1.</span><pre>apcDeletesInc()</pre></a></li>
+<li class="method public "><a href="#method_apcReadsInc" title="apcReadsInc :: Increase apc reads by 1."><span class="description">Increase apc reads by 1.</span><pre>apcReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_apcWritesInc" title="apcWritesInc :: Increase apc writes by 1."><span class="description">Increase apc writes by 1.</span><pre>apcWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_calculateExecTime" title="calculateExecTime :: Calculate total execution time."><span class="description">Calculate total execution time.</span><pre>calculateExecTime()</pre></a></li>
+<li class="method public "><a href="#method_calculateIncludes" title="calculateIncludes :: Calculate total included files."><span class="description">Calculate total included files.</span><pre>calculateIncludes()</pre></a></li>
+<li class="method public "><a href="#method_calculateMemoryUsage" title="calculateMemoryUsage :: Calculate total memory usage."><span class="description">Calculate total memory usage.</span><pre>calculateMemoryUsage()</pre></a></li>
+<li class="method public "><a href="#method_calculateMysqlQueries" title="calculateMysqlQueries :: Calculate total queries."><span class="description">Calculate total queries.</span><pre>calculateMysqlQueries()</pre></a></li>
+<li class="method public "><a href="#method_calculatePDOQueries" title="calculatePDOQueries :: Calculate total queries."><span class="description">Calculate total queries.</span><pre>calculatePDOQueries()</pre></a></li>
+<li class="method public "><a href="#method_finalize" title="finalize :: Calcualtes, logs, displays debugger info."><span class="description">Calcualtes, logs, displays debugger info.</span><pre>finalize()</pre></a></li>
+<li class="method public "><a href="#method_lcDeletesInc" title="lcDeletesInc :: Increase lc deletes by 1."><span class="description">Increase lc deletes by 1.</span><pre>lcDeletesInc()</pre></a></li>
+<li class="method public "><a href="#method_lcReadsInc" title="lcReadsInc :: Increase lc reads by 1."><span class="description">Increase lc reads by 1.</span><pre>lcReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_lcWritesInc" title="lcWritesInc :: Increase lc writes by 1."><span class="description">Increase lc writes by 1.</span><pre>lcWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_mcConnectionsInc" title="mcConnectionsInc :: Increase mc connections by 1."><span class="description">Increase mc connections by 1.</span><pre>mcConnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcDeletesInc" title="mcDeletesInc :: Increase mc deletes by 1."><span class="description">Increase mc deletes by 1.</span><pre>mcDeletesInc()</pre></a></li>
+<li class="method public "><a href="#method_mcDisconnectionsInc" title="mcDisconnectionsInc :: Increase mc disconnections by 1."><span class="description">Increase mc disconnections by 1.</span><pre>mcDisconnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcReadsInc" title="mcReadsInc :: Increase mc reads by 1."><span class="description">Increase mc reads by 1.</span><pre>mcReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcWritesInc" title="mcWritesInc :: Increase mc writes by 1."><span class="description">Increase mc writes by 1.</span><pre>mcWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_mcdConnectionsInc" title="mcdConnectionsInc :: Increase mcd connections by 1."><span class="description">Increase mcd connections by 1.</span><pre>mcdConnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcdDeletesInc" title="mcdDeletesInc :: Increase mcd deletes by 1."><span class="description">Increase mcd deletes by 1.</span><pre>mcdDeletesInc()</pre></a></li>
+<li class="method public "><a href="#method_mcdDisconnectionsInc" title="mcdDisconnectionsInc :: Increase mcd disconnections by 1."><span class="description">Increase mcd disconnections by 1.</span><pre>mcdDisconnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcdReadsInc" title="mcdReadsInc :: Increase mcd reads by 1."><span class="description">Increase mcd reads by 1.</span><pre>mcdReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_mcdWritesInc" title="mcdWritesInc :: Increase mcd writes by 1."><span class="description">Increase mcd writes by 1.</span><pre>mcdWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_mysqlConnectionsInc" title="mysqlConnectionsInc :: Increase mysql connections by 1."><span class="description">Increase mysql connections by 1.</span><pre>mysqlConnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mysqlDisconnectionsInc" title="mysqlDisconnectionsInc :: Increase mysql disconnections by 1."><span class="description">Increase mysql disconnections by 1.</span><pre>mysqlDisconnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_mysqlLogQuery" title="mysqlLogQuery :: "><span class="description">mysqlLogQuery()
+        </span><pre>mysqlLogQuery()</pre></a></li>
+<li class="method public "><a href="#method_mysqlReadsInc" title="mysqlReadsInc :: Increase mysql reads by 1."><span class="description">Increase mysql reads by 1.</span><pre>mysqlReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_mysqlWritesInc" title="mysqlWritesInc :: Increase mysql writes by 1."><span class="description">Increase mysql writes by 1.</span><pre>mysqlWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_pdoConnectionsInc" title="pdoConnectionsInc :: Increase pdo connections by 1."><span class="description">Increase pdo connections by 1.</span><pre>pdoConnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_pdoDisconnectionsInc" title="pdoDisconnectionsInc :: Increase pdo disconnections by 1."><span class="description">Increase pdo disconnections by 1.</span><pre>pdoDisconnectionsInc()</pre></a></li>
+<li class="method public "><a href="#method_pdoLogQuery" title="pdoLogQuery :: "><span class="description">pdoLogQuery()
+        </span><pre>pdoLogQuery()</pre></a></li>
+<li class="method public "><a href="#method_pdoReadsInc" title="pdoReadsInc :: Increase pdo reads by 1."><span class="description">Increase pdo reads by 1.</span><pre>pdoReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_pdoWritesInc" title="pdoWritesInc :: Increase pdo writes by 1."><span class="description">Increase pdo writes by 1.</span><pre>pdoWritesInc()</pre></a></li>
+<li class="method public "><a href="#method_registerVersionInfo" title="registerVersionInfo :: Registers a package or subpackage with version info."><span class="description">Registers a package or subpackage with version info.</span><pre>registerVersionInfo()</pre></a></li>
+<li class="method public "><a href="#method_shmDeletesInc" title="shmDeletesInc :: Increase shm deletes by 1."><span class="description">Increase shm deletes by 1.</span><pre>shmDeletesInc()</pre></a></li>
+<li class="method public "><a href="#method_shmReadsInc" title="shmReadsInc :: Increase shm reads by 1."><span class="description">Increase shm reads by 1.</span><pre>shmReadsInc()</pre></a></li>
+<li class="method public "><a href="#method_shmWritesInc" title="shmWritesInc :: Increase shm writes by 1."><span class="description">Increase shm writes by 1.</span><pre>shmWritesInc()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul><li class="method private "><a href="#method__buildBar" title="_buildBar :: This method handles building the debug bar and populating it."><span class="description">This method handles building the debug bar and populating it.</span><pre>_buildBar()</pre></a></li></ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__dbHost" title="$_dbHost :: The host for the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbHost</pre></a></li>
+<li class="property private "><a href="#property__dbName" title="$_dbName :: The database name for the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbName</pre></a></li>
+<li class="property private "><a href="#property__dbPassword" title="$_dbPassword :: The password for the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbPassword</pre></a></li>
+<li class="property private "><a href="#property__dbPort" title="$_dbPort :: The port for the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbPort</pre></a></li>
+<li class="property private "><a href="#property__dbRetryDelay" title="$_dbRetryDelay :: Retry attempt delays to the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbRetryDelay</pre></a></li>
+<li class="property private "><a href="#property__dbRetryattempts" title="$_dbRetryattempts :: Retry attempts to the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbRetryattempts</pre></a></li>
+<li class="property private "><a href="#property__dbUser" title="$_dbUser :: The user name for the mysql server that has access to the pz_debugger table."><span class="description"></span><pre>$_dbUser</pre></a></li>
+<li class="property private "><a href="#property__displayBar" title="$_displayBar :: If the debug bar should be displayed."><span class="description"></span><pre>$_displayBar</pre></a></li>
+<li class="property private "><a href="#property__logToDb" title="$_logToDb :: Whether stats should be logged to the database or not."><span class="description"></span><pre>$_logToDb</pre></a></li>
+<li class="property private "><a href="#property__registeredVersionInfo" title="$_registeredVersionInfo :: This array holds a key =&gt; value pair of any versions of packages/subpackages registered in your script; which are then displayed in the debug bar."><span class="description"></span><pre>$_registeredVersionInfo</pre></a></li>
+<li class="property private "><a href="#property__statistics" title="$_statistics :: Full array of different statistics this class keeps track of."><span class="description"></span><pre>$_statistics</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Pz_Debugger"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Pz_Debugger.html">Pz_Debugger</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">The Debugger class keeps track of various statistics during your scripts execution.</p>
+<div class="details">
+<div class="long_description"><p>It can also log them to a dB, or output them in HMTL.</p></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Sets the default values for the debugger class.</h2>
+<pre>__construct(string $dbUser, string $dbPassword, string $dbName, string $dbHost, int $dbPort, bool $displayBar, bool $logToDb) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dbUser</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPassword</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbName</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbHost</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$dbPort</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$displayBar</h4>
+<code>bool</code>
+</div>
+<div class="subelement argument">
+<h4>$logToDb</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_apcDeletesInc"></a><div class="element clickable method public method_apcDeletesInc" data-toggle="collapse" data-target=".method_apcDeletesInc .collapse">
+<h2>Increase apc deletes by 1.</h2>
+<pre>apcDeletesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_apcReadsInc"></a><div class="element clickable method public method_apcReadsInc" data-toggle="collapse" data-target=".method_apcReadsInc .collapse">
+<h2>Increase apc reads by 1.</h2>
+<pre>apcReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_apcWritesInc"></a><div class="element clickable method public method_apcWritesInc" data-toggle="collapse" data-target=".method_apcWritesInc .collapse">
+<h2>Increase apc writes by 1.</h2>
+<pre>apcWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_calculateExecTime"></a><div class="element clickable method public method_calculateExecTime" data-toggle="collapse" data-target=".method_calculateExecTime .collapse">
+<h2>Calculate total execution time.</h2>
+<pre>calculateExecTime() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_calculateIncludes"></a><div class="element clickable method public method_calculateIncludes" data-toggle="collapse" data-target=".method_calculateIncludes .collapse">
+<h2>Calculate total included files.</h2>
+<pre>calculateIncludes() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_calculateMemoryUsage"></a><div class="element clickable method public method_calculateMemoryUsage" data-toggle="collapse" data-target=".method_calculateMemoryUsage .collapse">
+<h2>Calculate total memory usage.</h2>
+<pre>calculateMemoryUsage() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_calculateMysqlQueries"></a><div class="element clickable method public method_calculateMysqlQueries" data-toggle="collapse" data-target=".method_calculateMysqlQueries .collapse">
+<h2>Calculate total queries.</h2>
+<pre>calculateMysqlQueries() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_calculatePDOQueries"></a><div class="element clickable method public method_calculatePDOQueries" data-toggle="collapse" data-target=".method_calculatePDOQueries .collapse">
+<h2>Calculate total queries.</h2>
+<pre>calculatePDOQueries() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_finalize"></a><div class="element clickable method public method_finalize" data-toggle="collapse" data-target=".method_finalize .collapse">
+<h2>Calcualtes, logs, displays debugger info.</h2>
+<pre>finalize(\Pz_Core $PzCore) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$PzCore</h4>
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_lcDeletesInc"></a><div class="element clickable method public method_lcDeletesInc" data-toggle="collapse" data-target=".method_lcDeletesInc .collapse">
+<h2>Increase lc deletes by 1.</h2>
+<pre>lcDeletesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_lcReadsInc"></a><div class="element clickable method public method_lcReadsInc" data-toggle="collapse" data-target=".method_lcReadsInc .collapse">
+<h2>Increase lc reads by 1.</h2>
+<pre>lcReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_lcWritesInc"></a><div class="element clickable method public method_lcWritesInc" data-toggle="collapse" data-target=".method_lcWritesInc .collapse">
+<h2>Increase lc writes by 1.</h2>
+<pre>lcWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcConnectionsInc"></a><div class="element clickable method public method_mcConnectionsInc" data-toggle="collapse" data-target=".method_mcConnectionsInc .collapse">
+<h2>Increase mc connections by 1.</h2>
+<pre>mcConnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcDeletesInc"></a><div class="element clickable method public method_mcDeletesInc" data-toggle="collapse" data-target=".method_mcDeletesInc .collapse">
+<h2>Increase mc deletes by 1.</h2>
+<pre>mcDeletesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcDisconnectionsInc"></a><div class="element clickable method public method_mcDisconnectionsInc" data-toggle="collapse" data-target=".method_mcDisconnectionsInc .collapse">
+<h2>Increase mc disconnections by 1.</h2>
+<pre>mcDisconnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcReadsInc"></a><div class="element clickable method public method_mcReadsInc" data-toggle="collapse" data-target=".method_mcReadsInc .collapse">
+<h2>Increase mc reads by 1.</h2>
+<pre>mcReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcWritesInc"></a><div class="element clickable method public method_mcWritesInc" data-toggle="collapse" data-target=".method_mcWritesInc .collapse">
+<h2>Increase mc writes by 1.</h2>
+<pre>mcWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcdConnectionsInc"></a><div class="element clickable method public method_mcdConnectionsInc" data-toggle="collapse" data-target=".method_mcdConnectionsInc .collapse">
+<h2>Increase mcd connections by 1.</h2>
+<pre>mcdConnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcdDeletesInc"></a><div class="element clickable method public method_mcdDeletesInc" data-toggle="collapse" data-target=".method_mcdDeletesInc .collapse">
+<h2>Increase mcd deletes by 1.</h2>
+<pre>mcdDeletesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcdDisconnectionsInc"></a><div class="element clickable method public method_mcdDisconnectionsInc" data-toggle="collapse" data-target=".method_mcdDisconnectionsInc .collapse">
+<h2>Increase mcd disconnections by 1.</h2>
+<pre>mcdDisconnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcdReadsInc"></a><div class="element clickable method public method_mcdReadsInc" data-toggle="collapse" data-target=".method_mcdReadsInc .collapse">
+<h2>Increase mcd reads by 1.</h2>
+<pre>mcdReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mcdWritesInc"></a><div class="element clickable method public method_mcdWritesInc" data-toggle="collapse" data-target=".method_mcdWritesInc .collapse">
+<h2>Increase mcd writes by 1.</h2>
+<pre>mcdWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mysqlConnectionsInc"></a><div class="element clickable method public method_mysqlConnectionsInc" data-toggle="collapse" data-target=".method_mysqlConnectionsInc .collapse">
+<h2>Increase mysql connections by 1.</h2>
+<pre>mysqlConnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mysqlDisconnectionsInc"></a><div class="element clickable method public method_mysqlDisconnectionsInc" data-toggle="collapse" data-target=".method_mysqlDisconnectionsInc .collapse">
+<h2>Increase mysql disconnections by 1.</h2>
+<pre>mysqlDisconnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mysqlLogQuery"></a><div class="element clickable method public method_mysqlLogQuery" data-toggle="collapse" data-target=".method_mysqlLogQuery .collapse">
+<h2>mysqlLogQuery()
+        </h2>
+<pre>mysqlLogQuery($query) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4><p>logs actual query strings</p></div>
+</div></div>
+</div>
+<a id="method_mysqlReadsInc"></a><div class="element clickable method public method_mysqlReadsInc" data-toggle="collapse" data-target=".method_mysqlReadsInc .collapse">
+<h2>Increase mysql reads by 1.</h2>
+<pre>mysqlReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_mysqlWritesInc"></a><div class="element clickable method public method_mysqlWritesInc" data-toggle="collapse" data-target=".method_mysqlWritesInc .collapse">
+<h2>Increase mysql writes by 1.</h2>
+<pre>mysqlWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_pdoConnectionsInc"></a><div class="element clickable method public method_pdoConnectionsInc" data-toggle="collapse" data-target=".method_pdoConnectionsInc .collapse">
+<h2>Increase pdo connections by 1.</h2>
+<pre>pdoConnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_pdoDisconnectionsInc"></a><div class="element clickable method public method_pdoDisconnectionsInc" data-toggle="collapse" data-target=".method_pdoDisconnectionsInc .collapse">
+<h2>Increase pdo disconnections by 1.</h2>
+<pre>pdoDisconnectionsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_pdoLogQuery"></a><div class="element clickable method public method_pdoLogQuery" data-toggle="collapse" data-target=".method_pdoLogQuery .collapse">
+<h2>pdoLogQuery()
+        </h2>
+<pre>pdoLogQuery($query) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4><p>logs actual query strings</p></div>
+</div></div>
+</div>
+<a id="method_pdoReadsInc"></a><div class="element clickable method public method_pdoReadsInc" data-toggle="collapse" data-target=".method_pdoReadsInc .collapse">
+<h2>Increase pdo reads by 1.</h2>
+<pre>pdoReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_pdoWritesInc"></a><div class="element clickable method public method_pdoWritesInc" data-toggle="collapse" data-target=".method_pdoWritesInc .collapse">
+<h2>Increase pdo writes by 1.</h2>
+<pre>pdoWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_registerVersionInfo"></a><div class="element clickable method public method_registerVersionInfo" data-toggle="collapse" data-target=".method_registerVersionInfo .collapse">
+<h2>Registers a package or subpackage with version info.</h2>
+<pre>registerVersionInfo(string $name, string $version) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$version</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_shmDeletesInc"></a><div class="element clickable method public method_shmDeletesInc" data-toggle="collapse" data-target=".method_shmDeletesInc .collapse">
+<h2>Increase shm deletes by 1.</h2>
+<pre>shmDeletesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_shmReadsInc"></a><div class="element clickable method public method_shmReadsInc" data-toggle="collapse" data-target=".method_shmReadsInc .collapse">
+<h2>Increase shm reads by 1.</h2>
+<pre>shmReadsInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_shmWritesInc"></a><div class="element clickable method public method_shmWritesInc" data-toggle="collapse" data-target=".method_shmWritesInc .collapse">
+<h2>Increase shm writes by 1.</h2>
+<pre>shmWritesInc() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method__buildBar"></a><div class="element clickable method private method__buildBar" data-toggle="collapse" data-target=".method__buildBar .collapse">
+<h2>This method handles building the debug bar and populating it.</h2>
+<pre>_buildBar() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__dbHost"> </a><div class="element clickable property private property__dbHost" data-toggle="collapse" data-target=".property__dbHost .collapse">
+<h2></h2>
+<pre>$_dbHost : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbName"> </a><div class="element clickable property private property__dbName" data-toggle="collapse" data-target=".property__dbName .collapse">
+<h2></h2>
+<pre>$_dbName : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbPassword"> </a><div class="element clickable property private property__dbPassword" data-toggle="collapse" data-target=".property__dbPassword .collapse">
+<h2></h2>
+<pre>$_dbPassword : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbPort"> </a><div class="element clickable property private property__dbPort" data-toggle="collapse" data-target=".property__dbPort .collapse">
+<h2></h2>
+<pre>$_dbPort : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbRetryDelay"> </a><div class="element clickable property private property__dbRetryDelay" data-toggle="collapse" data-target=".property__dbRetryDelay .collapse">
+<h2></h2>
+<pre>$_dbRetryDelay : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbRetryattempts"> </a><div class="element clickable property private property__dbRetryattempts" data-toggle="collapse" data-target=".property__dbRetryattempts .collapse">
+<h2></h2>
+<pre>$_dbRetryattempts : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__dbUser"> </a><div class="element clickable property private property__dbUser" data-toggle="collapse" data-target=".property__dbUser .collapse">
+<h2></h2>
+<pre>$_dbUser : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__displayBar"> </a><div class="element clickable property private property__displayBar" data-toggle="collapse" data-target=".property__displayBar .collapse">
+<h2></h2>
+<pre>$_displayBar : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__logToDb"> </a><div class="element clickable property private property__logToDb" data-toggle="collapse" data-target=".property__logToDb .collapse">
+<h2></h2>
+<pre>$_logToDb : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__registeredVersionInfo"> </a><div class="element clickable property private property__registeredVersionInfo" data-toggle="collapse" data-target=".property__registeredVersionInfo .collapse">
+<h2></h2>
+<pre>$_registeredVersionInfo : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property__statistics"> </a><div class="element clickable property private property__statistics" data-toggle="collapse" data-target=".property__statistics .collapse">
+<h2></h2>
+<pre>$_statistics : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>

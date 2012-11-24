@@ -1,0 +1,405 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Pz_Http_Response</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">34</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public inherited"><a href="#method___construct" title="__construct :: Calls the init() method."><span class="description">Calls the init() method.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_getHeader" title="getHeader :: Gets a custom set header."><span class="description">Gets a custom set header.</span><pre>getHeader()</pre></a></li>
+<li class="method public "><a href="#method_getHeaders" title="getHeaders :: Gets all custom set headers."><span class="description">Gets all custom set headers.</span><pre>getHeaders()</pre></a></li>
+<li class="method public "><a href="#method_getHttpVersion" title="getHttpVersion :: Gets the response http version."><span class="description">Gets the response http version.</span><pre>getHttpVersion()</pre></a></li>
+<li class="method public "><a href="#method_getStatusCode" title="getStatusCode :: Gets the response status code."><span class="description">Gets the response status code.</span><pre>getStatusCode()</pre></a></li>
+<li class="method public "><a href="#method_getStatusText" title="getStatusText :: Gets the response status code text."><span class="description">Gets the response status code text.</span><pre>getStatusText()</pre></a></li>
+<li class="method public inherited"><a href="#method_init" title="init :: The init method sets the Pz_Core object."><span class="description">The init method sets the Pz_Core object.</span><pre>init()</pre></a></li>
+<li class="method public inherited"><a href="#method_pzCore" title="pzCore :: Returns the Pz_Core instance."><span class="description">Returns the Pz_Core instance.</span><pre>pzCore()</pre></a></li>
+<li class="method public "><a href="#method_redirect" title="redirect :: Sets redirect headers, and can stop script execution if stated."><span class="description">Sets redirect headers, and can stop script execution if stated.</span><pre>redirect()</pre></a></li>
+<li class="method public "><a href="#method_setHeader" title="setHeader :: Defines a new header or replaces an existing one."><span class="description">Defines a new header or replaces an existing one.</span><pre>setHeader()</pre></a></li>
+<li class="method public "><a href="#method_setHttpVersion" title="setHttpVersion :: Sets the http version for the response."><span class="description">Sets the http version for the response.</span><pre>setHttpVersion()</pre></a></li>
+<li class="method public "><a href="#method_setStatusCode" title="setStatusCode :: Set the response status code."><span class="description">Set the response status code.</span><pre>setStatusCode()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul><li class="property protected inherited"><a href="#property__pzCoreObject" title="$_pzCoreObject :: Stores an instance of Pz_Core."><span class="description"></span><pre>$_pzCoreObject</pre></a></li></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__headers" title="$_headers :: An array of custom set headers."><span class="description"></span><pre>$_headers</pre></a></li>
+<li class="property private "><a href="#property__httpVersion" title="$_httpVersion :: The http version being used."><span class="description"></span><pre>$_httpVersion</pre></a></li>
+<li class="property private "><a href="#property__statusCode" title="$_statusCode :: The http status code to be sent to the client."><span class="description"></span><pre>$_statusCode</pre></a></li>
+<li class="property private "><a href="#property__statusText" title="$_statusText :: Status code texts array."><span class="description"></span><pre>$_statusText</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Pz_Http_Response"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Pz_Http_Response.html">Pz_Http_Response</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">Allows you to set response headers and status codes.</p>
+<div class="details">
+<div class="long_description"></div>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Calls the init() method.</h2>
+<pre>__construct(\Pz_Core $PzCore) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::__construct()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$PzCore</h4>
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_getHeader"></a><div class="element clickable method public method_getHeader" data-toggle="collapse" data-target=".method_getHeader .collapse">
+<h2>Gets a custom set header.</h2>
+<pre>getHeader(string $name) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_getHeaders"></a><div class="element clickable method public method_getHeaders" data-toggle="collapse" data-target=".method_getHeaders .collapse">
+<h2>Gets all custom set headers.</h2>
+<pre>getHeaders() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_getHttpVersion"></a><div class="element clickable method public method_getHttpVersion" data-toggle="collapse" data-target=".method_getHttpVersion .collapse">
+<h2>Gets the response http version.</h2>
+<pre>getHttpVersion() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_getStatusCode"></a><div class="element clickable method public method_getStatusCode" data-toggle="collapse" data-target=".method_getStatusCode .collapse">
+<h2>Gets the response status code.</h2>
+<pre>getStatusCode() : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_getStatusText"></a><div class="element clickable method public method_getStatusText" data-toggle="collapse" data-target=".method_getStatusText .collapse">
+<h2>Gets the response status code text.</h2>
+<pre>getStatusText() : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_init"></a><div class="element clickable method public method_init" data-toggle="collapse" data-target=".method_init .collapse">
+<h2>The init method sets the Pz_Core object.</h2>
+<pre>init(\Pz_Core $PzCore) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::init()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$PzCore</h4>
+<code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_pzCore"></a><div class="element clickable method public method_pzCore" data-toggle="collapse" data-target=".method_pzCore .collapse">
+<h2>Returns the Pz_Core instance.</h2>
+<pre>pzCore() : null | <a href="../classes/Pz_Core.html">\Pz_Core</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::pzCore()</td>
+</tr>
+</table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Pz_Core.html">\Pz_Core</a></code>
+</div>
+</div></div>
+</div>
+<a id="method_redirect"></a><div class="element clickable method public method_redirect" data-toggle="collapse" data-target=".method_redirect .collapse">
+<h2>Sets redirect headers, and can stop script execution if stated.</h2>
+<pre>redirect(string $url, bool $exit) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$exit</h4>
+<code>bool</code>
+</div>
+</div></div>
+</div>
+<a id="method_setHeader"></a><div class="element clickable method public method_setHeader" data-toggle="collapse" data-target=".method_setHeader .collapse">
+<h2>Defines a new header or replaces an existing one.</h2>
+<pre>setHeader(string $name, string $value, bool $replace, null | int $responsecode) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$replace</h4>
+<code>bool</code>
+</div>
+<div class="subelement argument">
+<h4>$responsecode</h4>
+<code>null</code><code>int</code>
+</div>
+</div></div>
+</div>
+<a id="method_setHttpVersion"></a><div class="element clickable method public method_setHttpVersion" data-toggle="collapse" data-target=".method_setHttpVersion .collapse">
+<h2>Sets the http version for the response.</h2>
+<pre>setHttpVersion(string $version) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$version</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a id="method_setStatusCode"></a><div class="element clickable method public method_setStatusCode" data-toggle="collapse" data-target=".method_setStatusCode .collapse">
+<h2>Set the response status code.</h2>
+<pre>setStatusCode(string | int $code) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$code</h4>
+<code>string</code><code>int</code>
+</div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__pzCoreObject"> </a><div class="element clickable property protected property__pzCoreObject" data-toggle="collapse" data-target=".property__pzCoreObject .collapse">
+<h2></h2>
+<pre>$_pzCoreObject : null | <a href="../classes/Pz_Core.html">\Pz_Core</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>protected</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Pz_Abstract_Generic::$$_pzCoreObject</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__headers"> </a><div class="element clickable property private property__headers" data-toggle="collapse" data-target=".property__headers .collapse">
+<h2></h2>
+<pre>$_headers : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__httpVersion"> </a><div class="element clickable property private property__httpVersion" data-toggle="collapse" data-target=".property__httpVersion .collapse">
+<h2></h2>
+<pre>$_httpVersion : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__statusCode"> </a><div class="element clickable property private property__statusCode" data-toggle="collapse" data-target=".property__statusCode .collapse">
+<h2></h2>
+<pre>$_statusCode : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__statusText"> </a><div class="element clickable property private property__statusText" data-toggle="collapse" data-target=".property__statusText .collapse">
+<h2></h2>
+<pre>$_statusText : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a11</a> and<br>
+            generated on 2012-11-24T01:59:57-05:00.<br></footer></div>
+</div>
+</body>
+</html>
