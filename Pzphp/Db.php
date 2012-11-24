@@ -146,7 +146,7 @@
 		 * Returns the active database object or resource.
 		 *
 		 * @access public
-		 * @var int $id
+		 * @param int $id
 		 * @return bool|mysqli|pdo|mysql
 		 */
 		public function dbObject($id = -1)
@@ -168,7 +168,7 @@
 		 * Gets the last insert id.
 		 *
 		 * @access public
-		 * @var int $id
+		 * @param int $id
 		 * @return int
 		 */
 		public function insertId($id = -1)
@@ -190,8 +190,8 @@
 		 * Gets the affected rows count from the last insert/delete/update/etc query.
 		 *
 		 * @access public
-		 * @var PDOStatement|null $queryObject
-		 * @var int $id
+		 * @param PDOStatement|null $queryObject
+		 * @param int $id
 		 * @return int
 		 */
 		public function affectedRows(PDOStatement $queryObject = NULL, $id = -1)

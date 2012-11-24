@@ -330,7 +330,7 @@
 		 * Returns the affected rows from the provided query.
 		 *
 		 * @access public
-		 * @var PDOStatement $queryOnject
+		 * @param PDOStatement $queryOnject
 		 * @return mixed
 		 */
 		public function affectedRows(PDOStatement $queryOnject)

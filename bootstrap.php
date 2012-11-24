@@ -9,7 +9,11 @@
 	 *
 	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
 	 */
-
+	/**
+	 * The bootstrap is meant for you to include all your important logic.
+	 *
+	 * It can also be used for routing, among other things.
+	 */
 	/*#############################################################################*/
 	/*****THE FOLLOWING CAN BE REMOVED IF YOU DO NOT PLAN TO USE THE Pz_Debugger*****/
 	/*#*/define('PZD_START_MICROTIME', microtime(true));                        /*#*/
