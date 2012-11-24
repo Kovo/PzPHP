@@ -24,7 +24,7 @@
 	define('BASE_CLASS_DIR', BASE_DIR);
 	define('PZ_INC_DIR', BASE_DIR.'Pz'.DIRECTORY_SEPARATOR);
 	define('PZ_LOGS_DIR', BASE_DIR.'LOGS'.DIRECTORY_SEPARATOR);
-	define('PZPHP_ENVIRONMENT', $_ENV['PZPHP_ENVIRONMENT']);
+	define('PZPHP_ENVIRONMENT', getenv('PZPHP_ENVIRONMENT'));
 
 	require_once BASE_DIR.'config'.(PZPHP_ENVIRONMENT === 'production'?'':PZPHP_ENVIRONMENT).'.php';
 	require_once BASE_DIR.'my_config'.(PZPHP_ENVIRONMENT === 'production'?'':PZPHP_ENVIRONMENT).'.php';
