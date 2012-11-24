@@ -98,21 +98,67 @@
 		}
 
 		/**
-		 * Returns the active mysqli object.
+		 * Sets the active database id to use.
 		 *
 		 * @access public
-		 * @return bool|mysqli|pdo|mysql
+		 * @param int $id
+		 * @param bool $autoconnect
+		 * @return bool
 		 */
-		public function dbObject()
+		public function setActiveServerId($id, $autoconnect = false)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliActiveObject();
+					return $this->pzphp()->pz()->setActiveMysqliServerId($id, $autoconnect);
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlActiveObject();
+					return $this->pzphp()->pz()->setActiveMysqlServerId($id, $autoconnect);
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoActiveObject();
+					return $this->pzphp()->pz()->setActivePDOServerId($id, $autoconnect);
+				default:
+					return false;
+			}
+		}
+
+		/**
+		 * Return the active database object (or using the supplied id).
+		 *
+		 * @access public
+		 * @param $id
+		 * @return bool|Pz_Mysql_Server|Pz_Mysqli_Server|Pz_PDO_Server
+		 */
+		public function returnActiveServerObject($id = -1)
+		{
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id));
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id));
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id));
+				default:
+					return false;
+			}
+		}
+
+		/**
+		 * Returns the active database object or resource.
+		 *
+		 * @access public
+		 * @var int $id
+		 * @return bool|mysqli|pdo|mysql
+		 */
+		public function dbObject($id = -1)
+		{
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id));
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id));
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -122,18 +168,19 @@
 		 * Gets the last insert id.
 		 *
 		 * @access public
+		 * @var int $id
 		 * @return int
 		 */
-		public function insertId()
+		public function insertId($id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->insertId();
+					return $this->pzphp()->pz()->mysqliInteract()->insertId($this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->insertId();
+					return $this->pzphp()->pz()->mysqlInteract()->insertId($this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->insertId();
+					return $this->pzphp()->pz()->pdoInteract()->insertId($this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -144,18 +191,19 @@
 		 *
 		 * @access public
 		 * @var PDOStatement|null $queryObject
+		 * @var int $id
 		 * @return int
 		 */
-		public function affectedRows(PDOStatement $queryObject = NULL)
+		public function affectedRows(PDOStatement $queryObject = NULL, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->affectedRows();
+					return $this->pzphp()->pz()->mysqliInteract()->affectedRows($this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqliInteract()->affectedRows();
+					return $this->pzphp()->pz()->mysqliInteract()->affectedRows($this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->affectedRows($queryObject);
+					return $this->pzphp()->pz()->pdoInteract()->affectedRows($queryObject, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -165,7 +213,7 @@
 		 * Gets the returned rows count for the mysqli_result object.
 		 *
 		 * @access public
-		 * @param $object
+		 * @param msqli_result|PDOStatement|resource $object
 		 * @return int
 		 */
 		public function returnedRows($object)
@@ -175,9 +223,9 @@
 				case PZPHP_DATABASE_MYSQLI:
 					return (is_object($object)?$object->num_rows:0);
 				case PZPHP_DATABASE_MYSQL:
-					return (is_object($object)?$object->num_rows:0);
+					return (is_resource($object)?mysql_num_rows($object):0);
 				case self::PDO:
-					return (is_object($object)?$object->num_rows:0);
+					return (is_object($object)?$object->rowCount():0);
 				default:
 					return false;
 			}
@@ -187,7 +235,7 @@
 		 * Gets the next row from the mysqli_result object in an associative array.
 		 *
 		 * @access public
-		 * @param $object
+		 * @param msqli_result|PDOStatement|resource $object
 		 * @return bool
 		 */
 		public function fetchNextRowAssoc($object)
@@ -197,9 +245,9 @@
 				case PZPHP_DATABASE_MYSQLI:
 					return (is_object($object)?$object->fetch_assoc():false);
 				case PZPHP_DATABASE_MYSQL:
-					return (is_object($object)?$object->fetch_assoc():false);
+					return (is_resource($object)?mysql_fetch_assoc($object):false);
 				case self::PDO:
-					return (is_object($object)?$object->fetch_assoc():false);
+					return (is_object($object)?$object->fetch(PDO::FETCH_ASSOC):false);
 				default:
 					return false;
 			}
@@ -209,7 +257,7 @@
 		 * Gets the next row from the mysqli_result object in a numerated array.
 		 *
 		 * @access public
-		 * @param $object
+		 * @param msqli_result|PDOStatement|resource $object
 		 * @return bool
 		 */
 		public function fetchNextRowEnum($object)
@@ -219,9 +267,9 @@
 				case PZPHP_DATABASE_MYSQLI:
 					return (is_object($object)?$object->fetch_row():false);
 				case PZPHP_DATABASE_MYSQL:
-					return (is_object($object)?$object->fetch_row():false);
+					return (is_resource($object)?mysql_fetch_row($object):false);
 				case self::PDO:
-					return (is_object($object)?$object->fetch_row():false);
+					return (is_object($object)?$object->fetch(PDO::FETCH_NUM):false);
 				default:
 					return false;
 			}
@@ -231,7 +279,7 @@
 		 * Clears the result set if a valid result object is provided.
 		 *
 		 * @access public
-		 * @param $object
+		 * @param msqli_result|PDOStatement|resource $object
 		 */
 		public function freeResult($object)
 		{
@@ -243,14 +291,14 @@
 						$object->close();
 					}
 				case PZPHP_DATABASE_MYSQL:
-					if(is_object($object) && method_exists($object, 'close'))
+					if(is_resource($object))
 					{
-						$object->close();
+						mysql_free_result($object);
 					}
 				case self::PDO:
-					if(is_object($object) && method_exists($object, 'close'))
+					if(is_object($object) && method_exists($object, 'closeCursor '))
 					{
-						$object->close();
+						$object->closeCursor();
 					}
 			}
 
@@ -261,18 +309,17 @@
 		 *
 		 * @access public
 		 * @param string $name
+		 * @param int $id
 		 * @return bool
 		 */
-		public function changeDatabase($name)
+		public function changeDatabase($name, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->selectDatabase($name);
+					return $this->pzphp()->pz()->mysqliInteract()->selectDatabase($name, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->mysqlSelectDatabase($name);
-				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->pdoSelectDatabase($name);
+					return $this->pzphp()->pz()->mysqlInteract()->selectDatabase($name, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				default:
 					return false;
 			}
@@ -285,18 +332,17 @@
 		 * @param string $user
 		 * @param string $password
 		 * @param null|string $dbName
+		 * @param int $id
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = NULL)
+		public function changeUser($user, $password, $dbName = NULL, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->changeUser($user, $password, $dbName);
+					return $this->pzphp()->pz()->mysqliInteract()->changeUser($user, $password, $dbName, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->mysqlChangeUser($user, $password, $dbName);
-				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->pdoChangeUser($user, $password, $dbName);
+					return $this->pzphp()->pz()->mysqlInteract()->mysqlChangeUser($user, $password, $dbName, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				default:
 					return false;
 			}
@@ -306,19 +352,20 @@
 		 * Expects to handle a select query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function select($query)
+		public function select($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->read($query);
+					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -328,19 +375,20 @@
 		 * Expects to handle a set query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function set($query)
+		public function set($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->read($query);
+					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -350,19 +398,20 @@
 		 * Expects to handle an optimize query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function optimize($query)
+		public function optimize($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->read($query);
+					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -372,19 +421,20 @@
 		 * Expects to handle a check query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function check($query)
+		public function check($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->read($query);
+					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->read($query);
+					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->read($query);
+					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -394,19 +444,20 @@
 		 * Expects to handle an insert query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function insert($query)
+		public function insert($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->write($query);
+					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -416,19 +467,20 @@
 		 * Expects to handle a delete query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function delete($query)
+		public function delete($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->write($query);
+					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -438,19 +490,20 @@
 		 * Expects to handle an update query.
 		 *
 		 * @access public
-		 * @param $query
-		 * @return bool|mysqli_result
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
-		public function update($query)
+		public function update($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->write($query);
+					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->write($query);
+					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->write($query);
+					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -462,18 +515,19 @@
 		 * @access public
 		 * @param mixed $value
 		 * @param int $decimalPlaces
+		 * @param int $id
 		 * @return mixed
 		 */
-		public function sanitizeNumeric($value, $decimalPlaces = 2)
+		public function sanitizeNumeric($value, $decimalPlaces = 2, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces);
+					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, true, $decimalPlaces);
+					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, true, $decimalPlaces);
+					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}
@@ -485,18 +539,19 @@
 		 * @access public
 		 * @param mixed $value
 		 * @param int $cleanHtmlLevel
+		 * @param int $id
 		 * @return mixed
 		 */
-		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
 				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActiveMySqliId($id));
 				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
-					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel);
+					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActivePDOId($id));
 				default:
 					return false;
 			}

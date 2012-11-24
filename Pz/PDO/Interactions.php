@@ -221,4 +221,25 @@
 
 			return ($this->pzCore()->pdoActiveObject($id)?$this->pzCore()->pdoActiveObject($id)->insertId():0);
 		}
+
+		/**
+		 * Sanitize a value that will be injected into a query string.
+		 *
+		 * @access public
+		 * @param mixed $value
+		 * @param bool $mustBeNumeric
+		 * @param int  $decimalPlaces
+		 * @param int  $cleanall
+		 * @return mixed
+		 */
+		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+		{
+			return $this->pzCore()->pzSecurity()->cleanQuery(
+				NULL,
+				$value,
+				$mustBeNumeric,
+				$decimalPlaces,
+				$cleanall
+			);
+		}
 	}

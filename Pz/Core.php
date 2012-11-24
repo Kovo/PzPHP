@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '3.9.1';
+		const VERSION = '3.9.2';
 
 		/**
 		 * A multi-dimensional array that will hold various object instances.
