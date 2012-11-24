@@ -1,5 +1,5 @@
 ###ENVIRONMENT VARAIBLES
-SetEnv ENV local
+SetEnv PZPHP_ENVIRONMENT production
 SetEnv BOOTSTRAP_SCRIPT bootstrap.php
 
 ###BASIC CONFIG
