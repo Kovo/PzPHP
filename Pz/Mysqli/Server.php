@@ -11,9 +11,9 @@
 	 * @package Pz Library
 	 */
 	/**
-	 * Class is used for storing mysql connection information using mysql.
+	 * Class is used for storing mysql connection information using mysqli.
 	 */
-	final class Pz_Mysql_Server
+	final class Pz_Mysqli_Server
 	{
 		/**
 		 * Status constant when the connection is established.
@@ -101,12 +101,12 @@
 		private $_status = self::DISCONNECTED;
 
 		/**
-		 * The final mysql object.
+		 * The final mysqli object.
 		 *
 		 * @access private
-		 * @var null|resource
+		 * @var null|mysqli
 		 */
-		private $_mysql_res = NULL;
+		private $_mysqli_obj = NULL;
 
 		/**
 		 * The constructor handles setting the mysql server credentials.
@@ -143,24 +143,22 @@
 			{
 				$this->_status = self::CONNECTING;
 
-				$this->_mysql_res =  mysql_connect($this->_host.':'.$this->_port, $this->_user, $this->_password);
+				$this->_mysqli_obj =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
-				if(!$this->_mysql_res)
+				if(mysqli_connect_error())
 				{
 					for($x=0;$x<$this->_connectRetryAttempts;$x++)
 					{
 						sleep($this->_connectRetryDelay);
 
-						$this->_mysql_res =  mysql_connect($this->_host.':'.$this->_port, $this->_user, $this->_password);
+						$this->_mysqli_obj =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
-						if(!$this->_mysql_res)
+						if(mysqli_connect_error())
 						{
 							continue;
 						}
 						else
 						{
-							$this->selectDatabase($this->_dbName);
-
 							$this->_status = self::CONNECTED;
 
 							break;
@@ -180,8 +178,6 @@
 				}
 				else
 				{
-					$this->selectDatabase($this->_dbName);
-
 					$this->_status = self::CONNECTED;
 
 					return true;
@@ -200,11 +196,11 @@
 		 */
 		public function disconnect()
 		{
-			if($this->isConnected() === true && is_resource($this->_mysql_res))
+			if($this->isConnected() === true && is_object($this->_mysqli_obj))
 			{
-				$this->_mysql_res->close();
+				$this->_mysqli_obj->close();
 
-				$this->_mysql_res = NULL;
+				$this->_mysqli_obj = NULL;
 
 				$this->_status = self::DISCONNECTED;
 			}
@@ -218,18 +214,18 @@
 		 */
 		public function isConnected()
 		{
-			return ($this->_status===self::CONNECTED&&is_resource($this->_mysql_res)?true:false);
+			return ($this->_status===self::CONNECTED&&is_object($this->_mysqli_obj)?true:false);
 		}
 
 		/**
-		 * Returns the active mysql resource.
+		 * Returns the active mysqli object.
 		 *
 		 * @access public
-		 * @return resource|null
+		 * @return mysqli|null
 		 */
-		public function returnMysqlRes()
+		public function returnMysqliObj()
 		{
-			return $this->_mysql_res;
+			return $this->_mysqli_obj;
 		}
 
 		/**
@@ -240,7 +236,7 @@
 		 */
 		public function insertId()
 		{
-			return mysql_insert_id($this->_mysql_res);
+			return $this->_mysqli_obj->insert_id;
 		}
 
 		/**
@@ -251,7 +247,7 @@
 		 */
 		public function affectedRows()
 		{
-			return mysql_affected_rows($this->_mysql_res);
+			return $this->_mysqli_obj->affected_rows;
 		}
 
 		/**
@@ -263,7 +259,7 @@
 		 */
 		public function selectDatabase($dbName)
 		{
-			if(mysql_select_db($dbName, $this->_mysql_res))
+			if($this->_mysqli_obj->select_db($dbName))
 			{
 				$this->_dbName = $dbName;
 
@@ -278,8 +274,6 @@
 		/**
 		 * Change the current user.
 		 *
-		 * Since the mysql module does not support this directly, Pz will disconnect the current connection, and reconnect using the new username and password.
-		 *
 		 * @access public
 		 * @param string $user
 		 * @param string $password
@@ -288,20 +282,14 @@
 		 */
 		public function changeUser($user, $password, $dbName = NULL)
 		{
-			$this->disconnect();
-
-			$this->_user = $user;
-			$this->_password = $password;
-
-			if($this->connect())
+			if($this->_mysqli_obj->change_user($user, $password, $dbName))
 			{
+				$this->_user = $user;
+				$this->_password = $password;
+
 				if($dbName !== NULL)
 				{
-					$this->selectDatabase($dbName);
-				}
-				else
-				{
-					$this->selectDatabase($this->_dbName);
+					$this->_dbName = $dbName;
 				}
 
 				return true;
