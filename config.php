@@ -81,6 +81,7 @@
 	define('PZ_SETTING_DOMAIN_TARGET_DOMAIN', '');
 
 	define('PZ_SETTING_DEBUG_MODE', true);
+	define('PZ_SETTING_DEBUG_ERROR_LOGGING', true);
 	define('PZ_SETTING_DEBUG_DISPLAY_BAR', false);
 	define('PZ_SETTING_DEBUG_DB_USER', '');
 	define('PZ_SETTING_DEBUG_DB_PASSWORD', '');
