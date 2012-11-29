@@ -121,10 +121,10 @@
 		 */
 		private $_kPoisonConstraints = array(
 			array(1,2),
-			array(10,2),
+			array(10,3),
 			array(15,2),
 			array(25,2),
-			array(35,1),
+			array(35,3),
 			array(50,1),
 			array(70,1),
 			array(90,2),
@@ -366,8 +366,10 @@
 		{
 			//encrypt string first
 			$hashedInputString = $this->encrypt($inputString, $flags, $customRules);
+
 			//depoison it
 			$hashedInputString = $this->_depoisonString($hashedInputString, (isset($customRules[self::POISON_CONSTRAINTS])?$customRules[self::POISON_CONSTRAINTS]:$this->_kPoisonConstraints));
+
 			//depoison the comparison hash
 			$comparisonHash = $this->_depoisonString($comparisonHash, (isset($customRules[self::POISON_CONSTRAINTS])?$customRules[self::POISON_CONSTRAINTS]:$this->_kPoisonConstraints));
 
@@ -392,17 +394,15 @@
 		 */
 		private function _poisonString($input, array $constraints, $type = Pz_Helper_String::HEX)
 		{
-			$startChar = 0;
 			foreach($constraints as $coords)
 			{
-				if($coords[0]+$coords[1] < strlen($input))
+				if($coords[0] <= strlen($input))
 				{
-					$splitLeft = substr($input, 0, $coords[0]+$startChar);
-					$splitRight = substr($input, $coords[0]+$startChar);
+					$part1 = substr($input, 0, $coords[0]);
+					$part2 = substr($input, $coords[0]);
 
-					$input = $splitLeft.Pz_Helper_String::createCode($coords[1], $type).$splitRight;
-
-					$startChar += $coords[1];
+					$part1 = $part1.Pz_Helper_String::createCode($coords[1], $type);
+					$input = $part1.$part2;
 				}
 			}
 
@@ -423,22 +423,11 @@
 			{
 				if($coords[0] <= strlen($input))
 				{
-					if($coords[0]+$coords[1] < strlen($input))
-					{
-						$splitLeft = substr($input, 0, $coords[0]);
-						$splitRight = substr($input, $coords[0]+$coords[1]);
-					}
-					else
-					{
-						$splitLeft = substr($input, 0, $coords[0]-$coords[1]);
-						$splitRight = '';
-					}
-
-					$input = $splitLeft.$splitRight;
+					$input = substr_replace($input, str_repeat('|', $coords[1]), $coords[0], $coords[1]);
 				}
 			}
 
-			return $input;
+			return str_replace('|', '', $input);
 		}
 
 		/**

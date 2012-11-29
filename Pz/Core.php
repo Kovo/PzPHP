@@ -115,6 +115,7 @@
 			'domain_target_domain' => '',
 			#debug/profiling
 			'debug_mode' => true,
+			'debug_error_logging' => true,
 			'debug_display_bar' => true,
 			'debug_db_user' => '',
 			'debug_db_password' => '',
@@ -292,19 +293,22 @@
 		{
 			if($this->getSetting('debug_mode') === true)
 			{
-				if($this->getSetting('debug_log_php_errors'))
-				{
-					ini_set('error_log', PZ_LOGS_DIR.$this->getSetting('debug_php_error_log_file_name').'.log');
-					ini_set('error_reporting', E_ALL | E_NOTICE);
-					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
-				}
-
 				$this->setPzObject(
 					'debugger',
 					new Pz_Debugger($this->getSetting('debug_db_user'), $this->getSetting('debug_db_password'), $this->getSetting('debug_db_name'), $this->getSetting('debug_db_host'), $this->getSetting('debug_db_port'), $this->getSetting('debug_display_bar'), $this->getSetting('debug_db_log'))
 				);
 
 				$this->debugger('registerVersionInfo', array('Pz Library', self::VERSION));
+			}
+
+			if($this->getSetting('debug_error_logging'))
+			{
+				if($this->getSetting('debug_log_php_errors'))
+				{
+					ini_set('error_log', PZ_LOGS_DIR.$this->getSetting('debug_php_error_log_file_name').'.log');
+					ini_set('error_reporting', E_ALL | E_NOTICE);
+					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
+				}
 
 				if($this->getSetting('debug_mysql_log_errors'))
 				{
