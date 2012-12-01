@@ -267,11 +267,8 @@
 					}
 				}
 			}
-			else
-			{
-				return $unregisteredVariables;
-			}
 
+			return $unregisteredVariables;
 		}
 
 		/**
