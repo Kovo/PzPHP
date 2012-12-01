@@ -245,24 +245,33 @@
 		}
 
 		/**
-		 * Unregisters a registered variable.
+		 * Unregisters one or more registered variables.
 		 *
 		 * @access public
-		 * @param string $variableName
-		 * @return bool
+		 * @return int
 		 */
-		public function unregisterVariable($variableName)
+		public function unregisterVariable()
 		{
-			if($this->variableExists($variableName))
-			{
-				unset($this->_registeredVariables[$variableName]);
+			$variableNames = func_get_args();
+			$unregisteredVariables = 0;
 
-				return true;
+			if(count($variableNames) > 0)
+			{
+				foreach($variableNames as $variableName)
+				{
+					if($this->variableExists($variableName))
+					{
+						unset($this->_registeredVariables[$variableName]);
+
+						$unregisteredVariables++;
+					}
+				}
 			}
 			else
 			{
-				return false;
+				return $unregisteredVariables;
 			}
+
 		}
 
 		/**
