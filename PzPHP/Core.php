@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.2';
+		const VERSION = '1.0.3/Ultrices Tempor';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -52,6 +52,7 @@
 			$this->registerModule('PzPHP_Cache');
 			$this->registerModule('PzPHP_Db');
 			$this->registerModule('PzPHP_Security');
+			$this->registerModule('PzPHP_Locale');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
 		}
