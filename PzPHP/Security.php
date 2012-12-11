@@ -74,7 +74,7 @@
 		 * Decrypts a string that was encrypted using the two-way method.
 		 *
 		 * @access public
-		 * @param strng $value
+		 * @param string $value
 		 * @return string
 		 */
 		public function twoWayDecrypt($value)

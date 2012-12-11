@@ -148,16 +148,27 @@
 		 *
 		 * @access public
 		 * @param string $key
+		 * @param array $replacements
 		 * @param string $localeOverride
 		 * @return mixed
 		 */
-		public function translate($key, $localeOverride = '')
+		public function translate($key, $replacements = array(), $localeOverride = '')
 		{
 			$shortLocale = ($localeOverride===''?$this->_locale:$this->getShortLocaleId($localeOverride));
 
 			if(isset($this->_translations[$shortLocale][$key]))
 			{
-				return $this->_translations[$shortLocale][$key];
+				$returnString = $this->_translations[$shortLocale][$key];
+
+				if(count($replacements) > 0)
+				{
+					foreach($replacements as $key => $value)
+					{
+						$returnString = str_replace('%'.$key.'%', $value, $returnString);
+					}
+				}
+
+				return $returnString;
 			}
 			else
 			{
