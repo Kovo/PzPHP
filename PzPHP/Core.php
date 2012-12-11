@@ -322,7 +322,7 @@
 		 * @access public
 		 * @return PzPHP_Locale|null
 		 */
-		public function localize()
+		public function locale()
 		{
 			return $this->module('PzPHP_Locale');
 		}
