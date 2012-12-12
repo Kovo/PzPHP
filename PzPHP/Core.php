@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.2';
+		const VERSION = '1.0.3/Ultrices Tempor';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -52,6 +52,7 @@
 			$this->registerModule('PzPHP_Cache');
 			$this->registerModule('PzPHP_Db');
 			$this->registerModule('PzPHP_Security');
+			$this->registerModule('PzPHP_Locale');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
 		}
@@ -245,24 +246,30 @@
 		}
 
 		/**
-		 * Unregisters a registered variable.
+		 * Unregisters one or more registered variables.
 		 *
 		 * @access public
-		 * @param string $variableName
-		 * @return bool
+		 * @return int
 		 */
-		public function unregisterVariable($variableName)
+		public function unregisterVariable()
 		{
-			if($this->variableExists($variableName))
-			{
-				unset($this->_registeredVariables[$variableName]);
+			$variableNames = func_get_args();
+			$unregisteredVariables = 0;
 
-				return true;
-			}
-			else
+			if(count($variableNames) > 0)
 			{
-				return false;
+				foreach($variableNames as $variableName)
+				{
+					if($this->variableExists($variableName))
+					{
+						unset($this->_registeredVariables[$variableName]);
+
+						$unregisteredVariables++;
+					}
+				}
 			}
+
+			return $unregisteredVariables;
 		}
 
 		/**
@@ -315,7 +322,7 @@
 		 * @access public
 		 * @return PzPHP_Locale|null
 		 */
-		public function localize()
+		public function locale()
 		{
 			return $this->module('PzPHP_Locale');
 		}
