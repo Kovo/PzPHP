@@ -30,8 +30,8 @@
 	define('PZ_LOGS_DIR', BASE_DIR.'LOGS'.DIRECTORY_SEPARATOR);
 	define('PZPHP_ENVIRONMENT', getenv('PZPHP_ENVIRONMENT'));
 
-	require_once BASE_DIR.'config'.(PZPHP_ENVIRONMENT === 'production'?'':PZPHP_ENVIRONMENT).'.php';
-	require_once BASE_DIR.'my_config'.(PZPHP_ENVIRONMENT === 'production'?'':PZPHP_ENVIRONMENT).'.php';
+	require_once BASE_DIR.'config'.(PZPHP_ENVIRONMENT === 'production'?'':'_'.PZPHP_ENVIRONMENT).'.php';
+	require_once BASE_DIR.'my_config'.(PZPHP_ENVIRONMENT === 'production'?'':'_'.PZPHP_ENVIRONMENT).'.php';
 	
 	require_once PZ_INC_DIR.'ClassAutoloader.php';
 
