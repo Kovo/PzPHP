@@ -33,7 +33,7 @@
 		private function loader($className)
 		{
 			$fileNameParts = explode('_', $className);
-			$fileName = BASE_CLASS_DIR.implode('/', $fileNameParts).'.php';
+			$fileName = BASE_CLASS_DIR.implode(DIRECTORY_SEPARATOR, $fileNameParts).'.php';
 
 			if(file_exists($fileName))
 			{
