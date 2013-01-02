@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.3/Ultrices Tempor';
+		const VERSION = '1.0.4/Ultrices Tempor';
 
 		/**
 		 * An array of registered modules and their instances.

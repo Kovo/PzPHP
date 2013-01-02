@@ -138,15 +138,57 @@
 		}
 
 		/**
+		 * Sets the active cache id to use.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @param bool $autoconnect
+		 * @return bool
+		 */
+		public function setActiveServerId($id, $autoconnect = false)
+		{
+			switch($this->cacheMethod())
+			{
+				case PZPHP_CACHE_MODE_MEMCACHE:
+					return $this->pzphp()->pz()->setActiveMemcacheServerId($id, $autoconnect);
+				case PZPHP_CACHE_MODE_MEMCACHED:
+					return $this->pzphp()->pz()->setActiveMemcachedServerId($id, $autoconnect);
+				default:
+					return false;
+			}
+		}
+
+		/**
+		 * Return the active cache object (or using the supplied id).
+		 *
+		 * @access public
+		 * @param $id
+		 * @return bool|Pz_Memcache_Server|Pz_Memcached_Server
+		 */
+		public function returnActiveServerObject($id = -1)
+		{
+			switch($this->cacheMethod())
+			{
+				case PZPHP_CACHE_MODE_MEMCACHE:
+					return $this->pzphp()->pz()->memcacheActiveObject($this->pzphp()->pz()->decideActiveMemcacheId($id));
+				case PZPHP_CACHE_MODE_MEMCACHED:
+					return $this->pzphp()->pz()->memcachedActiveObject($this->pzphp()->pz()->decideActiveMemcachedId($id));
+				default:
+					return false;
+			}
+		}
+
+		/**
 		 * Cache read without a lock check and set.
 		 *
 		 * Reads from the cache without setting a lock, or checking for one.
 		 *
 		 * @access public
 		 * @param string $keyName
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function read_il($keyName)
+		public function read_il($keyName, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -155,9 +197,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->read($keyName);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->read($keyName);
+						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->read($keyName);
+						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->read($keyName);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
@@ -179,9 +221,10 @@
 		 *
 		 * @access public
 		 * @param $keyName
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function read_csl($keyName)
+		public function read_csl($keyName, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -190,9 +233,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->read($keyName, true);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, true);
+						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, true, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, true);
+						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, true, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->read($keyName, true);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
@@ -216,9 +259,10 @@
 		 * @param string $keyName
 		 * @param mixed $value
 		 * @param int $expires
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function write_ddl($keyName, $value, $expires = 0)
+		public function write_ddl($keyName, $value, $expires = 0, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -227,9 +271,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->write($keyName, $value, $expires, false, true);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, false, true);
+						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, false, true, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, false, true);
+						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, false, true, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->write($keyName, $value, false, true);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
@@ -253,9 +297,10 @@
 		 * @param string $keyName
 		 * @param mixed $value
 		 * @param int $expires
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function write_dl($keyName, $value, $expires = 0)
+		public function write_dl($keyName, $value, $expires = 0, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -264,9 +309,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->write($keyName, $value, $expires, true, true);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, true, true);
+						return $this->pzphp()->pz()->memcacheInteract()->write($keyName, $value, $expires, true, true, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, true, true);
+						return $this->pzphp()->pz()->memcachedInteract()->write($keyName, $value, $expires, true, true, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->write($keyName, $value, true, true);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
@@ -288,9 +333,10 @@
 		 *
 		 * @access public
 		 * @param string $keyName
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function delete_nlc($keyName)
+		public function delete_nlc($keyName, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -299,9 +345,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->delete($keyName, false);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, false);
+						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, false, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, false);
+						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, false, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->delete($keyName, false);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
@@ -323,9 +369,10 @@
 		 *
 		 * @access public
 		 * @param string $keyName
+		 * @param int $id
 		 * @return bool|mixed
 		 */
-		public function delete_lc($keyName)
+		public function delete_lc($keyName, $id = -1)
 		{
 			if($this->cacheEnabled())
 			{
@@ -334,9 +381,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->delete($keyName, true);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, true);
+						return $this->pzphp()->pz()->memcacheInteract()->delete($keyName, true, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, true);
+						return $this->pzphp()->pz()->memcachedInteract()->delete($keyName, true, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->delete($keyName, true);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
