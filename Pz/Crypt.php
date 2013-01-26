@@ -72,16 +72,6 @@ class Pz_Crypt
 	const DE_POISON = 10;
 
 	/**
-	 * This passphrase is required when generating or verifying environment info.
-	 *
-	 * Using a passphrase means it wont be possible for somoene to call the public function from another program, without direct access to the source of this class
-	 *
-	 * @access private
-	 * @var string
-	 */
-	private $_passPhrase = 'seeYouInShell';
-
-	/**
 	 * How many times should the default/custom salt be hashed by the default hashing algorithm.
 	 *
 	 * @access private
@@ -439,39 +429,31 @@ class Pz_Crypt
 	 *
 	 * NOTE: This verification method cannot take into account custom rules you may have passed in to the encrypt method, so do not soley rely on this method to verify compatibility.
 	 *
-	 * NOTE: This verification method will not take into account your passphrase.
-	 *
 	 * @access public
-	 * @param string $passPhrase
 	 * @return string
 	 */
-	public function getChecksum($passPhrase)
+	public function getChecksum()
 	{
-		if($passPhrase === $this->_passPhrase)
-		{
-			$strungString = md5($this->_kSaltDepth);
-			$strungString .= md5($this->_kHash);
-			$strungString .= md5($this->_kSalt);
-			$strungString .= md5(var_export($this->_kPoisonConstraints,true));
-			$strungString .= md5(var_export($this->_hashTableFrom,true));
-			$strungString .= md5(var_export($this->_hashTableTo,true));
+		$strungString = md5($this->_kSaltDepth);
+		$strungString .= md5($this->_kHash);
+		$strungString .= md5($this->_kSalt);
+		$strungString .= md5(var_export($this->_kPoisonConstraints,true));
+		$strungString .= md5(var_export($this->_hashTableFrom,true));
+		$strungString .= md5(var_export($this->_hashTableTo,true));
 
-			$supportedHashes = hash_algos();
+		$supportedHashes = hash_algos();
 
-			$strungString .=  md5((isset($supportedHashes['whirlpool'])?
-				md5('whirlpool'):
-				(isset($supportedHashes['sha512'])?
-					md5('sha512'):
-					(isset($supportedHashes['ripemd320'])?
-						md5('ripemd320'):md5('md5')
-					)
+		$strungString .=  md5((isset($supportedHashes['whirlpool'])?
+			md5('whirlpool'):
+			(isset($supportedHashes['sha512'])?
+				md5('sha512'):
+				(isset($supportedHashes['ripemd320'])?
+					md5('ripemd320'):md5('md5')
 				)
-			));
+			)
+		));
 
-			return md5($strungString);
-		}
-
-		return 'Incorrect pass phrase supplied.';
+		return md5($strungString);
 	}
 
 	/**
@@ -479,47 +461,33 @@ class Pz_Crypt
 	 *
 	 * @access public
 	 * @param string $checksumString
-	 * @param string $passPhrase
 	 * @return string
 	 */
-	public function verifyChecksum($checksumString, $passPhrase)
+	public function verifyChecksum($checksumString)
 	{
-		if($passPhrase === $this->_passPhrase)
+		if($this->getChecksum() === $checksumString)
 		{
-			if($this->getChecksum($passPhrase) === $checksumString)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return true;
 		}
-
-		return 'Incorrect passphrase supplied.';
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
 	 * Will dump a new array to replace the defualt $hashTableFrom array.
 	 *
 	 * @access public
-	 * @param string $passPhrase
 	 * @return mixed
 	 */
-	public function regeneratePzCryptHash($passPhrase)
+	public function regeneratePzCryptHash()
 	{
-		if($passPhrase === $this->_passPhrase)
-		{
-			$hashTableFrom = $this->_hashTableFrom;
+		$hashTableFrom = $this->_hashTableFrom;
 
-			shuffle($hashTableFrom);
+		shuffle($hashTableFrom);
 
-			$hashTableFrom = array_values($hashTableFrom);
-
-			return $hashTableFrom;
-		}
-
-		return 'Incorrect passphrase supplied.';
+		return array_values($hashTableFrom);
 	}
 
 	/**
@@ -537,63 +505,49 @@ class Pz_Crypt
 	 * Regenerates a new Pz_Crypt salt.
 	 *
 	 * @access public
-	 * @param string $passPhrase
 	 * @return string
 	 */
-	public function regeneratePzCryptSalt($passPhrase)
+	public function regeneratePzCryptSalt()
 	{
-		if($passPhrase === $this->_passPhrase)
-		{
-			return Pz_Helper_String::createCode(mt_rand(35,45), Pz_Helper_String::ALPHANUMERIC_PLUS);
-		}
-
-		return 'Incorrect passphrase supplied.';
+		return Pz_Helper_String::createCode(mt_rand(35,45), Pz_Helper_String::ALPHANUMERIC_PLUS);
 	}
 
 	/**
 	 * Replaces the default Pz_Crypt salt.
 	 *
 	 * @access public
-	 * @param string $passPhrase
+	 * @param string $newSalt
 	 */
-	public function replacePzCryptSalt($passPhrase)
+	public function replacePzCryptSalt($newSalt)
 	{
-		$this->_kSalt = $passPhrase;
+		$this->_kSalt = $newSalt;
 	}
 
 	/**
 	 * Regenerates a new array of poison constraints to replace the default array.
 	 *
 	 * @access public
-	 * @param string $passPhrase
 	 * @return mixed|string
 	 */
-	public function regeneratePzCryptPoisonConstraints($passPhrase)
+	public function regeneratePzCryptPoisonConstraints()
 	{
-		if($passPhrase === $this->_passPhrase)
-		{
-			$newConstraints = array(
-				array(mt_rand(0,5),mt_rand(1,2)),
-				array(mt_rand(8,12),mt_rand(1,2)),
-				array(mt_rand(13,20),mt_rand(1,2)),
-				array(mt_rand(22,34),mt_rand(1,2)),
-				array(mt_rand(35,48),mt_rand(1,2)),
-				array(mt_rand(49,65),mt_rand(1,2)),
-				array(mt_rand(68,80),mt_rand(1,2)),
-				array(mt_rand(85,124),mt_rand(1,2)),
-				array(mt_rand(135,287),mt_rand(1,2)),
-				array(mt_rand(289,555),mt_rand(1,2)),
-				array(mt_rand(580,987),mt_rand(1,2)),
-				array(mt_rand(999,8754),mt_rand(1,2)),
-				array(mt_rand(9000,89547),mt_rand(1,3)),
-				array(mt_rand(99853,985412),mt_rand(1,2)),
-				array(mt_rand(998541,1245551),mt_rand(1,3))
-			);
-
-			return $newConstraints;
-		}
-
-		return 'Incorrect passphrase supplied.';
+		return array(
+			array(mt_rand(0,5),mt_rand(1,2)),
+			array(mt_rand(8,12),mt_rand(1,2)),
+			array(mt_rand(13,20),mt_rand(1,2)),
+			array(mt_rand(22,34),mt_rand(1,2)),
+			array(mt_rand(35,48),mt_rand(1,2)),
+			array(mt_rand(49,65),mt_rand(1,2)),
+			array(mt_rand(68,80),mt_rand(1,2)),
+			array(mt_rand(85,124),mt_rand(1,2)),
+			array(mt_rand(135,287),mt_rand(1,2)),
+			array(mt_rand(289,555),mt_rand(1,2)),
+			array(mt_rand(580,987),mt_rand(1,2)),
+			array(mt_rand(999,8754),mt_rand(1,2)),
+			array(mt_rand(9000,89547),mt_rand(1,3)),
+			array(mt_rand(99853,985412),mt_rand(1,2)),
+			array(mt_rand(998541,1245551),mt_rand(1,3))
+		);;
 	}
 
 	/**
