@@ -109,11 +109,15 @@
 							$month = substr($extractDate, 4, 2);
 							$day = substr($extractDate, 6, 2);
 
-							$secondsDifference = time() - strtotime($year.'-'.$month.'-'.$day.' 00:00:00');
-
-							if($secondsDifference >= ($this->_deleteLogsAfterXDays*86400))
+							//verify that we have a valid date in the file name
+							if((int)$year > 1969 && (int)$year < 3000 && (int)$month > 0 && (int)$month < 12 && (int)$day > 0 && (int)$day < 32)
 							{
-								unlink($this->_logsDir.$fileName);
+								$secondsDifference = time() - strtotime($year.'-'.$month.'-'.$day.' 00:00:00');
+
+								if($secondsDifference >= ($this->_deleteLogsAfterXDays*86400))
+								{
+									unlink($this->_logsDir.$fileName);
+								}
 							}
 						}
 					}

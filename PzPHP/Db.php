@@ -21,7 +21,7 @@
 		 * @access private
 		 * @var int
 		 */
-		private $_databaseMethod = PZPHP_DATABASE_MYSQLI;
+		protected $_databaseMethod = PZPHP_DATABASE_MYSQLI;
 
 		/**
 		 * If databaseMethod is PDO, this varaible defines which one.
@@ -29,7 +29,7 @@
 		 * @access private
 		 * @var int
 		 */
-		private $_pdoType = -1;
+		protected $_pdoType = -1;
 
 		/**
 		 * The contstruct sets the database method (module) to be used.
@@ -128,28 +128,6 @@
 		 * @return bool|Pz_Mysql_Server|Pz_Mysqli_Server|Pz_PDO_Server
 		 */
 		public function returnActiveServerObject($id = -1)
-		{
-			switch($this->_databaseMethod)
-			{
-				case PZPHP_DATABASE_MYSQLI:
-					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
-					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id));
-				case self::PDO:
-					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id));
-				default:
-					return false;
-			}
-		}
-
-		/**
-		 * Returns the active database object or resource.
-		 *
-		 * @access public
-		 * @param int $id
-		 * @return bool|mysqli|pdo|mysql
-		 */
-		public function dbObject($id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
@@ -426,6 +404,29 @@
 		 * @return bool|mysqli_result|PDOStatement|resource
 		 */
 		public function check($query, $id = -1)
+		{
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
+				default:
+					return false;
+			}
+		}
+
+		/**
+		 * Expects to handle an analyze query.
+		 *
+		 * @access public
+		 * @param string $query
+		 * @param int $id
+		 * @return bool|mysqli_result|PDOStatement|resource
+		 */
+		public function analyze($query, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{

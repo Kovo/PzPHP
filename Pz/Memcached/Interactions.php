@@ -132,7 +132,7 @@
 				}
 				else
 				{
-					while($this->write($key.'_pzLock', mt_rand(1,2000000000), 15, false, false, $id) === false)
+					while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false, $id) === false)
 					{
 						usleep(mt_rand(1000,500000));
 					}
@@ -186,7 +186,7 @@
 				}
 				else
 				{
-					while($this->write($key.'_pzLock', mt_rand(1,2000000000), 15, false, false, $id) === false)
+					while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false, $id) === false)
 					{
 						usleep(mt_rand(1000,500000));
 					}
