@@ -21,7 +21,7 @@
 		 * @access private
 		 * @var int
 		 */
-		private $_databaseMethod = PZPHP_DATABASE_MYSQLI;
+		protected $_databaseMethod = PZPHP_DATABASE_MYSQLI;
 
 		/**
 		 * If databaseMethod is PDO, this varaible defines which one.
@@ -29,7 +29,7 @@
 		 * @access private
 		 * @var int
 		 */
-		private $_pdoType = -1;
+		protected $_pdoType = -1;
 
 		/**
 		 * The contstruct sets the database method (module) to be used.

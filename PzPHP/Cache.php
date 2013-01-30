@@ -21,7 +21,7 @@
 		 * @access private
 		 * @var int
 		 */
-		private $_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
+		protected $_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
 
 		/**
 		 * Flag if caching is enabled or not.
@@ -29,7 +29,7 @@
 		 * @access private
 		 * @var bool
 		 */
-		private $_cachingEnabled = false;
+		protected $_cachingEnabled = false;
 
 		/**
 		 * The contstruct verifies if caching is enabled, and sets it, if it is.
@@ -46,7 +46,7 @@
 		 *
 		 * @access private
 		 */
-		private function _verifyIfCachingEnabled()
+		protected function _verifyIfCachingEnabled()
 		{
 			if(PZPHP_CACHING_MODE !== PZPHP_CACHE_MODE_NO_CACHING)
 			{

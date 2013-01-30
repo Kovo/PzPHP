@@ -22,7 +22,7 @@
 		 * @access private
 		 * @var array
 		 */
-		private $_languages = array();
+		protected $_languages = array();
 
 		/**
 		 * The loaded translations array.
@@ -30,7 +30,7 @@
 		 * @access private
 		 * @var array
 		 */
-		private $_translations = array();
+		protected $_translations = array();
 
 		/**
 		 * The current active language.
@@ -38,7 +38,7 @@
 		 * @access private
 		 * @var string
 		 */
-		private $_locale = '';
+		protected $_locale = '';
 
 		/**
 		 * Add a language to be used in translation.
