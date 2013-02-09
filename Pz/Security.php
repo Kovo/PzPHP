@@ -128,13 +128,13 @@
 			{
 				if($mustBeNumeric === true)
 				{
-					if(is_float($value) === true)
+					if((string)(float)$value == $value)
 					{
-						return bcmul((float)$value, 1, $decimalPlaces);
+						return bcmul($value, 1, $decimalPlaces);
 					}
 					else
 					{
-						return bcmul((int)$value, 1, 0);
+						return bcmul($value, 1, 0);
 					}
 				}
 
