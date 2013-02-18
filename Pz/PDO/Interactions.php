@@ -235,7 +235,7 @@
 		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 		{
 			return $this->pzCore()->pzSecurity()->cleanQuery(
-				NULL,
+				null,
 				$value,
 				$mustBeNumeric,
 				$decimalPlaces,

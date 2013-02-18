@@ -106,7 +106,7 @@
 		 * @access private
 		 * @var null|mysqli
 		 */
-		private $_mysqli_obj = NULL;
+		private $_mysqli_obj = null;
 
 		/**
 		 * The constructor handles setting the mysql server credentials.
@@ -200,7 +200,7 @@
 			{
 				$this->_mysqli_obj->close();
 
-				$this->_mysqli_obj = NULL;
+				$this->_mysqli_obj = null;
 
 				$this->_status = self::DISCONNECTED;
 			}
@@ -280,14 +280,14 @@
 		 * @param null|string $dbName
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = NULL)
+		public function changeUser($user, $password, $dbName = null)
 		{
 			if($this->_mysqli_obj->change_user($user, $password, $dbName))
 			{
 				$this->_user = $user;
 				$this->_password = $password;
 
-				if($dbName !== NULL)
+				if($dbName !== null)
 				{
 					$this->_dbName = $dbName;
 				}

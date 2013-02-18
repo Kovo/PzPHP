@@ -82,7 +82,7 @@
 		 * @access private
 		 * @var null|memcache
 		 */
-		private $_memcache_obj = NULL;
+		private $_memcache_obj = null;
 
 		/**
 		 * The constructor handles setting the default settings.
@@ -167,7 +167,7 @@
 			{
 				$this->_memcache_obj->close();
 
-				$this->_memcache_obj = NULL;
+				$this->_memcache_obj = null;
 
 				$this->_status = self::DISCONNECTED;
 			}

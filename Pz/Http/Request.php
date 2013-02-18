@@ -117,7 +117,7 @@
 		{
 			$rawData = $this->server('HTTP_REFERER');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$this->_referer = trim($rawData);
 			}
@@ -132,7 +132,7 @@
 		{
 			$rawData = $this->server('HTTPS');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$rawData = strtolower(trim($rawData));
 
@@ -152,7 +152,7 @@
 		{
 			$rawData = $this->server('QUERY_STRING');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$this->_queryString = $this->cleanQueryString($rawData);
 			}
@@ -167,7 +167,7 @@
 		{
 			$rawData = $this->server('HTTP_ACCEPT');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$rawData = trim($rawData);
 
@@ -175,7 +175,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== NULL)
+					if($extractInfo !== null)
 					{
 						$this->_mediaTypes = $extractInfo;
 					}
@@ -202,7 +202,7 @@
 		{
 			$rawData = $this->server('HTTP_ACCEPT_CHARSET');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$rawData = trim($rawData);
 
@@ -210,7 +210,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== NULL)
+					if($extractInfo !== null)
 					{
 						$this->_charsets = $extractInfo;
 					}
@@ -237,7 +237,7 @@
 		{
 			$rawData = $this->server('HTTP_ACCEPT_ENCODING');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$rawData = trim($rawData);
 
@@ -245,7 +245,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== NULL)
+					if($extractInfo !== null)
 					{
 						$this->_encodings = $extractInfo;
 					}
@@ -272,7 +272,7 @@
 		{
 			$rawData = $this->server('HTTP_ACCEPT_LANGUAGE');
 
-			if($rawData !== NULL)
+			if($rawData !== null)
 			{
 				$rawData = trim($rawData);
 
@@ -280,7 +280,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== NULL)
+					if($extractInfo !== null)
 					{
 						$this->_languages = $extractInfo;
 					}
@@ -307,7 +307,7 @@
 		 */
 		public function parseAcceptHeader($header)
 		{
-			$return = NULL;
+			$return = null;
 			$header = str_replace(array("\r\n", "\r", "\n"), ' ', trim($header));
 			$types = explode(',', $header);
 			$types = array_map('trim', $types);
@@ -483,7 +483,7 @@
 		 */
 		public function server($varname)
 		{
-			$return = NULL;
+			$return = null;
 
 			if(isset($_SERVER[$varname]))
 			{
@@ -502,7 +502,7 @@
 		 */
 		public function get($varname)
 		{
-			$return = NULL;
+			$return = null;
 
 			if(isset($_GET[$varname]))
 			{
@@ -521,7 +521,7 @@
 		 */
 		public function post($varname)
 		{
-			$return = NULL;
+			$return = null;
 
 			if(isset($_POST[$varname]))
 			{
@@ -540,7 +540,7 @@
 		 */
 		public function cookie($varname)
 		{
-			$return = NULL;
+			$return = null;
 
 			if(isset($_COOKIE[$varname]))
 			{
@@ -559,7 +559,7 @@
 		 */
 		public function files($varname)
 		{
-			$return = NULL;
+			$return = null;
 
 			if(isset($_FILES[$varname]))
 			{

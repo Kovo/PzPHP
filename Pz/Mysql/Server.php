@@ -106,7 +106,7 @@
 		 * @access private
 		 * @var null|resource
 		 */
-		private $_mysql_res = NULL;
+		private $_mysql_res = null;
 
 		/**
 		 * The constructor handles setting the mysql server credentials.
@@ -204,7 +204,7 @@
 			{
 				$this->_mysql_res->close();
 
-				$this->_mysql_res = NULL;
+				$this->_mysql_res = null;
 
 				$this->_status = self::DISCONNECTED;
 			}
@@ -286,7 +286,7 @@
 		 * @param null|string $dbName
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = NULL)
+		public function changeUser($user, $password, $dbName = null)
 		{
 			$this->disconnect();
 
@@ -295,7 +295,7 @@
 
 			if($this->connect())
 			{
-				if($dbName !== NULL)
+				if($dbName !== null)
 				{
 					$this->selectDatabase($dbName);
 				}

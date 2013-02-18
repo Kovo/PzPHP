@@ -21,7 +21,7 @@
 		 * @access protected
 		 * @var null|Pz_Core
 		 */
-		protected $_pzCoreObject = NULL;
+		protected $_pzCoreObject = null;
 
 		/**
 		 * Calls the init() method.
