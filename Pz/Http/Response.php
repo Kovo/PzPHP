@@ -117,7 +117,7 @@
 		 * @param bool   $replace
 		 * @param null|int   $responsecode
 		 */
-		public function setHeader($name, $value = '', $replace = false, $responsecode = NULL)
+		public function setHeader($name, $value = '', $replace = false, $responsecode = null)
 		{
 			header($name.($value !== ''?': '.$value:''), $replace, $responsecode);
 

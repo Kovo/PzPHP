@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.5/Ultrices Tempor';
+		const VERSION = '1.1.0/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -53,6 +53,7 @@
 			$this->registerModule('PzPHP_Db');
 			$this->registerModule('PzPHP_Security');
 			$this->registerModule('PzPHP_Locale');
+			$this->registerModule('PzPHP_Routing');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
 		}
@@ -166,8 +167,24 @@
 			}
 			else
 			{
-				return NULL;
+				return null;
 			}
+		}
+
+		/**
+		 * A short-form for the registerVariable method.
+		 *
+		 * @param $variableName
+		 * @param $variableValue
+		 *
+		 * @return mixed
+		 */
+		public function setVariable($variableName, $variableValue)
+		{
+			return call_user_func_array(
+				array($this, 'registerVariable'),
+				array($variableName, $variableValue)
+			);
 		}
 
 		/**
@@ -207,7 +224,7 @@
 			}
 			else
 			{
-				return NULL;
+				return null;
 			}
 		}
 
@@ -229,7 +246,7 @@
 			}
 			else
 			{
-				return NULL;
+				return null;
 			}
 		}
 
@@ -243,6 +260,19 @@
 		public function variableExists($variableName)
 		{
 			return isset($this->_registeredVariables[$variableName]);
+		}
+
+		/**
+		 * Short-form for the unregisterVariable method.
+		 *
+		 * @return mixed
+		 */
+		public function unsetVariable()
+		{
+			return call_user_func_array(
+				array($this, 'unregisterVariable'),
+				func_get_args()
+			);
 		}
 
 		/**
@@ -325,5 +355,16 @@
 		public function locale()
 		{
 			return $this->module('PzPHP_Locale');
+		}
+
+		/**
+		 * Returns the instance of PzPHP_Routing.
+		 *
+		 * @access public
+		 * @return PzPHP_Routing|null
+		 */
+		public function routing()
+		{
+			return $this->module('PzPHP_Routing');
 		}
 	}

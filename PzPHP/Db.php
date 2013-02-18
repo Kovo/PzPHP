@@ -172,7 +172,7 @@
 		 * @param int $id
 		 * @return int
 		 */
-		public function affectedRows(PDOStatement $queryObject = NULL, $id = -1)
+		public function affectedRows(PDOStatement $queryObject = null, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{
@@ -313,7 +313,7 @@
 		 * @param int $id
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = NULL, $id = -1)
+		public function changeUser($user, $password, $dbName = null, $id = -1)
 		{
 			switch($this->_databaseMethod)
 			{

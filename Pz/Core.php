@@ -31,18 +31,18 @@ class Pz_Core
 	 * @var array
 	 */
 	private $_pzObjects = array(
-		'security' => NULL,
-		'debugger' => NULL,
+		'security' => null,
+		'debugger' => null,
 		'loggers' => array(
-			'mysql' => NULL,
-			'mysqli' => NULL,
-			'pdo' => NULL,
-			'memcache' => NULL,
-			'memcached' => NULL
+			'mysql' => null,
+			'mysqli' => null,
+			'pdo' => null,
+			'memcache' => null,
+			'memcached' => null
 		),
 		'http' => array(
-			'response' => NULL,
-			'request' => NULL
+			'response' => null,
+			'request' => null
 		)
 	);
 
@@ -55,14 +55,14 @@ class Pz_Core
 	 * @var array
 	 */
 	private $_pzInteractions = array(
-		'mysql' => NULL,
-		'mysqli' => NULL,
-		'pdo' => NULL,
-		'memcache' => NULL,
-		'memcached' => NULL,
-		'apc' => NULL,
-		'shm' => NULL,
-		'localcache' => NULL
+		'mysql' => null,
+		'mysqli' => null,
+		'pdo' => null,
+		'memcache' => null,
+		'memcached' => null,
+		'apc' => null,
+		'shm' => null,
+		'localcache' => null
 	);
 
 	/**
@@ -448,7 +448,7 @@ class Pz_Core
 	 */
 	protected function _loadPzInteraction($name, $className)
 	{
-		if($this->_pzInteractions[$name] === NULL)
+		if($this->_pzInteractions[$name] === null)
 		{
 			$this->_pzInteractions[$name] = new $className($this);
 		}
@@ -463,7 +463,7 @@ class Pz_Core
 	 */
 	public function getPzInteraction($name)
 	{
-		if($this->_pzInteractions[$name] === NULL)
+		if($this->_pzInteractions[$name] === null)
 		{
 			return false;
 		}
@@ -504,7 +504,7 @@ class Pz_Core
 	 */
 	public function pzSecurity()
 	{
-		if(($pzSecurity = $this->getPzObject('security')) === NULL)
+		if(($pzSecurity = $this->getPzObject('security')) === null)
 		{
 			$pzSecurity = $this->setPzObject('security', new Pz_Security());
 		}
@@ -520,7 +520,7 @@ class Pz_Core
 	 */
 	public function pzHttpRequest()
 	{
-		if(($pzHttpRequest = $this->getPzObject('http_request')) === NULL)
+		if(($pzHttpRequest = $this->getPzObject('http_request')) === null)
 		{
 			$pzHttpRequest = $this->setPzObject('http_request', new Pz_Http_Request($this));
 		}
@@ -536,7 +536,7 @@ class Pz_Core
 	 */
 	public function pzHttpResponse()
 	{
-		if(($pzHttpResponse = $this->getPzObject('http_response')) === NULL)
+		if(($pzHttpResponse = $this->getPzObject('http_response')) === null)
 		{
 			$pzHttpResponse = $this->setPzObject('http_response', new Pz_Http_Response($this));
 		}
@@ -580,7 +580,7 @@ class Pz_Core
 	 */
 	public function debugger($methodName, $param = array())
 	{
-		if($this->getPzObject('debugger') !== NULL)
+		if($this->getPzObject('debugger') !== null)
 		{
 			call_user_func_array(array($this->getPzObject('debugger'), $methodName), $param);
 		}

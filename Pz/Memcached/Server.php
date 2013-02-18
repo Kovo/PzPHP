@@ -82,7 +82,7 @@
 		 * @access private
 		 * @var null|memcached
 		 */
-		private $_memcached_obj = NULL;
+		private $_memcached_obj = null;
 
 		/**
 		 * The constructor handles setting the default settings.
@@ -170,7 +170,7 @@
 		{
 			if($this->isConnected() === true && is_object($this->_memcached_obj))
 			{
-				$this->_memcached_obj = NULL;
+				$this->_memcached_obj = null;
 
 				$this->_status = self::DISCONNECTED;
 			}

@@ -246,7 +246,7 @@
 		 * @param int $id
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = NULL, $id = -1)
+		public function changeUser($user, $password, $dbName = null, $id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 

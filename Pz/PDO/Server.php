@@ -154,7 +154,7 @@
 		 * @access private
 		 * @var null|pdo
 		 */
-		private $_pdo_obj = NULL;
+		private $_pdo_obj = null;
 
 		/**
 		 * The constructor handles setting the database server credentials.
@@ -287,7 +287,7 @@
 		{
 			if($this->isConnected() === true && is_object($this->_pdo_obj))
 			{
-				$this->_pdo_obj = NULL;
+				$this->_pdo_obj = null;
 
 				$this->_status = self::DISCONNECTED;
 			}

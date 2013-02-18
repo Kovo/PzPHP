@@ -19,7 +19,7 @@
 		 * @access private
 		 * @var null|PzPHP_Core
 		 */
-		private $_pzphpCore = NULL;
+		private $_pzphpCore = null;
 
 		/**
 		 * The init method sets the PzPHP_Core object.

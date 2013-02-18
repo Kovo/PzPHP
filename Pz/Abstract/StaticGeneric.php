@@ -22,7 +22,7 @@
 		 * @access protected
 		 * @var null|Pz_Core
 		 */
-		protected static $_pzCoreObject = NULL;
+		protected static $_pzCoreObject = null;
 
 		/**
 		 * The init method sets the Pz_Core object.
