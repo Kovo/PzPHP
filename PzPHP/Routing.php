@@ -61,6 +61,11 @@
 		const ERROR_REGEX_MATCH_ERROR = 104;
 
 		/**
+		 * @var int
+		 */
+		const ERROR_NO_CLASS_OR_ACTION = 105;
+
+		/**
 		 * @var string
 		 */
 		const REGEX_TERM_PATTERN = "#(\\()?<[^>]++>(\\))?#";
@@ -112,11 +117,47 @@
 		 * This method scans the rquest uri and attempts to match it to a registered route. Once a route is found, the specified class and method are executed with the found terms passed to it.
 		 *
 		 * @access public
+		 * @var $allowGetOverride
 		 * @return mixed
 		 * @throws Exception
 		 */
-		public function listen()
+		public function listen($allowGetOverride = false)
 		{
+			if($allowGetOverride)
+			{
+				$class = $this->pzphp()->pz()->pzHttpRequest()->get('controller');
+				$method = $this->pzphp()->pz()->pzHttpRequest()->get('action');
+				$terms = $this->pzphp()->pz()->pzHttpRequest()->get('terms');
+
+				if($class !== NULL && $method !== NULL)
+				{
+					if(class_exists($class) && method_exists($class, $method))
+					{
+						if($terms === NULL)
+						{
+							$arguments = array();
+						}
+						elseif(!is_array($terms))
+						{
+							$arguments = array($terms);
+						}
+						else
+						{
+							$arguments = $terms;
+						}
+
+						return call_user_func_array(
+							array($class, $method),
+							$arguments
+						);
+					}
+					else
+					{
+						throw new Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
+					}
+				}
+			}
+
 			if(count($this->_routes) > 0)
 			{
 				$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
@@ -188,22 +229,29 @@
 
 				if($foundKey !== null)
 				{
-					return call_user_func_array(
-						array(
-							$routeValues[self::CONTROLLER],
-							$routeValues[self::ACTION]
-						),
-						$terms
-					);
+					if(class_exists($routeValues[self::CONTROLLER]) && method_exists($routeValues[self::CONTROLLER], $routeValues[self::ACTION]))
+					{
+						return call_user_func_array(
+							array(
+								$routeValues[self::CONTROLLER],
+								$routeValues[self::ACTION]
+							),
+							$terms
+						);
+					}
+					else
+					{
+						throw new Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
+					}
 				}
 				else
 				{
-					throw new Exception('No valid route found for this request.');
+					throw new Exception('No valid route found for this request.', self::ERROR_NO_ROUTE);
 				}
 			}
 			else
 			{
-				throw new Exception('No routes to match this request to.');
+				throw new Exception('No routes to match this request to.', self::ERROR_NO_ROUTE);
 			}
 		}
 

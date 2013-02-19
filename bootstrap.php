@@ -40,24 +40,3 @@
 	$_PZPHP = new PzPHP_Core();
 
 	//----------------------BEGIN YOUR MAGIC BELOW----------------------//
-
-	$_PZPHP->routing()->setSiteUrl('http://localhost/');
-	$_PZPHP->routing()->setBaseUri('PzPHP');
-	$_PZPHP->routing()->add('default', '/dogs/are/<very>/(<cute>)/', 'mine', 'yours');
-
-	echo $_PZPHP->routing()->get('default', array(
-		'very' => 'replace1',
-		'cute' => 'replace2'
-	));
-
-	echo '<br/>';
-	echo '<br/>';
-
-	try
-	{
-		$_PZPHP->routing()->listen();
-	}
-	catch(Exception $e)
-	{
-		echo 'not found';
-	}
