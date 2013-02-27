@@ -143,6 +143,28 @@
 		}
 
 		/**
+		 * Returns the active database object or resource.
+		 *
+		 * @access public
+		 * @param int $id
+		 * @return bool|mysqli|pdo|mysql
+		 */
+		public function dbObject($id = -1)
+		{
+			switch($this->_databaseMethod)
+			{
+				case PZPHP_DATABASE_MYSQLI:
+					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id))->returnMysqliObj();
+				case PZPHP_DATABASE_MYSQL:
+					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id))->returnMysqlRes();
+				case self::PDO:
+					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id))->returnPDOObj();
+				default:
+					return false;
+			}
+		}
+
+		/**
 		 * Gets the last insert id.
 		 *
 		 * @access public
