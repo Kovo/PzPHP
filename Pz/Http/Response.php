@@ -18,34 +18,34 @@
 		/**
 		 * An array of custom set headers.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_headers = array();
+		protected $_headers = array();
 
 		/**
 		 * The http status code to be sent to the client.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_statusCode = 200;
+		protected $_statusCode = 200;
 
 		/**
 		 * The http version being used.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_httpVersion = '1.1';
+		protected $_httpVersion = '1.1';
 
 		/**
 		 * Status code texts array.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_statusText = array(
+		protected $_statusText = array(
 			100 => 'Continue',
 			101 => 'Switching Protocols',
 			102 => 'Processing',

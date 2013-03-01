@@ -39,79 +39,79 @@
 		/**
 		 * The username that will access the mysql server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_user = '';
+		protected $_user = '';
 
 		/**
 		 * The password that will access the mysql server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_password = '';
+		protected $_password = '';
 
 		/**
 		 * The host that the mysql server is on.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_host = '';
+		protected $_host = '';
 
 		/**
 		 * The default database to connect to.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbName = '';
+		protected $_dbName = '';
 
 		/**
 		 * The port that the mysql server is on.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_port = 0;
+		protected $_port = 0;
 
 		/**
 		 * The amount of times Pz should try to reconnect to the mysql server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryAttempts = 0;
+		protected $_connectRetryAttempts = 0;
 
 		/**
 		 * The amount of seconds to wait between connection retry attempts.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryDelay = 0;
+		protected $_connectRetryDelay = 0;
 
 		/**
 		 * The current connection status.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_status = self::DISCONNECTED;
+		protected $_status = self::DISCONNECTED;
 
 		/**
 		 * The final mysqli object.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var null|mysqli
 		 */
-		private $_mysqli_obj = null;
+		protected $_mysqli_obj = null;
 
 		/**
 		 * The constructor handles setting the mysql server credentials.
 		 *
-		 * @access private
+		 * @access protected
 		 * @param string $dbUser
 		 * @param string $dbPassword
 		 * @param string $dbName

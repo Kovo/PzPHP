@@ -18,66 +18,66 @@
 		/**
 		 * Whether the current request is an AJAX request or not.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var bool
 		 */
-		private $_isAjax = false;
+		protected $_isAjax = false;
 
 		/**
 		 * The query string (if any) associated with this request.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_queryString = '';
+		protected $_queryString = '';
 
 		/**
 		 * The different accepted media types.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_mediaTypes = array();
+		protected $_mediaTypes = array();
 
 		/**
 		 * The different accepted charsets.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_charsets = array();
+		protected $_charsets = array();
 
 		/**
 		 * The different accepted encodings.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_encodings = array();
+		protected $_encodings = array();
 
 		/**
 		 * The different accepted languages.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_languages = array();
+		protected $_languages = array();
 
 		/**
 		 * The referer url for this request.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_referer = '';
+		protected $_referer = '';
 
 		/**
 		 * Whether this request is being sent over https.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var bool
 		 */
-		private $_secure = false;
+		protected $_secure = false;
 
 		/**
 		 * Sets Pz Core object and starts gathering request data.
@@ -94,9 +94,9 @@
 		/**
 		 * Gathers various information about the request and stores it.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _populateRequestParameters()
+		protected function _populateRequestParameters()
 		{
 			$this->_detectAjax();
 			$this->_detectQueryString();
@@ -111,9 +111,9 @@
 		/**
 		 * Detects the referer url (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectReferer()
+		protected function _detectReferer()
 		{
 			$rawData = $this->server('HTTP_REFERER');
 
@@ -126,9 +126,9 @@
 		/**
 		 * Detects whether https is being used.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectHttps()
+		protected function _detectHttps()
 		{
 			$rawData = $this->server('HTTPS');
 
@@ -146,9 +146,9 @@
 		/**
 		 * Detects and cleans the query string (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectQueryString()
+		protected function _detectQueryString()
 		{
 			$rawData = $this->server('QUERY_STRING');
 
@@ -161,9 +161,9 @@
 		/**
 		 * Reads header information for media types and extracts them.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectMediaTypes()
+		protected function _detectMediaTypes()
 		{
 			$rawData = $this->server('HTTP_ACCEPT');
 
@@ -196,9 +196,9 @@
 		/**
 		 * Reads header information for charsets and extracts them.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectCharsets()
+		protected function _detectCharsets()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_CHARSET');
 
@@ -231,9 +231,9 @@
 		/**
 		 * Reads header information for accepted encodings and extracts them.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectEncodings()
+		protected function _detectEncodings()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_ENCODING');
 
@@ -266,9 +266,9 @@
 		/**
 		 * Reads header information for accepted languages and extracts them.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectLanguages()
+		protected function _detectLanguages()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_LANGUAGE');
 
@@ -388,9 +388,9 @@
 		/**
 		 * Detects if current request is an ajax call.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _detectAjax()
+		protected function _detectAjax()
 		{
 			$serverXmlHttpVar = $this->server('HTTP_X_REQUESTED_WITH');
 

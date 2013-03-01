@@ -19,7 +19,7 @@
 		 * The key must be the long format, while the value must be the short format.
 		 * Ex: en_us => en
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
 		protected $_languages = array();
@@ -27,7 +27,7 @@
 		/**
 		 * The loaded translations array.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
 		protected $_translations = array();
@@ -35,7 +35,7 @@
 		/**
 		 * The current active language.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
 		protected $_locale = '';

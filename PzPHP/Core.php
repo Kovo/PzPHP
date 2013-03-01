@@ -20,23 +20,23 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.0/Ultrices Quam';
+		const VERSION = '1.1.1/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_registeredModules = array();
+		protected $_registeredModules = array();
 
 		/**
 		 * An array of registered variables accessible to all modules.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_registeredVariables = array();
+		protected $_registeredVariables = array();
 
 		/**
 		 * The construct registers the core modules of PzPHP, including Pz_Core.
@@ -61,9 +61,9 @@
 		/**
 		 * Checks to make sure key directories exist, and if they don't, create them.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _warmupDirectories()
+		protected function _warmupDirectories()
 		{
 			if(!is_dir(PZPHP_TRANSLATIONS_DIR))
 			{
@@ -89,10 +89,10 @@
 		/**
 		 * Extracts all pz related constants to pass to Pz_Core.
 		 *
-		 * @access private
+		 * @access protected
 		 * @return array
 		 */
-		private function _extractPzCoreSettings()
+		protected function _extractPzCoreSettings()
 		{
 			$settings = array();
 			$definedConstants = get_defined_constants(true);

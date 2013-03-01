@@ -18,16 +18,18 @@
 		/**
 		 * This array holds a key => value pair of any versions of packages/subpackages registered in your script; which are then displayed in the debug bar.
 		 *
+		 * @access protected
 		 * @var array
 		 */
-		private $_registeredVersionInfo = array();
+		protected $_registeredVersionInfo = array();
 
 		/**
 		 * Full array of different statistics this class keeps track of.
 		 *
+		 * @access protected
 		 * @var array
 		 */
-		private $_statistics = array(
+		protected $_statistics = array(
 			'mysql_queries' => 0,
 			'mysql_read_queries' => 0,
 			'mysql_write_queries' => 0,
@@ -79,65 +81,74 @@
 		/**
 		 * The user name for the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbUser = '';
+		protected $_dbUser = '';
 
 		/**
 		 * The password for the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbPassword = '';
+		protected $_dbPassword = '';
 
 		/**
 		 * The database name for the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbName = '';
+		protected $_dbName = '';
 
 		/**
 		 * The host for the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbHost = 'localhost';
+		protected $_dbHost = 'localhost';
 
 		/**
 		 * The port for the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var int
 		 */
-		private $_dbPort = 3306;
+		protected $_dbPort = 3306;
 
 		/**
 		 * Retry attempts to the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var int
 		 */
-		private $_dbRetryattempts = 1;
+		protected $_dbRetryattempts = 1;
 
 		/**
 		 * Retry attempt delays to the mysql server that has access to the pz_debugger table.
 		 *
+		 * @access protected
 		 * @var int
 		 */
-		private $_dbRetryDelay = 2;
+		protected $_dbRetryDelay = 2;
 
 		/**
 		 * If the debug bar should be displayed.
 		 *
+		 * @access protected
 		 * @var bool
 		 */
-		private $_displayBar = false;
+		protected $_displayBar = false;
 
 		/**
 		 * Whether stats should be logged to the database or not.
 		 *
+		 * @access protected
 		 * @var bool
 		 */
-		private $_logToDb = false;
+		protected $_logToDb = false;
 
 		/**
 		 * Sets the default values for the debugger class.
@@ -564,10 +575,10 @@
 		/**
 		 * This method handles building the debug bar and populating it.
 		 *
-		 * @access private
+		 * @access protected
 		 * @return string
 		 */
-		private function _buildBar()
+		protected function _buildBar()
 		{
 			$html = '<div style="position:fixed;bottom:0;width:90%;margin:0 5%;font-size: 12px;font-family: Arial, sans-serif;background-color: #E9E9E9;border:1px solid #6A5C5A;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;height:40px;z-index:2147483647;">';
 

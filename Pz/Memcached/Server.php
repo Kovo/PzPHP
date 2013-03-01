@@ -39,50 +39,50 @@
 		/**
 		 * The IP of the target memcache server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_ip = '';
+		protected $_ip = '';
 
 		/**
 		 * The port of the target memcache server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_port = 0;
+		protected $_port = 0;
 
 		/**
 		 * The amount of times Pz should try to reconnect to memcache on failure.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryAttempts = 0;
+		protected $_connectRetryAttempts = 0;
 
 		/**
 		 * The time in seconds to wait between retry attempts.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryDelay = 0;
+		protected $_connectRetryDelay = 0;
 
 		/**
 		 * The current connection status.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_status = self::DISCONNECTED;
+		protected $_status = self::DISCONNECTED;
 
 		/**
 		 * The current active memcached object.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var null|memcached
 		 */
-		private $_memcached_obj = null;
+		protected $_memcached_obj = null;
 
 		/**
 		 * The constructor handles setting the default settings.

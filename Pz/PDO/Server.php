@@ -39,127 +39,126 @@
 		/**
 		 * The username that will access the database server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_user = '';
+		protected $_user = '';
 
 		/**
 		 * The password that will access the database server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_password = '';
+		protected $_password = '';
 
 		/**
 		 * The host that the database server is on.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_host = '';
+		protected $_host = '';
 
 		/**
 		 * The server name for the database (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_server = '';
+		protected $_server = '';
 
 		/**
 		 * The connection socket for the database (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_socket = '';
+		protected $_socket = '';
 
 		/**
 		 * The connection protocol for the database (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_protocol = '';
+		protected $_protocol = '';
 
 		/**
 		 * The default database to connect to.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbName = '';
+		protected $_dbName = '';
 
 		/**
 		 * The type of database this is.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_dbType = '';
+		protected $_dbType = '';
 
 		/**
 		 * The charset to use for the connection.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var string
 		 */
-		private $_charset = '';
+		protected $_charset = '';
 
 		/**
 		 * The chosen database's driver options.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_dbDriverOptions = array();
+		protected $_dbDriverOptions = array();
 
 		/**
 		 * The port that the database server is on.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_port = 0;
+		protected $_port = 0;
 
 		/**
 		 * The amount of times Pz should try to reconnect to the database server.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryAttempts = 0;
+		protected $_connectRetryAttempts = 0;
 
 		/**
 		 * The amount of seconds to wait between connection retry attempts.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_connectRetryDelay = 0;
+		protected $_connectRetryDelay = 0;
 
 		/**
 		 * The current connection status.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
-		private $_status = self::DISCONNECTED;
+		protected $_status = self::DISCONNECTED;
 
 		/**
 		 * The final pdo object.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var null|pdo
 		 */
-		private $_pdo_obj = null;
+		protected $_pdo_obj = null;
 
 		/**
 		 * The constructor handles setting the database server credentials.
 		 *
-		 * @access private
 		 * @param string $dbUser
 		 * @param string $dbPassword
 		 * @param string $dbType
@@ -234,10 +233,10 @@
 		/**
 		 * Returns the correct DSN for the PDO connection.
 		 *
-		 * @access private
+		 * @access protected
 		 * @return string
 		 */
-		private function _getDSN()
+		protected function _getDSN()
 		{
 			switch($this->_dbType)
 			{
