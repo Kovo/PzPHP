@@ -16,10 +16,10 @@
 		/**
 		 * An object representing PzPHP_Core.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var null|PzPHP_Core
 		 */
-		private $_pzphpCore = null;
+		protected $_pzphpCore = null;
 
 		/**
 		 * The init method sets the PzPHP_Core object.

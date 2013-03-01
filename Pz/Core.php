@@ -20,17 +20,17 @@ class Pz_Core
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.9.3/Morbi Mollis';
+	const VERSION = '3.9.4/Morbi Mollis';
 
 	/**
 	 * A multi-dimensional array that will hold various object instances.
 	 *
 	 * Pz stores main objects like the logger class, debugger, security, etc... inside this array for easy access.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_pzObjects = array(
+	protected $_pzObjects = array(
 		'security' => null,
 		'debugger' => null,
 		'loggers' => array(
@@ -51,10 +51,10 @@ class Pz_Core
 	 *
 	 * Pz stores interaction objects for class representations of data storage/caching architectures, such as MySQL, Memcache, APC, etc...
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_pzInteractions = array(
+	protected $_pzInteractions = array(
 		'mysql' => null,
 		'mysqli' => null,
 		'pdo' => null,
@@ -70,10 +70,10 @@ class Pz_Core
 	 *
 	 * A multi-dimensional array that holds default settings for Pz.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_settings = array(
+	protected $_settings = array(
 		#databases
 		'db_connect_retry_attempts' => 1,
 		'db_connect_retry_delay' => 2,
@@ -144,90 +144,90 @@ class Pz_Core
 	 *
 	 * They keys in this array also act as the id for the particular mysql server object.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_mysqlServers = array();
+	protected $_mysqlServers = array();
 
 	/**
 	 * The active mysql server id.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var int
 	 */
-	private $_activeMysqlServerId = -1;
+	protected $_activeMysqlServerId = -1;
 
 	/**
 	 * An array where mysqli server objects are stored.
 	 *
 	 * They keys in this array also act as the id for the particular mysqli server object.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_mysqliServers = array();
+	protected $_mysqliServers = array();
 
 	/**
 	 * The active mysqli server id.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var int
 	 */
-	private $_activeMysqliServerId = -1;
+	protected $_activeMysqliServerId = -1;
 
 	/**
 	 * An array where pdo server objects are stored.
 	 *
 	 * They keys in this array also act as the id for the particular pdo server object.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_pdoServers = array();
+	protected $_pdoServers = array();
 
 	/**
 	 * The active pdo server id.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var int
 	 */
-	private $_activePDOServerId = -1;
+	protected $_activePDOServerId = -1;
 
 	/**
 	 * An array where memcached server objects are stored.
 	 *
 	 * They keys in this array also act as the id for the particular memcached server object.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_memcachedServers = array();
+	protected $_memcachedServers = array();
 
 	/**
 	 * An array where memcache server objects are stored.
 	 *
 	 * They keys in this array also act as the id for the particular memcache server object.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $_memcacheServers = array();
+	protected $_memcacheServers = array();
 
 	/**
 	 * The active memcached server id.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var int
 	 */
-	private $_activeMemcachedServerId = -1;
+	protected $_activeMemcachedServerId = -1;
 
 	/**
 	 * The active memcache server id.
 	 *
-	 * @access private
+	 * @access protected
 	 * @var int
 	 */
-	private $_activeMemcacheServerId = -1;
+	protected $_activeMemcacheServerId = -1;
 
 	/**
 	 * Boot-up process for the Pz Library.
@@ -268,10 +268,10 @@ class Pz_Core
 	/**
 	 * Apply any custom settings for Pz before anything else gets started.
 	 *
-	 * @access private
+	 * @access protected
 	 * @param array $settings
 	 */
-	private function _initSettings(array $settings = array())
+	protected function _initSettings(array $settings = array())
 	{
 		if(count($settings) > 0)
 		{
@@ -288,9 +288,9 @@ class Pz_Core
 	/**
 	 * Begin debugging class, or warm-up logs.
 	 *
-	 * @access private
+	 * @access protected
 	 */
-	private function _initDebugging()
+	protected function _initDebugging()
 	{
 		if($this->getSetting('debug_mode') === true)
 		{
@@ -350,9 +350,9 @@ class Pz_Core
 	 *
 	 * This will do a domain check, whitelist check, and blacklist check.
 	 *
-	 * @access private
+	 * @access protected
 	 */
-	private function _initServerSecurity()
+	protected function _initServerSecurity()
 	{
 		if($this->_serverSecurityNeeded())
 		{
@@ -378,9 +378,9 @@ class Pz_Core
 	/**
 	 * Any other functions that need to be executed at start-up are called here.
 	 *
-	 * @access private
+	 * @access protected
 	 */
-	private function _initMisc()
+	protected function _initMisc()
 	{
 		if($this->getSetting('output_buffering') && $this->getSetting('output_compression'))
 		{
@@ -488,10 +488,10 @@ class Pz_Core
 	/**
 	 * Returns true if server security is needed/enabled.
 	 *
-	 * @access private
+	 * @access protected
 	 * @return bool
 	 */
-	private function _serverSecurityNeeded()
+	protected function _serverSecurityNeeded()
 	{
 		return ($this->getSetting('domain_protection') || $this->getSetting('blacklist_ip_check') || $this->getSetting('whitelist_ip_check'));
 	}

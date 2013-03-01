@@ -18,11 +18,11 @@
 		/**
 		 * Converts key to a valid hex value (for proper storage with shmop).
 		 *
-		 * @access private
+		 * @access protected
 		 * @param string $keyname
 		 * @return string
 		 */
-		private function _shmKeyToHex($keyname)
+		protected function _shmKeyToHex($keyname)
 		{
 			return bin2hex($keyname);
 		}
@@ -30,11 +30,11 @@
 		/**
 		 * Converts a value to be stored to a string, or a serialized string.
 		 *
-		 * @access private
+		 * @access protected
 		 * @param $value
 		 * @return string
 		 */
-		private function _shmValueToString($value)
+		protected function _shmValueToString($value)
 		{
 			if(is_scalar($value))
 			{
@@ -49,11 +49,11 @@
 		/**
 		 * Returns a stringback to its original type.
 		 *
-		 * @access private
+		 * @access protected
 		 * @param $value
 		 * @return string
 		 */
-		private function _shmStringToValue($value)
+		protected function _shmStringToValue($value)
 		{
 			$validValue = @unserialize($value);
 

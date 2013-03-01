@@ -18,37 +18,42 @@
 		/**
 		 * The directory where log files are stored.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_logsDir = '';
+		protected $_logsDir = '';
 
 		/**
 		 * The log file name for this logger instance.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_logFileName = '';
+		protected $_logFileName = '';
 
 		/**
 		 * Combined log directory and log file name.
 		 *
+		 * @access protected
 		 * @var string
 		 */
-		private $_fullLogFileName = '';
+		protected $_fullLogFileName = '';
 
 		/**
 		 * Whether log files should rotated or not.
 		 *
+		 * @access protected
 		 * @var bool
 		 */
-		private $_autoRotate = true;
+		protected $_autoRotate = true;
 
 		/**
 		 * Log files older than x days will be deleted on start-up.
 		 *
+		 * @access protected
 		 * @var int
 		 */
-		private $_deleteLogsAfterXDays = 7;
+		protected $_deleteLogsAfterXDays = 7;
 
 		/**
 		 * Sets the defaults for the logger instance.
@@ -71,9 +76,9 @@
 		/**
 		 * Makes sure the log dir exists, and rotates if necessary.
 		 *
-		 * @access private
+		 * @access protected
 		 */
-		private function _warmupLogs()
+		protected function _warmupLogs()
 		{
 			if(!file_exists($this->_logsDir) || !is_dir($this->_logsDir))
 			{

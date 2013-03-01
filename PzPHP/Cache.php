@@ -18,7 +18,7 @@
 		/**
 		 * The established caching method (if any).
 		 *
-		 * @access private
+		 * @access protected
 		 * @var int
 		 */
 		protected $_cachingMethod = PZPHP_CACHE_MODE_NO_CACHING;
@@ -26,7 +26,7 @@
 		/**
 		 * Flag if caching is enabled or not.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var bool
 		 */
 		protected $_cachingEnabled = false;
@@ -44,7 +44,7 @@
 		/**
 		 * Verifies if caching is enabled, and sets the flag accordingly.
 		 *
-		 * @access private
+		 * @access protected
 		 */
 		protected function _verifyIfCachingEnabled()
 		{

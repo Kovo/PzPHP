@@ -18,10 +18,10 @@
 		/**
 		 * The key / value pairs are stored in a simple array.
 		 *
-		 * @access private
+		 * @access protected
 		 * @var array
 		 */
-		private $_localCache = array();
+		protected $_localCache = array();
 
 		/**
 		 * Writes a value to the cache.

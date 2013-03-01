@@ -26,11 +26,11 @@
 		/**
 		 * Takes in the class name, and constructs the path to the class file using PEAR naming conventions.
 		 *
-		 * @access private
+		 * @access protected
 		 * @param $className
 		 * @throws Exception
 		 */
-		private function loader($className)
+		protected function loader($className)
 		{
 			$fileNameParts = explode('_', $className);
 			$fileName = BASE_CLASS_DIR.implode(DIRECTORY_SEPARATOR, $fileNameParts).'.php';

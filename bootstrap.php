@@ -31,12 +31,13 @@
 	define('PZPHP_ENVIRONMENT', getenv('PZPHP_ENVIRONMENT'));
 
 	require_once BASE_DIR.'config'.(PZPHP_ENVIRONMENT === 'production'?'':'_'.PZPHP_ENVIRONMENT).'.php';
-	require_once BASE_DIR.'my_config'.(PZPHP_ENVIRONMENT === 'production'?'':'_'.PZPHP_ENVIRONMENT).'.php';
 
 	require_once PZ_INC_DIR.'ClassAutoloader.php';
 
 	new Pz_ClassAutoloader();
 
 	$_PZPHP = new PzPHP_Core();
+
+	require_once BASE_DIR.'my_config'.(PZPHP_ENVIRONMENT === 'production'?'':'_'.PZPHP_ENVIRONMENT).'.php';
 
 	//----------------------BEGIN YOUR MAGIC BELOW----------------------//

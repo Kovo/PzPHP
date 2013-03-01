@@ -129,11 +129,11 @@
 				$method = $this->pzphp()->pz()->pzHttpRequest()->get('action');
 				$terms = $this->pzphp()->pz()->pzHttpRequest()->get('terms');
 
-				if($class !== NULL && $method !== NULL)
+				if($class !== null && $method !== null)
 				{
 					if(class_exists($class) && method_exists($class, $method))
 					{
-						if($terms === NULL)
+						if($terms === null)
 						{
 							$arguments = array();
 						}
@@ -146,10 +146,24 @@
 							$arguments = $terms;
 						}
 
-						return call_user_func_array(
-							array($class, $method),
+						$classObj = new $class($this->pzphp());
+
+						if(method_exists($classObj, 'before'))
+						{
+							$classObj->before($method);
+						}
+
+						$return = call_user_func_array(
+							array($classObj, $method),
 							$arguments
 						);
+
+						if(method_exists($classObj, 'after'))
+						{
+							$classObj->after($method, $return);
+						}
+
+						return $return;
 					}
 					else
 					{
@@ -231,13 +245,24 @@
 				{
 					if(class_exists($routeValues[self::CONTROLLER]) && method_exists($routeValues[self::CONTROLLER], $routeValues[self::ACTION]))
 					{
-						return call_user_func_array(
-							array(
-								$routeValues[self::CONTROLLER],
-								$routeValues[self::ACTION]
-							),
+						$classObj = new $routeValues[self::CONTROLLER]($this->pzphp());
+
+						if(method_exists($classObj, 'before'))
+						{
+							$classObj->before($routeValues[self::ACTION]);
+						}
+
+						$return = call_user_func_array(
+							array($classObj, $routeValues[self::ACTION]),
 							$terms
 						);
+
+						if(method_exists($classObj, 'after'))
+						{
+							$classObj->after($routeValues[self::ACTION], $return);
+						}
+
+						return $return;
 					}
 					else
 					{
@@ -268,11 +293,16 @@
 
 			if($this->_baseUri !== '')
 			{
+				$baseUriExploded = explode('/', $baseUri);
+
 				$uriExploded = explode('/', $uri);
 
-				if($uriExploded[0] === $baseUri)
+				foreach($baseUriExploded as $key => $value)
 				{
-					unset($uriExploded[0]);
+					if(isset($uriExploded[$key]) && $uriExploded[$key] === $value)
+					{
+						unset($uriExploded[$key]);
+					}
 				}
 
 				$uri = implode('/', $uriExploded);
@@ -416,9 +446,9 @@
 		public function stripTrailingSlash($string)
 		{
 			return (
-				substr($string, -1) === '/'?
-					substr($string, 0, -1):
-					$string
+			substr($string, -1) === '/'?
+				substr($string, 0, -1):
+				$string
 			);
 		}
 
@@ -431,9 +461,9 @@
 		public function addTrailingSlash($string)
 		{
 			return (
-				substr($string, -1) !== '/'?
-					$string.'/':
-					$string
+			substr($string, -1) !== '/'?
+				$string.'/':
+				$string
 			);
 		}
 
@@ -446,9 +476,9 @@
 		public function stripLeadingSlash($string)
 		{
 			return (
-				substr($string, 0, 1) === '/'?
-					substr($string, 1):
-					$string
+			substr($string, 0, 1) === '/'?
+				substr($string, 1):
+				$string
 			);
 		}
 
@@ -461,9 +491,9 @@
 		public function addLeadingSlash($string)
 		{
 			return (
-				substr($string, 0, 1) !== '/'?
-					'/'.$string:
-					$string
+			substr($string, 0, 1) !== '/'?
+				'/'.$string:
+				$string
 			);
 		}
 

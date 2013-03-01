@@ -17,6 +17,7 @@ satisfy all
 ##CATCHALL FOR ROUTING
 ####this is disabled by default
 ####enable it if you plan to use the Routing Module
+#RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule .* bootstrap.php [NC]
 
 ###INJECTION PREVENTION
