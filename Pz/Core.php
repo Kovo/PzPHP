@@ -20,7 +20,7 @@ class Pz_Core
 	 *
 	 * @var string
 	 */
-	const VERSION = '3.9.4/Morbi Mollis';
+	const VERSION = '3.9.5/Morbi Mollis';
 
 	/**
 	 * A multi-dimensional array that will hold various object instances.
