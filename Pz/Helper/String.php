@@ -90,6 +90,79 @@
 		 */
 		public static function unserializable($string)
 		{
-			return (!@unserialize($string)?false:true);
+			if(!is_string($string))
+			{
+				return false;
+			}
+
+			$string = trim($string);
+
+			if($string === '')
+			{
+				return false;
+			}
+
+			if($string === 'b:0;')
+			{
+				return true;
+			}
+
+			$length	= strlen($string);
+			$end = '';
+
+			switch($string[0])
+			{
+				case 's':
+					if($string[$length - 2] !== '"')
+					{
+						return false;
+					}
+				case 'b':
+				case 'i':
+				case 'd':
+					$end .= ';';
+				case 'a':
+				case 'O':
+					$end .= '}';
+
+					if($string[1] !== ':')
+					{
+						return false;
+					}
+
+					switch($string[2])
+					{
+						case 0:
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 5:
+						case 6:
+						case 7:
+						case 8:
+						case 9:
+							break;
+						default:
+							return false;
+					}
+				case 'N':
+					$end .= ';';
+					if($string[$length - 1] !== $end[0])
+					{
+						return false;
+					}
+
+					break;
+				default:
+					return false;
+			}
+
+			if(@unserialize($string) === false)
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
