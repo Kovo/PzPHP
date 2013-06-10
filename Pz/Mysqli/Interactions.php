@@ -246,7 +246,7 @@
 		 * @param int $id
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = null, $id = -1)
+		public function changeUser($user, $password, $dbName = NULL, $id = -1)
 		{
 			$id = $this->pzCore()->decideActiveMySqliId($id);
 
@@ -264,7 +264,7 @@
 		 * @param int $id
 		 * @return mixed
 		 */
-		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
+		public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = 0, $id = -1)
 		{
 			return $this->pzCore()->pzSecurity()->cleanQuery(
 				$this->pzCore()->mysqliActiveObject($this->pzCore()->decideActiveMySqliId($id))->returnMysqliObj(),

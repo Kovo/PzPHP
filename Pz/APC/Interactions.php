@@ -50,7 +50,8 @@
 			{
 				if($replaceOnExist === true)
 				{
-					$return = apc_store($key, $value, $expires);
+					apc_delete($key);
+					$return = apc_add($key, $value, $expires);
 				}
 				else
 				{
@@ -84,7 +85,7 @@
 			}
 			else
 			{
-				while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false) === false)
+				while($this->write($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
 				{
 					usleep(mt_rand(1000,500000));
 				}
@@ -120,7 +121,7 @@
 			}
 			else
 			{
-				while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false) === false)
+				while($this->write($key.'_pzLock', mt_rand(1,2000000000), 15, false, false) === false)
 				{
 					usleep(mt_rand(1000,500000));
 				}

@@ -41,7 +41,7 @@
 				{
 					if(!is_array($allowedDomains))
 					{
-						$allowedDomains = array_map('trim', explode(',', $allowedDomains));
+						$allowedDomains = array_map(array('Helper_String', 'trim'), explode(',', $allowedDomains));
 					}
 
 					if(count($allowedDomains) > 0)
@@ -85,7 +85,7 @@
 
 			if(!is_array($whitelistedips))
 			{
-				$whitelistedips = array_map('trim', explode(',', $whitelistedips));
+				$whitelistedips = array_map(array('Helper_String', 'trim'), explode(',', $whitelistedips));
 			}
 
 			if(self::pzCore()->getSetting('whitelist_auto_allow_host_server_ip') === true)
@@ -136,7 +136,7 @@
 
 			if(!is_array($blacklistedips))
 			{
-				$blacklistedips = array_map('trim', explode(',', $blacklistedips));
+				$blacklistedips = array_map(array('Helper_String', 'trim'), explode(',', $blacklistedips));
 			}
 
 			if(count($blacklistedips) > 0)

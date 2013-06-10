@@ -18,66 +18,66 @@
 		/**
 		 * Whether the current request is an AJAX request or not.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var bool
 		 */
-		protected $_isAjax = false;
+		private $_isAjax = false;
 
 		/**
 		 * The query string (if any) associated with this request.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_queryString = '';
+		private $_queryString = '';
 
 		/**
 		 * The different accepted media types.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var array
 		 */
-		protected $_mediaTypes = array();
+		private $_mediaTypes = array();
 
 		/**
 		 * The different accepted charsets.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var array
 		 */
-		protected $_charsets = array();
+		private $_charsets = array();
 
 		/**
 		 * The different accepted encodings.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var array
 		 */
-		protected $_encodings = array();
+		private $_encodings = array();
 
 		/**
 		 * The different accepted languages.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var array
 		 */
-		protected $_languages = array();
+		private $_languages = array();
 
 		/**
 		 * The referer url for this request.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_referer = '';
+		private $_referer = '';
 
 		/**
 		 * Whether this request is being sent over https.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var bool
 		 */
-		protected $_secure = false;
+		private $_secure = false;
 
 		/**
 		 * Sets Pz Core object and starts gathering request data.
@@ -94,9 +94,9 @@
 		/**
 		 * Gathers various information about the request and stores it.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _populateRequestParameters()
+		private function _populateRequestParameters()
 		{
 			$this->_detectAjax();
 			$this->_detectQueryString();
@@ -111,13 +111,13 @@
 		/**
 		 * Detects the referer url (if any).
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectReferer()
+		private function _detectReferer()
 		{
 			$rawData = $this->server('HTTP_REFERER');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$this->_referer = trim($rawData);
 			}
@@ -126,13 +126,13 @@
 		/**
 		 * Detects whether https is being used.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectHttps()
+		private function _detectHttps()
 		{
 			$rawData = $this->server('HTTPS');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$rawData = strtolower(trim($rawData));
 
@@ -146,13 +146,13 @@
 		/**
 		 * Detects and cleans the query string (if any).
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectQueryString()
+		private function _detectQueryString()
 		{
 			$rawData = $this->server('QUERY_STRING');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$this->_queryString = $this->cleanQueryString($rawData);
 			}
@@ -161,13 +161,13 @@
 		/**
 		 * Reads header information for media types and extracts them.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectMediaTypes()
+		private function _detectMediaTypes()
 		{
 			$rawData = $this->server('HTTP_ACCEPT');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$rawData = trim($rawData);
 
@@ -175,7 +175,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== null)
+					if($extractInfo !== NULL)
 					{
 						$this->_mediaTypes = $extractInfo;
 					}
@@ -196,13 +196,13 @@
 		/**
 		 * Reads header information for charsets and extracts them.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectCharsets()
+		private function _detectCharsets()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_CHARSET');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$rawData = trim($rawData);
 
@@ -210,7 +210,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== null)
+					if($extractInfo !== NULL)
 					{
 						$this->_charsets = $extractInfo;
 					}
@@ -231,13 +231,13 @@
 		/**
 		 * Reads header information for accepted encodings and extracts them.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectEncodings()
+		private function _detectEncodings()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_ENCODING');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$rawData = trim($rawData);
 
@@ -245,7 +245,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== null)
+					if($extractInfo !== NULL)
 					{
 						$this->_encodings = $extractInfo;
 					}
@@ -266,13 +266,13 @@
 		/**
 		 * Reads header information for accepted languages and extracts them.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectLanguages()
+		private function _detectLanguages()
 		{
 			$rawData = $this->server('HTTP_ACCEPT_LANGUAGE');
 
-			if($rawData !== null)
+			if($rawData !== NULL)
 			{
 				$rawData = trim($rawData);
 
@@ -280,7 +280,7 @@
 				{
 					$extractInfo = $this->parseAcceptHeader($rawData);
 
-					if($extractInfo !== null)
+					if($extractInfo !== NULL)
 					{
 						$this->_languages = $extractInfo;
 					}
@@ -307,21 +307,21 @@
 		 */
 		public function parseAcceptHeader($header)
 		{
-			$return = null;
+			$return = NULL;
 			$header = str_replace(array("\r\n", "\r", "\n"), ' ', trim($header));
 			$types = explode(',', $header);
-			$types = array_map('trim', $types);
+			$types = array_map(array('Helper_String', 'trim'), $types);
 
 			if($header !== '')
 			{
 				foreach($types as $ruleSets)
 				{
-					$ruleSet = array_map('trim', explode(';', $ruleSets));
+					$ruleSet = array_map(array('Helper_String', 'trim'), explode(';', $ruleSets));
 					$rule = array_shift($ruleSet);
 
 					if($rule)
 					{
-						$array = array_map('trim', explode('/', $rule));
+						$array = array_map(array('Helper_String', 'trim'), explode('/', $rule));
 
 						if(!isset($array[1]))
 						{
@@ -363,12 +363,12 @@
 				$ruleSet = explode(';', $ruleSet);
 			}
 
-			$ruleSet = array_map('trim', $ruleSet);
+			$ruleSet = array_map(array('Helper_String', 'trim'), $ruleSet);
 
 			foreach($ruleSet as $option)
 			{
 				$option = explode('=', $option);
-				$option = array_map('trim', $option);
+				$option = array_map(array('Helper_String', 'trim'), $option);
 
 				if($option[0] === 'q')
 				{
@@ -388,9 +388,9 @@
 		/**
 		 * Detects if current request is an ajax call.
 		 *
-		 * @access protected
+		 * @access private
 		 */
-		protected function _detectAjax()
+		private function _detectAjax()
 		{
 			$serverXmlHttpVar = $this->server('HTTP_X_REQUESTED_WITH');
 
@@ -483,7 +483,7 @@
 		 */
 		public function server($varname)
 		{
-			$return = null;
+			$return = NULL;
 
 			if(isset($_SERVER[$varname]))
 			{
@@ -502,7 +502,7 @@
 		 */
 		public function get($varname)
 		{
-			$return = null;
+			$return = NULL;
 
 			if(isset($_GET[$varname]))
 			{
@@ -521,7 +521,7 @@
 		 */
 		public function post($varname)
 		{
-			$return = null;
+			$return = NULL;
 
 			if(isset($_POST[$varname]))
 			{
@@ -540,7 +540,7 @@
 		 */
 		public function cookie($varname)
 		{
-			$return = null;
+			$return = NULL;
 
 			if(isset($_COOKIE[$varname]))
 			{
@@ -559,7 +559,7 @@
 		 */
 		public function files($varname)
 		{
-			$return = null;
+			$return = NULL;
 
 			if(isset($_FILES[$varname]))
 			{
