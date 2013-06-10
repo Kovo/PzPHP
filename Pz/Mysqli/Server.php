@@ -39,79 +39,79 @@
 		/**
 		 * The username that will access the mysql server.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_user = '';
+		private $_user = '';
 
 		/**
 		 * The password that will access the mysql server.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_password = '';
+		private $_password = '';
 
 		/**
 		 * The host that the mysql server is on.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_host = '';
+		private $_host = '';
 
 		/**
 		 * The default database to connect to.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var string
 		 */
-		protected $_dbName = '';
+		private $_dbName = '';
 
 		/**
 		 * The port that the mysql server is on.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var int
 		 */
-		protected $_port = 0;
+		private $_port = 0;
 
 		/**
 		 * The amount of times Pz should try to reconnect to the mysql server.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var int
 		 */
-		protected $_connectRetryAttempts = 0;
+		private $_connectRetryAttempts = 0;
 
 		/**
 		 * The amount of seconds to wait between connection retry attempts.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var int
 		 */
-		protected $_connectRetryDelay = 0;
+		private $_connectRetryDelay = 0;
 
 		/**
 		 * The current connection status.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var int
 		 */
-		protected $_status = self::DISCONNECTED;
+		private $_status = self::DISCONNECTED;
 
 		/**
 		 * The final mysqli object.
 		 *
-		 * @access protected
+		 * @access private
 		 * @var null|mysqli
 		 */
-		protected $_mysqli_obj = null;
+		private $_mysqli_obj = NULL;
 
 		/**
 		 * The constructor handles setting the mysql server credentials.
 		 *
-		 * @access protected
+		 * @access private
 		 * @param string $dbUser
 		 * @param string $dbPassword
 		 * @param string $dbName
@@ -147,6 +147,13 @@
 
 				if(mysqli_connect_error())
 				{
+					if(strpos(mysqli_connect_error(), 'access denied') !== false)
+					{
+						$this->_status = self::DISCONNECTED;
+
+						return false;
+					}
+
 					for($x=0;$x<$this->_connectRetryAttempts;$x++)
 					{
 						sleep($this->_connectRetryDelay);
@@ -155,6 +162,13 @@
 
 						if(mysqli_connect_error())
 						{
+							if(strpos(mysqli_connect_error(), 'access denied') !== false)
+							{
+								$this->_status = self::DISCONNECTED;
+
+								return false;
+							}
+
 							continue;
 						}
 						else
@@ -200,7 +214,7 @@
 			{
 				$this->_mysqli_obj->close();
 
-				$this->_mysqli_obj = null;
+				$this->_mysqli_obj = NULL;
 
 				$this->_status = self::DISCONNECTED;
 			}
@@ -280,14 +294,14 @@
 		 * @param null|string $dbName
 		 * @return bool
 		 */
-		public function changeUser($user, $password, $dbName = null)
+		public function changeUser($user, $password, $dbName = NULL)
 		{
 			if($this->_mysqli_obj->change_user($user, $password, $dbName))
 			{
 				$this->_user = $user;
 				$this->_password = $password;
 
-				if($dbName !== null)
+				if($dbName !== NULL)
 				{
 					$this->_dbName = $dbName;
 				}
