@@ -197,9 +197,9 @@
 					case PZPHP_CACHE_MODE_APC:
 						return $this->pzphp()->pz()->apcInteract()->read($keyName);
 					case PZPHP_CACHE_MODE_MEMCACHE:
-						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, $id);
+						return $this->pzphp()->pz()->memcacheInteract()->read($keyName, false, $id);
 					case PZPHP_CACHE_MODE_MEMCACHED:
-						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, $id);
+						return $this->pzphp()->pz()->memcachedInteract()->read($keyName, false, $id);
 					case PZPHP_CACHE_MODE_SHARED_MEMORY:
 						return $this->pzphp()->pz()->shmInteract()->read($keyName);
 					case PZPHP_CACHE_MODE_LOCALCACHE:
