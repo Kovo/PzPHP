@@ -24,11 +24,9 @@
 		}
 
 		/**
-		 * Takes in the class name, and constructs the path to the class file using PEAR naming conventions.
-		 *
-		 * @access protected
 		 * @param $className
-		 * @throws Exception
+		 *
+		 * @throws Pz_Exception
 		 */
 		protected function loader($className)
 		{
@@ -41,7 +39,7 @@
 			}
 			else
 			{
-				throw new Exception('Failed to load "'.$className.'"! File "'.$fileName.'" does not exist!');
+				throw new Pz_Exception('Failed to load "'.$className.'"! File "'.$fileName.'" does not exist!');
 			}
 		}
 	}

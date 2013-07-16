@@ -167,7 +167,7 @@
 					}
 					else
 					{
-						throw new Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
+						throw new PzPHP_Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
 					}
 				}
 			}
@@ -266,17 +266,17 @@
 					}
 					else
 					{
-						throw new Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
+						throw new PzPHP_Exception('Requested class or action does not exist.', self::ERROR_NO_CLASS_OR_ACTION);
 					}
 				}
 				else
 				{
-					throw new Exception('No valid route found for this request.', self::ERROR_NO_ROUTE);
+					throw new PzPHP_Exception('No valid route found for this request.', self::ERROR_NO_ROUTE);
 				}
 			}
 			else
 			{
-				throw new Exception('No routes to match this request to.', self::ERROR_NO_ROUTE);
+				throw new PzPHP_Exception('No routes to match this request to.', self::ERROR_NO_ROUTE);
 			}
 		}
 
@@ -549,7 +549,7 @@
 			}
 			else
 			{
-				throw new Exception('Route not found.', self::ERROR_NO_ROUTE);
+				throw new PzPHP_Exception('Route not found.', self::ERROR_NO_ROUTE);
 			}
 		}
 
@@ -627,7 +627,7 @@
 								{
 									if($this->_throwExceptionForConstraintTermMiss)
 									{
-										throw new Exception('Term constraint rule failed for "'.$term.'". Value was "'.$value.'".', self::ERROR_REGEX_MATCH_ERROR);
+										throw new PzPHP_Exception('Term constraint rule failed for "'.$term.'". Value was "'.$value.'".', self::ERROR_REGEX_MATCH_ERROR);
 									}
 									else
 									{
@@ -651,7 +651,7 @@
 						{
 							if($this->_throwExceptionForReqTermMiss)
 							{
-								throw new Exception('Could not fulfill required terms.', self::ERROR_MISSING_REQ_TERMS);
+								throw new PzPHP_Exception('Could not fulfill required terms.', self::ERROR_MISSING_REQ_TERMS);
 							}
 							else
 							{
@@ -716,7 +716,7 @@
 			}
 			else
 			{
-				throw new Exception('Cannot get URI.', self::ERROR_NO_URI);
+				throw new PzPHP_Exception('Cannot get URI.', self::ERROR_NO_URI);
 			}
 		}
 	}
