@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.5/Ultrices Quam';
+		const VERSION = '1.1.6/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
