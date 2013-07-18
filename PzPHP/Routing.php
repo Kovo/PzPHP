@@ -512,16 +512,14 @@
 		}
 
 		/**
-		 * @access public
 		 * @param       $identifier
 		 * @param array $terms
 		 * @param null  $overrideSiteUrl
-		 * @param null  $overrideBaseUri
 		 *
 		 * @return string
-		 * @throws Exception
+		 * @throws PzPHP_Exception
 		 */
-		public function get($identifier, array $terms = array(), $overrideSiteUrl = null, $overrideBaseUri = null)
+		public function get($identifier, array $terms = array(), $overrideSiteUrl = null)
 		{
 			if($overrideSiteUrl === null)
 			{
@@ -532,20 +530,13 @@
 				$siteUrl = $overrideSiteUrl;
 			}
 
-			if($overrideBaseUri === null)
-			{
-				$baseUri = $this->_baseUri;
-			}
-			else
-			{
-				$baseUri = $overrideBaseUri;
-			}
+			$siteUrl = $this->stripBaseUri($siteUrl);
 
 			if(isset($this->_routes[$identifier]))
 			{
 				$mergedPattern = $this->_mergeTermsWithPattern($terms, $this->_routes[$identifier][self::PATTERN], $this->_routes[$identifier][self::CONSTRAINTS]);
 
-				return $this->addTrailingSlash($siteUrl.$baseUri.$mergedPattern);
+				return $this->addTrailingSlash($siteUrl.'/'.$mergedPattern);
 			}
 			else
 			{
