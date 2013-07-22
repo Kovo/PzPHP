@@ -16,22 +16,31 @@
 	class Pz_ClassAutoloader
 	{
 		/**
+		 * @var string
+		 */
+		protected $_baseClassDir = '';
+
+		/**
 		 * Registers the class auto loader using spl_autoload_register method (recommended by PHP)
 		 */
-		public function __construct()
+		public function __construct($baseClassDir)
 		{
+			$this->_baseClassDir = $baseClassDir;
+
 			spl_autoload_register(array($this, 'loader'));
 		}
 
 		/**
-		 * @param $className
+		 * Takes in the class name, and constructs the path to the class file using PEAR naming conventions.
 		 *
-		 * @throws Pz_Exception
+		 * @access protected
+		 * @param $className
+		 * @throws Exception
 		 */
 		protected function loader($className)
 		{
 			$fileNameParts = explode('_', $className);
-			$fileName = BASE_CLASS_DIR.implode(DIRECTORY_SEPARATOR, $fileNameParts).'.php';
+			$fileName = $this->_baseClassDir.implode(DIRECTORY_SEPARATOR, $fileNameParts).'.php';
 
 			if(file_exists($fileName))
 			{

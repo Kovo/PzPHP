@@ -60,7 +60,7 @@
 		 */
 		function __construct($logsDir = '', $logFileName = '', $autoRotate = true, $deleteLogsAfterXDays = 7)
 		{
-			$this->_logsDir = ($logsDir === ''?PZ_LOGS_DIR:$logsDir);
+			$this->_logsDir = ($logsDir === ''?Pz_Config::get('PZ_LOGS_DIR'):$logsDir);
 			$this->_logFileName = ($logFileName === ''?'logger':$logFileName);
 			$this->_autoRotate = $autoRotate;
 			$this->_deleteLogsAfterXDays = $deleteLogsAfterXDays;

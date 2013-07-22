@@ -226,13 +226,14 @@
 						)
 					)
 				);
+
 				//then encrypt with salt last
 				$finalOutput = (isset($supportedHashes['whirlpool'])?
-					hash('whirlpool',$input.$saltOne):
+					hash('whirlpool',$finalOutput.$saltOne):
 					(isset($supportedHashes['sha512'])?
-						hash('sha512',$input.$saltOne):
+						hash('sha512',$finalOutput.$saltOne):
 						(isset($supportedHashes['ripemd320'])?
-							hash('ripemd320',$input.$saltOne):hash('md5', $input.$saltOne)
+							hash('ripemd320',$finalOutput.$saltOne):hash('md5', $finalOutput.$saltOne)
 						)
 					)
 				);
@@ -547,7 +548,7 @@
 				array(mt_rand(9000,89547),mt_rand(1,3)),
 				array(mt_rand(99853,985412),mt_rand(1,2)),
 				array(mt_rand(998541,1245551),mt_rand(1,3))
-			);;
+			);
 		}
 
 		/**

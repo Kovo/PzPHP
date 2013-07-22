@@ -38,7 +38,8 @@
 		 * @access protected
 		 * @var string
 		 */
-		protected $_locale = '';
+		protected $_localeLong = '';
+		protected $_localeShort = '';
 
 		/**
 		 * Add a language to be used in translation.
@@ -60,34 +61,44 @@
 		 */
 		public function setLocale($locale)
 		{
-			$this->_locale = $this->getLongLocaleId($locale);
+			$this->_localeLong = $this->getLongLocaleId($locale);
+			$this->_localeShort = $this->getShortLocaleId($locale);
 		}
 
 		/**
-		 * Get the current active language.
+		 * @param bool $short
 		 *
-		 * @access public
 		 * @return string
 		 */
-		public function getLocale()
+		public function getLocale($short = false)
 		{
-			return $this->_locale;
+			if($short)
+			{
+				return $this->_localeShort;
+			}
+			else
+			{
+				return $this->_localeLong;
+			}
 		}
 
 		/**
-		 * Load an array of translations for current active language.
-		 *
-		 * @access public
 		 * @param string $localeoverride
+		 *
+		 * @throws PzPHP_Exception
 		 */
 		public function loadTranslationSet($localeoverride = '')
 		{
-			$shortLocale = $this->getShortLocaleId(($localeoverride===''?$this->_locale:$localeoverride));
+			$shortLocale = ($localeoverride===''?$this->_localeShort:$this->getShortLocaleId($localeoverride));
 			$translations = array();
 
-			if(file_exists(PZPHP_TRANSLATIONS_DIR.$shortLocale.'.php'))
+			if(file_exists(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php'))
 			{
-				include PZPHP_TRANSLATIONS_DIR.$shortLocale.'.php';
+				require PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php';
+			}
+			else
+			{
+				throw new PzPHP_Exception('Could not find "'.PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php"!');
 			}
 
 			$this->_translations[$shortLocale] = $translations;
@@ -154,7 +165,7 @@
 		 */
 		public function translate($key, $replacements = array(), $localeOverride = '')
 		{
-			$shortLocale = ($localeOverride===''?$this->_locale:$this->getShortLocaleId($localeOverride));
+			$shortLocale = ($localeOverride===''?$this->_localeShort:$this->getShortLocaleId($localeOverride));
 
 			if(isset($this->_translations[$shortLocale][$key]))
 			{

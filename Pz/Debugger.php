@@ -210,8 +210,8 @@
 		public function calculateExecTime()
 		{
 			$microtime = microtime(true);
-			$this->_statistics['exec_time'] = bcsub($microtime,PZD_START_MICROTIME,4);
-			$this->_statistics['exec_start_time'] = bcmul(PZD_START_MICROTIME,1,4);
+			$this->_statistics['exec_time'] = bcsub($microtime,Pz_Config::get('PZD_START_MICROTIME'),4);
+			$this->_statistics['exec_start_time'] = bcmul(Pz_Config::get('PZD_START_MICROTIME'),1,4);
 			$this->_statistics['exec_end_time'] = bcmul($microtime,1,4);
 		}
 
@@ -222,11 +222,11 @@
 		 */
 		public function calculateMemoryUsage()
 		{
-			$this->_statistics['start_memory_usage'] = PZD_START_MEMORY_USE;
-			$this->_statistics['start_memory_real_usage'] = PZD_START_MEMORY_USE_REAL;
+			$this->_statistics['start_memory_usage'] = Pz_Config::get('PZD_START_MEMORY_USE');
+			$this->_statistics['start_memory_real_usage'] = Pz_Config::get('PZD_START_MEMORY_USE_REAL');
 
-			$this->_statistics['start_peak_memory_usage'] = PZD_START_MEMORY_PEAK_USE;
-			$this->_statistics['start_peak_memory_real_usage'] = PZD_START_MEMORY_PEAK_USE_REAL;
+			$this->_statistics['start_peak_memory_usage'] = Pz_Config::get('PZD_START_MEMORY_PEAK_USE');
+			$this->_statistics['start_peak_memory_real_usage'] = Pz_Config::get('PZD_START_MEMORY_PEAK_USE_REAL');
 
 			$this->_statistics['end_memory_usage'] = memory_get_usage();
 			$this->_statistics['end_memory_real_usage'] = memory_get_usage(true);

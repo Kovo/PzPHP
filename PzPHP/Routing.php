@@ -177,6 +177,7 @@
 				$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
 				$foundKey = null;
 				$terms = array();
+				$finalRouteValues = array();
 
 				foreach($this->_routes as $routeKey => $routeValues)
 				{
@@ -236,6 +237,7 @@
 					if(!$broken)
 					{
 						$foundKey = $routeKey;
+						$finalRouteValues = $routeValues;
 
 						break;
 					}
@@ -243,23 +245,23 @@
 
 				if($foundKey !== null)
 				{
-					if(class_exists($routeValues[self::CONTROLLER]) && method_exists($routeValues[self::CONTROLLER], $routeValues[self::ACTION]))
+					if(class_exists($finalRouteValues[self::CONTROLLER]) && method_exists($finalRouteValues[self::CONTROLLER], $finalRouteValues[self::ACTION]))
 					{
-						$classObj = new $routeValues[self::CONTROLLER]($this->pzphp());
+						$classObj = new $finalRouteValues[self::CONTROLLER]($this->pzphp());
 
 						if(method_exists($classObj, 'before'))
 						{
-							$classObj->before($routeValues[self::ACTION]);
+							$classObj->before($finalRouteValues[self::ACTION]);
 						}
 
 						$return = call_user_func_array(
-							array($classObj, $routeValues[self::ACTION]),
+							array($classObj, $finalRouteValues[self::ACTION]),
 							$terms
 						);
 
 						if(method_exists($classObj, 'after'))
 						{
-							$classObj->after($routeValues[self::ACTION], $return);
+							$classObj->after($finalRouteValues[self::ACTION], $return);
 						}
 
 						return $return;
@@ -512,16 +514,14 @@
 		}
 
 		/**
-		 * @access public
 		 * @param       $identifier
 		 * @param array $terms
 		 * @param null  $overrideSiteUrl
-		 * @param null  $overrideBaseUri
 		 *
 		 * @return string
-		 * @throws Exception
+		 * @throws PzPHP_Exception
 		 */
-		public function get($identifier, array $terms = array(), $overrideSiteUrl = null, $overrideBaseUri = null)
+		public function get($identifier, array $terms = array(), $overrideSiteUrl = null)
 		{
 			if($overrideSiteUrl === null)
 			{
@@ -532,20 +532,13 @@
 				$siteUrl = $overrideSiteUrl;
 			}
 
-			if($overrideBaseUri === null)
-			{
-				$baseUri = $this->_baseUri;
-			}
-			else
-			{
-				$baseUri = $overrideBaseUri;
-			}
+			$siteUrl = $this->stripBaseUri($siteUrl);
 
 			if(isset($this->_routes[$identifier]))
 			{
 				$mergedPattern = $this->_mergeTermsWithPattern($terms, $this->_routes[$identifier][self::PATTERN], $this->_routes[$identifier][self::CONSTRAINTS]);
 
-				return $this->addTrailingSlash($siteUrl.$baseUri.$mergedPattern);
+				return $this->addTrailingSlash($siteUrl.'/'.$mergedPattern);
 			}
 			else
 			{

@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.5/Ultrices Quam';
+		const VERSION = '1.1.7/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -65,24 +65,24 @@
 		 */
 		protected function _warmupDirectories()
 		{
-			if(!is_dir(PZPHP_TRANSLATIONS_DIR))
+			if(!is_dir(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR')))
 			{
-				mkdir(PZPHP_TRANSLATIONS_DIR, 0774, true);
+				mkdir(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR'), 0774, true);
 			}
 
-			if(!is_dir(PZPHP_CSS_DIR))
+			if(!is_dir(PzPHP_Config::get('PZPHP_CSS_DIR')))
 			{
-				mkdir(PZPHP_CSS_DIR, 0774, true);
+				mkdir(PzPHP_Config::get('PZPHP_CSS_DIR'), 0774, true);
 			}
 
-			if(!is_dir(PZPHP_JS_DIR))
+			if(!is_dir(PzPHP_Config::get('PZPHP_JS_DIR')))
 			{
-				mkdir(PZPHP_JS_DIR, 0774, true);
+				mkdir(PzPHP_Config::get('PZPHP_JS_DIR'), 0774, true);
 			}
 
-			if(!is_dir(PZPHP_IMAGES_DIR))
+			if(!is_dir(PzPHP_Config::get('PZPHP_IMAGES_DIR')))
 			{
-				mkdir(PZPHP_IMAGES_DIR, 0774, true);
+				mkdir(PzPHP_Config::get('PZPHP_IMAGES_DIR'), 0774, true);
 			}
 		}
 
@@ -95,23 +95,18 @@
 		protected function _extractPzCoreSettings()
 		{
 			$settings = array();
-			$definedConstants = get_defined_constants(true);
 
-			if(isset($definedConstants['user']) && count($definedConstants['user']) > 0)
+			if(count(PzPHP_Config::getAll()) > 0)
 			{
-				foreach($definedConstants['user'] as $constantName => $constantValue)
+				foreach(PzPHP_Config::getAll() as $key => $value)
 				{
-					if(strpos($constantName, 'PZ_SETTING_') !== false)
+					if(strpos($key, 'PZ_SETTING_') !== false)
 					{
 						$settingArrayKeyName = strtolower(
-							str_replace('PZ_SETTING_', '', $constantName)
+							str_replace('PZ_SETTING_', '', $key)
 						);
 
-						$settings[$settingArrayKeyName] = (
-							!Pz_Helper_String::unserializable($constantValue)?
-								$constantValue:
-								unserialize($constantValue)
-						);
+						$settings[$settingArrayKeyName] = $value;
 					}
 				}
 			}
