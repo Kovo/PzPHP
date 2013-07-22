@@ -83,19 +83,22 @@
 		}
 
 		/**
-		 * Load an array of translations for current active language.
-		 *
-		 * @access public
 		 * @param string $localeoverride
+		 *
+		 * @throws PzPHP_Exception
 		 */
 		public function loadTranslationSet($localeoverride = '')
 		{
 			$shortLocale = ($localeoverride===''?$this->_localeShort:$this->getShortLocaleId($localeoverride));
 			$translations = array();
 
-			if(file_exists(PZPHP_TRANSLATIONS_DIR.$shortLocale.'.php'))
+			if(file_exists(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php'))
 			{
-				include PZPHP_TRANSLATIONS_DIR.$shortLocale.'.php';
+				require PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php';
+			}
+			else
+			{
+				throw new PzPHP_Exception('Could not find "'.PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR').$shortLocale.'.php"!');
 			}
 
 			$this->_translations[$shortLocale] = $translations;

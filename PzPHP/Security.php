@@ -23,24 +23,24 @@
 		{
 			parent::init($PzphpCore);
 
-			if(PZ_SECURITY_HASH_TABLE !== '')
+			if(count(PzPHP_Config::get('PZ_SECURITY_HASH_TABLE')) > 0)
 			{
-				$this->pzphp()->pz()->pzSecurity()->replacePzCryptHash(unserialize(PZ_SECURITY_HASH_TABLE));
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptHash(PzPHP_Config::get('PZ_SECURITY_HASH_TABLE'));
 			}
 
-			if(PZ_SECURITY_SALT !== '')
+			if(PzPHP_Config::get('PZ_SECURITY_SALT') !== '')
 			{
-				$this->pzphp()->pz()->pzSecurity()->replacePzCryptSalt(PZ_SECURITY_SALT);
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptSalt(PzPHP_Config::get('PZ_SECURITY_SALT'));
 			}
 
-			if(PZ_SECURITY_POISON_CONSTRAINTS !== '')
+			if(count(PzPHP_Config::get('PZ_SECURITY_POISON_CONSTRAINTS')) > 0)
 			{
-				$this->pzphp()->pz()->pzSecurity()->replacePzCryptPoisonConstraints(unserialize(PZ_SECURITY_POISON_CONSTRAINTS));
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptPoisonConstraints(PzPHP_Config::get('PZ_SECURITY_POISON_CONSTRAINTS'));
 			}
 
-			if(PZ_SECURITY_REHASH_DEPTH !== '')
+			if(PzPHP_Config::get('PZ_SECURITY_REHASH_DEPTH') !== '')
 			{
-				$this->pzphp()->pz()->pzSecurity()->replacePzCryptRehashDepth(PZ_SECURITY_REHASH_DEPTH);
+				$this->pzphp()->pz()->pzSecurity()->replacePzCryptRehashDepth(PzPHP_Config::get('PZ_SECURITY_REHASH_DEPTH'));
 			}
 		}
 

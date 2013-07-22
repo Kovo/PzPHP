@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '3.9.4';
+		const VERSION = '3.9.5';
 
 		/**
 		 * A multi-dimensional array that will hold various object instances.
@@ -305,7 +305,7 @@
 			{
 				if($this->getSetting('debug_log_php_errors'))
 				{
-					ini_set('error_log', PZ_LOGS_DIR.$this->getSetting('debug_php_error_log_file_name').'.log');
+					ini_set('error_log', Pz_Config::get('PZ_LOGS_DIR').$this->getSetting('debug_php_error_log_file_name').'.log');
 					ini_set('error_reporting', E_ALL | E_NOTICE);
 					ini_set('display_errors', ($this->getSetting('debug_php_display_errors')?1:0));
 				}

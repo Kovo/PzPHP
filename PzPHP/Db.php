@@ -21,7 +21,7 @@
 		 * @access protected
 		 * @var int
 		 */
-		protected $_databaseMethod = PZPHP_DATABASE_MYSQLI;
+		protected $_databaseMethod = -1;
 
 		/**
 		 * If databaseMethod is PDO, this varaible defines which one.
@@ -36,7 +36,7 @@
 		 */
 		function __construct()
 		{
-			$this->setDatabaseMethod();
+			$this->setDatabaseMethod(PzPHP_Config::get('PZPHP_DATABASE_MODE'));
 		}
 
 		/**
@@ -46,25 +46,17 @@
 		 * @param int $method
 		 * @return int
 		 */
-		public function setDatabaseMethod($method = PZPHP_DATABASE_MODE)
+		public function setDatabaseMethod($method)
 		{
-			switch($method)
+			if($method === PzPHP_Config::get('PZPHP_DATABASE_PDO_CUBRID') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_MSSQL') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_FIREBIRD') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_IBM') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_INFORMIX') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_MYSQL') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_MSSQL05PLUS') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_ORACLE') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_ODBC') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_POSTGRESQL') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_SQLITE') || $method === PzPHP_Config::get('PZPHP_DATABASE_PDO_4D'))
 			{
-				case PZPHP_DATABASE_MYSQLI:
-					$this->_databaseMethod = PZPHP_DATABASE_MYSQLI;
-					break;
-				case PZPHP_DATABASE_MYSQL:
-					$this->_databaseMethod = PZPHP_DATABASE_MYSQL;
-					break;
-				case (PZPHP_DATABASE_PDO_CUBRID||PZPHP_DATABASE_PDO_MSSQL||PZPHP_DATABASE_PDO_FIREBIRD||PZPHP_DATABASE_PDO_IBM||PZPHP_DATABASE_PDO_INFORMIX||PZPHP_DATABASE_PDO_MYSQL||PZPHP_DATABASE_PDO_MSSQL05PLUS||PZPHP_DATABASE_PDO_ORACLE||PZPHP_DATABASE_PDO_ODBC||PZPHP_DATABASE_PDO_POSTGRESQL||PZPHP_DATABASE_PDO_SQLITE||PZPHP_DATABASE_PDO_4D):
-					$this->_databaseMethod = self::PDO;
-					$this->_pdoType = $method;
-					break;
-				default:
-					$this->_databaseMethod = PZPHP_DATABASE_MYSQLI;
+				$this->_databaseMethod = self::PDO;
+				$this->_pdoType = $method;
 			}
-
-			return $this->_databaseMethod;
+			else
+			{
+				$this->_databaseMethod = $method;
+			}
 		}
 
 		/**
@@ -86,9 +78,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->addMysqliServer($username, $password, $dbname, $host, $port);
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->addMysqlServer($username, $password, $dbname, $host, $port);
 				case self::PDO:
 					return $this->pzphp()->pz()->addPDOServer($username, $password, $this->_pdoType, $dbname, $host, $port, $dbDriverOptions, $server, $protocol, $socket);
@@ -109,9 +101,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->setActiveMysqliServerId($id, $autoconnect);
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->setActiveMysqlServerId($id, $autoconnect);
 				case self::PDO:
 					return $this->pzphp()->pz()->setActivePDOServerId($id, $autoconnect);
@@ -131,9 +123,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id));
@@ -153,9 +145,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliActiveObject($this->pzphp()->pz()->decideActiveMySqliId($id))->returnMysqliObj();
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlActiveObject($this->pzphp()->pz()->decideActiveMySqlId($id))->returnMysqlRes();
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoActiveObject($this->pzphp()->pz()->decideActivePDOId($id))->returnPDOObj();
@@ -175,9 +167,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->insertId($this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->insertId($this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->insertId($this->pzphp()->pz()->decideActivePDOId($id));
@@ -198,9 +190,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->affectedRows($this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqliInteract()->affectedRows($this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->affectedRows($queryObject, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -220,9 +212,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return (is_object($object)?$object->num_rows:0);
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return (is_resource($object)?mysql_num_rows($object):0);
 				case self::PDO:
 					return (is_object($object)?$object->rowCount():0);
@@ -242,9 +234,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return (is_object($object)?$object->fetch_assoc():false);
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return (is_resource($object)?mysql_fetch_assoc($object):false);
 				case self::PDO:
 					return (is_object($object)?$object->fetch(PDO::FETCH_ASSOC):false);
@@ -264,9 +256,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return (is_object($object)?$object->fetch_row():false);
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return (is_resource($object)?mysql_fetch_row($object):false);
 				case self::PDO:
 					return (is_object($object)?$object->fetch(PDO::FETCH_NUM):false);
@@ -285,16 +277,20 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					if(is_object($object) && method_exists($object, 'close'))
 					{
 						$object->close();
 					}
-				case PZPHP_DATABASE_MYSQL:
+
+					break;
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					if(is_resource($object))
 					{
 						mysql_free_result($object);
 					}
+
+					break;
 				case self::PDO:
 					if(is_object($object) && method_exists($object, 'closeCursor '))
 					{
@@ -316,9 +312,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->selectDatabase($name, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->selectDatabase($name, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				default:
 					return false;
@@ -339,9 +335,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->changeUser($user, $password, $dbName, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->mysqlChangeUser($user, $password, $dbName, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				default:
 					return false;
@@ -360,9 +356,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -383,9 +379,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -406,9 +402,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -429,9 +425,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -452,9 +448,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->read($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->read($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -475,9 +471,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -498,9 +494,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -521,9 +517,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->write($query, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->write($query, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -545,9 +541,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, true, $decimalPlaces, Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $this->pzphp()->pz()->decideActivePDOId($id));
@@ -569,9 +565,9 @@
 		{
 			switch($this->_databaseMethod)
 			{
-				case PZPHP_DATABASE_MYSQLI:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQLI'):
 					return $this->pzphp()->pz()->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActiveMySqliId($id));
-				case PZPHP_DATABASE_MYSQL:
+				case PzPHP_Config::get('PZPHP_DATABASE_MYSQL'):
 					return $this->pzphp()->pz()->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActiveMySqlId($id));
 				case self::PDO:
 					return $this->pzphp()->pz()->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $this->pzphp()->pz()->decideActivePDOId($id));
