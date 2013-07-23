@@ -20,7 +20,7 @@
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.7/Ultrices Quam';
+		const VERSION = '1.1.8/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -54,6 +54,7 @@
 			$this->registerModule('PzPHP_Security');
 			$this->registerModule('PzPHP_Locale');
 			$this->registerModule('PzPHP_Routing');
+			$this->registerModule('PzPHP_View');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
 		}
@@ -361,5 +362,16 @@
 		public function routing()
 		{
 			return $this->module('PzPHP_Routing');
+		}
+
+		/**
+		 * Returns the instance of PzPHP_View.
+		 *
+		 * @access public
+		 * @return PzPHP_View|null
+		 */
+		public function view()
+		{
+			return $this->module('PzPHP_View');
 		}
 	}
