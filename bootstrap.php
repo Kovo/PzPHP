@@ -28,7 +28,7 @@
 	$PZ_CONFIG_ARRAY['PZ_LOGS_DIR'] = $PZ_CONFIG_ARRAY['BASE_DIR'].'LOGS'.DIRECTORY_SEPARATOR;
 	$PZ_CONFIG_ARRAY['PZPHP_ENVIRONMENT'] = getenv('PZPHP_ENVIRONMENT');
 
-	require_once $PZ_CONFIG_ARRAY['PZ_LOGS_DIR'].'ClassAutoloader.php';
+	require_once $PZ_CONFIG_ARRAY['PZ_INC_DIR'].'ClassAutoloader.php';
 
 	new Pz_ClassAutoloader($PZ_CONFIG_ARRAY['BASE_CLASS_DIR']);
 
