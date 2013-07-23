@@ -16,11 +16,16 @@
 	class PzPHP_Core
 	{
 		/**
+		 * @var null|PzPHP_Core
+		 */
+		public static $STATIC = NULL;
+
+		/**
 		 * The version of PzPHP.
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.8/Ultrices Quam';
+		const VERSION = '1.1.10/Ultrices Quam';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -57,6 +62,8 @@
 			$this->registerModule('PzPHP_View');
 
 			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
+
+			self::$STATIC = $this;
 		}
 
 		/**
