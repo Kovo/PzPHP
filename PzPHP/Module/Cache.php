@@ -13,7 +13,7 @@
 	 *
 	 * The Cache class is agnostic to the type of caching (if any) you have configured PzPHP to use.
 	 */
-	class PzPHP_Cache extends PzPHP_Wrapper
+	class PzPHP_Module_Cache extends PzPHP_Wrapper
 	{
 		/**
 		 * The established caching method (if any).

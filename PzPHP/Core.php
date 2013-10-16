@@ -16,16 +16,11 @@
 	class PzPHP_Core
 	{
 		/**
-		 * @var null|PzPHP_Core
-		 */
-		public static $STATIC = NULL;
-
-		/**
 		 * The version of PzPHP.
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.1.10/Ultrices Quam';
+		const VERSION = '2.0.0/Semper Cursus';
 
 		/**
 		 * An array of registered modules and their instances.
@@ -50,76 +45,13 @@
 		 */
 		function __construct()
 		{
-			$this->_warmupDirectories();
-
-			$this->_registeredModules['Pz_Core'] = new Pz_Core($this->_extractPzCoreSettings());
-
-			$this->registerModule('PzPHP_Cache');
-			$this->registerModule('PzPHP_Db');
-			$this->registerModule('PzPHP_Security');
-			$this->registerModule('PzPHP_Locale');
-			$this->registerModule('PzPHP_Routing');
-			$this->registerModule('PzPHP_View');
-
-			$this->pz()->debugger('registerVersionInfo', array('PzPHP', self::VERSION));
-
-			self::$STATIC = $this;
-		}
-
-		/**
-		 * Checks to make sure key directories exist, and if they don't, create them.
-		 *
-		 * @access protected
-		 */
-		protected function _warmupDirectories()
-		{
-			if(!is_dir(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR')))
-			{
-				mkdir(PzPHP_Config::get('PZPHP_TRANSLATIONS_DIR'), 0774, true);
-			}
-
-			if(!is_dir(PzPHP_Config::get('PZPHP_CSS_DIR')))
-			{
-				mkdir(PzPHP_Config::get('PZPHP_CSS_DIR'), 0774, true);
-			}
-
-			if(!is_dir(PzPHP_Config::get('PZPHP_JS_DIR')))
-			{
-				mkdir(PzPHP_Config::get('PZPHP_JS_DIR'), 0774, true);
-			}
-
-			if(!is_dir(PzPHP_Config::get('PZPHP_IMAGES_DIR')))
-			{
-				mkdir(PzPHP_Config::get('PZPHP_IMAGES_DIR'), 0774, true);
-			}
-		}
-
-		/**
-		 * Extracts all pz related constants to pass to Pz_Core.
-		 *
-		 * @access protected
-		 * @return array
-		 */
-		protected function _extractPzCoreSettings()
-		{
-			$settings = array();
-
-			if(count(PzPHP_Config::getAll()) > 0)
-			{
-				foreach(PzPHP_Config::getAll() as $key => $value)
-				{
-					if(strpos($key, 'PZ_SETTING_') !== false)
-					{
-						$settingArrayKeyName = strtolower(
-							str_replace('PZ_SETTING_', '', $key)
-						);
-
-						$settings[$settingArrayKeyName] = $value;
-					}
-				}
-			}
-
-			return $settings;
+			$this->registerModule('PzPHP_Module_Cache');
+			$this->registerModule('PzPHP_Module_Db');
+			$this->registerModule('PzPHP_Module_Security');
+			$this->registerModule('PzPHP_Module_Locale');
+			$this->registerModule('PzPHP_Module_Routing');
+			$this->registerModule('PzPHP_Module_View');
+			$this->registerModule('PzPHP_Module_Log');
 		}
 
 		/**
@@ -182,25 +114,9 @@
 		 *
 		 * @return mixed
 		 */
-		public function setVariable($variableName, $variableValue)
+		public function set($variableName, $variableValue)
 		{
-			return call_user_func_array(
-				array($this, 'registerVariable'),
-				array($variableName, $variableValue)
-			);
-		}
-
-		/**
-		 * Registers a variable that can be accessed via any module.
-		 *
-		 * @access public
-		 * @param string $variableName
-		 * @param mixed $variableValue
-		 * @return bool
-		 */
-		public function registerVariable($variableName, $variableValue)
-		{
-			if(!$this->variableExists($variableName))
+			if(!$this->exists($variableName))
 			{
 				$this->_registeredVariables[$variableName] = $variableValue;
 
@@ -219,32 +135,10 @@
 		 * @param string $variableName
 		 * @return null|mixed
 		 */
-		public function getVariable($variableName)
+		public function get($variableName)
 		{
-			if($this->variableExists($variableName))
+			if($this->exists($variableName))
 			{
-				return $this->_registeredVariables[$variableName];
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		/**
-		 * Change a registered variable's value.
-		 *
-		 * @access public
-		 * @param $variableName
-		 * @param $variableValue
-		 * @return null|mixed
-		 */
-		public function changeVariable($variableName, $variableValue)
-		{
-			if($this->variableExists($variableName))
-			{
-				$this->_registeredVariables[$variableName] = $variableValue;
-
 				return $this->_registeredVariables[$variableName];
 			}
 			else
@@ -260,7 +154,7 @@
 		 * @param string $variableName
 		 * @return bool
 		 */
-		public function variableExists($variableName)
+		public function exists($variableName)
 		{
 			return isset($this->_registeredVariables[$variableName]);
 		}
@@ -270,21 +164,7 @@
 		 *
 		 * @return mixed
 		 */
-		public function unsetVariable()
-		{
-			return call_user_func_array(
-				array($this, 'unregisterVariable'),
-				func_get_args()
-			);
-		}
-
-		/**
-		 * Unregisters one or more registered variables.
-		 *
-		 * @access public
-		 * @return int
-		 */
-		public function unregisterVariable()
+		public function delete()
 		{
 			$variableNames = func_get_args();
 			$unregisteredVariables = 0;
@@ -293,7 +173,7 @@
 			{
 				foreach($variableNames as $variableName)
 				{
-					if($this->variableExists($variableName))
+					if($this->exists($variableName))
 					{
 						unset($this->_registeredVariables[$variableName]);
 
@@ -306,79 +186,79 @@
 		}
 
 		/**
-		 * Returns the instance of Pz_Core.
+		 * Returns the instance of PzPHP_Module_Cache.
 		 *
 		 * @access public
-		 * @return Pz_Core|null
-		 */
-		public function pz()
-		{
-			return $this->module('Pz_Core');
-		}
-
-		/**
-		 * Returns the instance of PzPHP_Cache.
-		 *
-		 * @access public
-		 * @return PzPHP_Cache|null
+		 * @return PzPHP_Module_Cache|null
 		 */
 		public function cache()
 		{
-			return $this->module('PzPHP_Cache');
+			return $this->module('PzPHP_Module_Cache');
 		}
 
 		/**
-		 * Returns the instance of PzPHP_Db.
+		 * Returns the instance of PzPHP_Module_Db.
 		 *
 		 * @access public
-		 * @return PzPHP_Db|null
+		 * @return PzPHP_Module_Db|null
 		 */
 		public function db()
 		{
-			return $this->module('PzPHP_Db');
+			return $this->module('PzPHP_Module_Db');
 		}
 
 		/**
-		 * Returns the instance of PzPHP_Security.
+		 * Returns the instance of PzPHP_Module_Security.
 		 *
 		 * @access public
-		 * @return PzPHP_Security|null
+		 * @return PzPHP_Module_Security|null
 		 */
 		public function security()
 		{
-			return $this->module('PzPHP_Security');
+			return $this->module('PzPHP_Module_Security');
 		}
 
 		/**
-		 * Returns the instance of PzPHP_Locale.
+		 * Returns the instance of PzPHP_Module_Locale.
 		 *
 		 * @access public
-		 * @return PzPHP_Locale|null
+		 * @return PzPHP_Module_Locale|null
 		 */
 		public function locale()
 		{
-			return $this->module('PzPHP_Locale');
+			return $this->module('PzPHP_Module_Locale');
 		}
 
 		/**
-		 * Returns the instance of PzPHP_Routing.
+		 * Returns the instance of PzPHP_Module_Routing.
 		 *
 		 * @access public
-		 * @return PzPHP_Routing|null
+		 * @return PzPHP_Module_Routing|null
 		 */
 		public function routing()
 		{
-			return $this->module('PzPHP_Routing');
+			return $this->module('PzPHP_Module_Routing');
 		}
 
 		/**
-		 * Returns the instance of PzPHP_View.
+		 * Returns the instance of PzPHP_Module_View.
 		 *
 		 * @access public
-		 * @return PzPHP_View|null
+		 * @return PzPHP_Module_View|null
 		 */
 		public function view()
 		{
-			return $this->module('PzPHP_View');
+			return $this->module('PzPHP_Module_View');
+		}
+
+		/**
+		 * Returns the instance of PzPHP_Module_Log.
+		 *
+		 * @access public
+		 * @return PzPHP_Module_Log|null
+		 */
+		public function log()
+		{
+			return $this->module('PzPHP_Module_Log');
 		}
 	}

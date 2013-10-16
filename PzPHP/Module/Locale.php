@@ -11,7 +11,7 @@
 	/**
 	 * The Locale class allows your application to support multiple languages.
 	 */
-	class PzPHP_Locale extends PzPHP_Wrapper
+	class PzPHP_Module_Locale extends PzPHP_Wrapper
 	{
 		/**
 		 * An array of key => value paris representing languages.

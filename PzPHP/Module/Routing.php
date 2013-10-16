@@ -13,7 +13,7 @@
 	 *
 	 * These classes can be controllers, or any other type of object.
 	 */
-	class PzPHP_Routing extends PzPHP_Wrapper
+	class PzPHP_Module_Routing extends PzPHP_Wrapper
 	{
 		/**
 		 * @var int

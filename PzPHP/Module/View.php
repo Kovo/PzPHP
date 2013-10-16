@@ -1,5 +1,5 @@
 <?php
-	class PzPHP_View extends PzPHP_Wrapper
+	class PzPHP_Module_View extends PzPHP_Wrapper
 	{
 		/**
 		 * @param       $view

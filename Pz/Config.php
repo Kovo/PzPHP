@@ -17,9 +17,9 @@
 			{
 				require $fileName;
 
-				if(isset($PZ_CONFIG_ARRAY) && is_array($PZ_CONFIG_ARRAY) && count($PZ_CONFIG_ARRAY) > 0)
+				if(isset($PZPHP_CONFIG_ARRAY) && is_array($PZPHP_CONFIG_ARRAY) && count($PZPHP_CONFIG_ARRAY) > 0)
 				{
-					foreach($PZ_CONFIG_ARRAY as $key => $value)
+					foreach($PZPHP_CONFIG_ARRAY as $key => $value)
 					{
 						self::$_CONFIGS[$key] = $value;
 					}

@@ -11,7 +11,7 @@
 	/**
 	 * The database class allows you to send queries to a database server, run through results, and a lot more.
 	 */
-	class PzPHP_Db extends PzPHP_Wrapper
+	class PzPHP_Module_Db extends PzPHP_Wrapper
 	{
 		const PDO = 'IS_PDO';
 

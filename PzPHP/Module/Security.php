@@ -11,7 +11,7 @@
 	/**
 	 * The security class gives you methods that allow you to create one-way, or two-way encryptions, among other things.
 	 */
-	class PzPHP_Security extends PzPHP_Wrapper
+	class PzPHP_Module_Security extends PzPHP_Wrapper
 	{
 		/**
 		 * The init method takes care of applying custom security rules (if any).
