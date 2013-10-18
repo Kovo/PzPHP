@@ -17,7 +17,7 @@
 			{
 				require $fileName;
 
-				if(isset($PZPHP_CONFIG_ARRAY) && is_array($PZPHP_CONFIG_ARRAY) && count($PZPHP_CONFIG_ARRAY) > 0)
+				if(isset($PZPHP_CONFIG_ARRAY) && is_array($PZPHP_CONFIG_ARRAY) && !empty($PZPHP_CONFIG_ARRAY))
 				{
 					foreach($PZPHP_CONFIG_ARRAY as $key => $value)
 					{
@@ -36,7 +36,7 @@
 		 */
 		public static function loadArray($array)
 		{
-			if(is_array($array) && count($array) > 0)
+			if(is_array($array) && !empty($array))
 			{
 				foreach($array as $key => $value)
 				{

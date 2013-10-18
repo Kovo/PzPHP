@@ -143,7 +143,7 @@ class PzPHP_Library_Security_Cleanse extends PzPHP_Wrapper
 		{
 			$recallvar = array();
 
-			if(count($value) > 0)
+			if(!empty($value))
 			{
 				foreach($value as $key => $val)
 				{

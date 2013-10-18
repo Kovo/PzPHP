@@ -33,11 +33,11 @@ $PZPHP_CONFIG_ARRAY = array();
 $PZPHP_CONFIG_ARRAY['BASE_DIR'] = __DIR__.DIRECTORY_SEPARATOR;
 $PZPHP_CONFIG_ARRAY['ENV'] = getenv('PZPHP_ENVIRONMENT');
 
-###CONFIG###
+###INIT CONFIG###
 PzPHP_Config::loadArray($PZPHP_CONFIG_ARRAY);
 PzPHP_Config::loadConfig('config');
 
-###INIT###
+###INIT PZPHP###
 $_PZPHP = new PzPHP_Core();
 
 ###INIT LOGGING###

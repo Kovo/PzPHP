@@ -62,4 +62,13 @@ class PzPHP_Helper_Codes
 	 * @var int
 	 */
 	const IO_FILE_ACCESS_ACTION_DENIED = 401;
+
+
+
+
+
+	/**
+	 * @var int
+	 */
+	const SECURITY_CHECKSUM_MISMATCH = 500;
 }

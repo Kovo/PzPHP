@@ -16,7 +16,7 @@ class PzPHP_Module_View extends PzPHP_Wrapper
 		{
 			$PZPHP = $this->pzphp();
 
-			if(count($parameters) > 0)
+			if(!empty($parameters))
 			{
 				extract($parameters);
 			}

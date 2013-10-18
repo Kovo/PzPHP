@@ -142,7 +142,7 @@ class PzPHP_Module_Locale extends PzPHP_Wrapper
 		{
 			$returnString = $this->_translations[$shortLocale][$key];
 
-			if($noReplace === false && count($replacements) > 0)
+			if($noReplace === false && !empty($replacements))
 			{
 				foreach($replacements as $key => $value)
 				{

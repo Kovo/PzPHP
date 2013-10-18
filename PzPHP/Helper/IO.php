@@ -63,7 +63,7 @@ class PzPHP_Helper_IO
 			{
 				$scannedDir = scandir($source);
 
-				if(count($scannedDir) > 0)
+				if(!empty($scannedDir))
 				{
 					foreach($scannedDir as $fileName)
 					{

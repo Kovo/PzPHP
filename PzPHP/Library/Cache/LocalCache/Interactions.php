@@ -289,7 +289,7 @@
 			{
 				$cahcheArray = &$this->_returnProperArray($keysStartingWith);
 
-				if(count($cahcheArray) > 0)
+				if(!empty($cahcheArray))
 				{
 					$keySegmentLength = strlen($keysStartingWith);
 					foreach($cahcheArray as $key => $value)

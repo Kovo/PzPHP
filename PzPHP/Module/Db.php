@@ -44,7 +44,7 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		 * @param int $id
 		 * @return mixed
 		 */
-	public function sanitizeNonNumeric($value, $cleanHtmlLevel = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
+	public function sanitizeNonNumeric($value, $cleanHtmlLevel = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
 	{
 		switch($this->_databaseMethod)
 		{

@@ -142,7 +142,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 			}
 		}
 
-		if(count($this->_routes) > 0)
+		if(!empty($this->_routes))
 		{
 			$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
 			$foundKey = null;

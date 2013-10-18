@@ -27,7 +27,7 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 		ini_set('error_reporting', E_ALL | E_NOTICE);
 		ini_set('display_errors', (PzPHP_Config::get('SETTING_DEBUG_MODE')?1:0));
 
-		if(PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS') > 0 && count($this->_logs) > 0)
+		if(PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS') > 0 && !empty($this->_logs))
 		{
 			foreach($this->_logs as $logName => $location)
 			{
@@ -108,7 +108,7 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 			{
 				$file = file($this->_logs[$logName]);
 
-				if(count($file) > 0)
+				if(!empty($file))
 				{
 					file_put_contents($this->_logs[$logName], '');
 
