@@ -1,39 +1,39 @@
 <?php
-	class PzPHP_Module_View extends PzPHP_Wrapper
+class PzPHP_Module_View extends PzPHP_Wrapper
+{
+	/**
+	 * @param       $view
+	 * @param array $parameters
+	 *
+	 * @return string
+	 * @throws PzPHP_Exception
+	 */
+	public function render($view, array $parameters)
 	{
-		/**
-		 * @param       $view
-		 * @param array $parameters
-		 *
-		 * @return string
-		 * @throws PzPHP_Exception
-		 */
-		public function render($view, array $parameters)
+		$file = PzPHP_Config::get('VIEWS_DIR').$view.'.php';
+
+		if(file_exists($file))
 		{
-			$file = PzPHP_Config::get('PZPHP_VIEWS_DIR').$view.'.php';
+			$PZPHP = $this->pzphp();
 
-			if(file_exists($file))
+			if(count($parameters) > 0)
 			{
-				$PZPHP = $this->pzphp();
-
-				if(count($parameters) > 0)
-				{
-					extract($parameters);
-				}
-
-				ob_start();
-
-				require $file;
-
-				$content = ob_get_clean();
-
-				ob_end_clean();
-
-				return $content;
+				extract($parameters);
 			}
-			else
-			{
-				throw new PzPHP_Exception('View "'.$file.'" not found!');
-			}
+
+			ob_start();
+
+			require $file;
+
+			$content = ob_get_clean();
+
+			ob_end_clean();
+
+			return $content;
+		}
+		else
+		{
+			throw new PzPHP_Exception('View "'.$file.'" not found!', PzPHP_Helper_Codes::VIEW_NOT_FOUND);
 		}
 	}
+}

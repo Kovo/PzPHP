@@ -19,17 +19,17 @@
 		 * @access protected
 		 * @var null|PzPHP_Core
 		 */
-		protected $_pzphpCore = null;
+		protected $_PzPHP = null;
 
 		/**
 		 * The init method sets the PzPHP_Core object.
 		 *
 		 * @access public
-		 * @param PzPHP_Core $PzphpCore
+		 * @param PzPHP_Core $PzPHPCore
 		 */
-		public function init(PzPHP_Core $PzphpCore)
+		public function init(PzPHP_Core $PzPHPCore)
 		{
-			$this->_pzphpCore = $PzphpCore;
+			$this->_PzPHP = $PzPHPCore;
 		}
 
 		/**
@@ -40,6 +40,6 @@
 		 */
 		public function pzphp()
 		{
-			return $this->_pzphpCore;
+			return $this->_PzPHP;
 		}
 	}

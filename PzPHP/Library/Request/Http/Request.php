@@ -340,7 +340,7 @@
 					}
 				}
 
-				Pz_Helper_Array::aasort($return, 'precedence', SORT_NUMERIC, false);
+				PzPHP_Helper_Array::aasort($return, 'precedence', SORT_NUMERIC, false);
 			}
 
 			return $return;

@@ -31,7 +31,6 @@ spl_autoload_register(function($className)
 ###BASE CONFIG###
 $PZPHP_CONFIG_ARRAY = array();
 $PZPHP_CONFIG_ARRAY['BASE_DIR'] = __DIR__.DIRECTORY_SEPARATOR;
-$PZPHP_CONFIG_ARRAY['LOGS_DIR'] = $PZPHP_CONFIG_ARRAY['BASE_DIR'].'LOGS'.DIRECTORY_SEPARATOR;
 $PZPHP_CONFIG_ARRAY['ENV'] = getenv('PZPHP_ENVIRONMENT');
 
 ###CONFIG###
@@ -40,6 +39,15 @@ PzPHP_Config::loadConfig('config');
 
 ###INIT###
 $_PZPHP = new PzPHP_Core();
+
+###INIT LOGGING###
+$_PZPHP->log()
+	->registerLog(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), PzPHP_Config::get('LOGS_DIR').'MYSQL')
+	->registerLog(PzPHP_Config::get('SETTING_MEMCACHED_ERROR_LOG_FILE_NAME'), PzPHP_Config::get('LOGS_DIR').'MEMCACHED')
+	->warmup();
+
+###INIT LOCALIZATION###
+$_PZPHP->locale()->addLanguage('en', 'en_us')->setCurrentLocale('en');
 
 ###CLEANUP###
 $PZPHP_CONFIG_ARRAY = null;

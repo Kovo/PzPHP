@@ -245,7 +245,7 @@
 
 			$this->_initMisc();
 
-			Pz_Helper_Misc::regenerateMtRandSeed();
+			PzPHP_Helper_Misc::regenerateMtRandSeed();
 		}
 
 		/**

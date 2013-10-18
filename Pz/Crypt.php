@@ -383,7 +383,7 @@
 		 * @param int $type
 		 * @return string
 		 */
-		private function _poisonString($input, array $constraints, $type = Pz_Helper_String::HEX)
+		private function _poisonString($input, array $constraints, $type = PzPHP_Helper_String::HEX)
 		{
 			foreach($constraints as $coords)
 			{
@@ -392,7 +392,7 @@
 					$part1 = substr($input, 0, $coords[0]);
 					$part2 = substr($input, $coords[0]);
 
-					$part1 = $part1.Pz_Helper_String::createCode($coords[1], $type);
+					$part1 = $part1.PzPHP_Helper_String::createCode($coords[1], $type);
 					$input = $part1.$part2;
 				}
 			}
@@ -510,7 +510,7 @@
 		 */
 		public function regeneratePzCryptSalt()
 		{
-			return Pz_Helper_String::createCode(mt_rand(35,45), Pz_Helper_String::ALPHANUMERIC_PLUS);
+			return PzPHP_Helper_String::createCode(mt_rand(35,45), PzPHP_Helper_String::ALPHANUMERIC_PLUS);
 		}
 
 		/**

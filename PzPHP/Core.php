@@ -66,13 +66,9 @@
 			if(!isset($this->_registeredModules[$moduleName]))
 			{
 				$this->_registeredModules[$moduleName] = false;
+			}
 
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return $this;
 		}
 
 		/**
@@ -119,13 +115,9 @@
 			if(!$this->exists($variableName))
 			{
 				$this->_registeredVariables[$variableName] = $variableValue;
+			}
 
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return $this;
 		}
 
 		/**
@@ -167,7 +159,6 @@
 		public function delete()
 		{
 			$variableNames = func_get_args();
-			$unregisteredVariables = 0;
 
 			if(count($variableNames) > 0)
 			{
@@ -176,13 +167,11 @@
 					if($this->exists($variableName))
 					{
 						unset($this->_registeredVariables[$variableName]);
-
-						$unregisteredVariables++;
 					}
 				}
 			}
 
-			return $unregisteredVariables;
+			return $this;
 		}
 
 		/**
