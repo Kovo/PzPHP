@@ -208,6 +208,8 @@ class PzPHP_Library_Db_PDO_Server
 				try
 				{
 					$this->_pdo_obj =  new PDO($this->_getDSN(), $this->_user, $this->_password, $this->_dbDriverOptions);
+					$this->_pdo_obj->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+					$this->_pdo_obj->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 					$this->_status = self::CONNECTED;
 
@@ -309,7 +311,7 @@ class PzPHP_Library_Db_PDO_Server
 	 * @access public
 	 * @return pdo|null
 	 */
-	public function returnPDOObj()
+	public function getDBObject()
 	{
 		return $this->_pdo_obj;
 	}

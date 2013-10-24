@@ -85,4 +85,9 @@ class PzPHP_Helper_Codes
 	 * @var int
 	 */
 	const DATABASE_CONNECT_FAILURE = 601;
+
+	/**
+	 * @var int
+	 */
+	const DATABASE_INVALID_MODE = 602;
 }

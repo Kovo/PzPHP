@@ -227,7 +227,7 @@ class PzPHP_Library_Db_Mysql_Server
 	 * @access public
 	 * @return resource|null
 	 */
-	public function returnMysqlRes()
+	public function getDBObject()
 	{
 		return $this->_mysql_res;
 	}

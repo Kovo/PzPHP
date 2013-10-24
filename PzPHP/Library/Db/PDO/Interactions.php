@@ -13,43 +13,36 @@
 /**
  * The interaction class for communicating with mysql using mysqli.
  */
-class PzPHP_Library_Db_PDO_Interactions
+class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
 	 * Expects to handle read related queries.
 	 *
 	 * @access public
 	 * @param string $query
-	 * @param int $id
+	 * @param int $serverId
 	 * @return bool|PDOStatement
 	 */
-	public function read($query, $id = -1)
+	public function read($query, $serverId = -1)
 	{
-		$id = $this->pzCore()->decideActivePDOId($id);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		if($this->pzCore()->pdoActiveObject($id) === false)
-		{
-			return false;
-		}
-		else
-		{
-			if($this->pzCore()->pdoActiveObject($id)->isConnected() === false)
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
 			{
-				if($this->pzCore()->pdoConnect($id) === false)
+				if(!$this->pzphp()->db()->connect($serverId))
 				{
 					return false;
 				}
 			}
 
-			$result = $this->pzCore()->pdoActiveObject($id)->returnPDOObj()->query($query);
+			$result = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->query($query);
 
-			if(!$result && strtoupper(substr($query,0,6)) === 'SELECT')
+			if(!$result)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Query failed: "'.$query.'".');
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.' | Error: "#'.$result->errorCode().' / '.$result->errorInfo().'"');
 			}
-
-			$this->pzCore()->debugger('pdoReadsInc');
-			$this->pzCore()->debugger('pdoLogQuery', array($query));
 
 			if(empty($result))
 			{
@@ -60,6 +53,12 @@ class PzPHP_Library_Db_PDO_Interactions
 				return $result;
 			}
 		}
+		catch(Exception $e)
+		{
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+
+			return false;
+		}
 	}
 
 	/**
@@ -67,32 +66,28 @@ class PzPHP_Library_Db_PDO_Interactions
 	 *
 	 * @access public
 	 * @param string $query
-	 * @param int $id
+	 * @param int $serverId
 	 * @return bool|PDOStatement
 	 */
-	public function write($query, $id = -1)
+	public function write($query, $serverId = -1)
 	{
-		$id = $this->pzCore()->decideActivePDOId($id);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		if($this->pzCore()->pdoActiveObject($id) === false)
-		{
-			return false;
-		}
-		else
-		{
-			if($this->pzCore()->pdoActiveObject($id)->isConnected() === false)
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
 			{
-				if($this->pzCore()->pdoConnect($id) === false)
+				if(!$this->pzphp()->db()->connect($serverId))
 				{
 					return false;
 				}
 			}
 
-			$firstIntervalDelay = $this->pzCore()->getSetting('db_write_retry_first_interval_delay');
-			$secondIntervalDelay = $this->pzCore()->getSetting('db_write_retry_second_interval_delay');
+			$firstIntervalDelay = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_FIRST_INTERVAL_DELAY_SECONDS');
+			$secondIntervalDelay = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_SECOND_INTERVAL_DELAY_SECONDS');
 
-			$firstIntervalRetries = $this->pzCore()->getSetting('db_write_retry_first_interval_retries');
-			$secondIntervalRetries = $this->pzCore()->getSetting('db_write_retry_second_interval_retries');
+			$firstIntervalRetries = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_FIRST_INTERVAL_RETRIES');
+			$secondIntervalRetries = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_SECOND_INTERVAL_RETRIES');
 
 			$retryCodes = array(
 				1213, //Deadlock found when trying to get lock
@@ -109,30 +104,28 @@ class PzPHP_Library_Db_PDO_Interactions
 				$retryFlag = 0;
 
 				// Write query (UPDATE, INSERT)
-				$result = $this->pzCore()->pdoActiveObject($id)->returnPDOObj()->query($query);
-				$pdoErrno = $this->pzCore()->pdoActiveObject($id)->returnPDOObj()->errorCode();
-				$pdoError = $this->pzCore()->pdoActiveObject($id)->returnPDOObj()->errorInfo();
-
-				$this->pzCore()->debugger('pdoWritesInc');
-				$this->pzCore()->debugger('pdoLogQuery', array($query));
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->query($query);
 
 				// If failed,
 				if(!$result)
 				{
+					$pdoErrno = $result->errorCode();
+					$pdoError = $result->errorInfo();
+
 					// Determine if we need to retry this transaction -
 					// If duplicate PRIMARY key error,
 					// or one of the errors in 'arr_need_to_retry_error_codes'
 					// then we need to retry
 					if($pdoErrno == 1062 && strpos($pdoError,"for key 'PRIMARY'") !== false)
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Duplicate Primary Key error for query: "'.$query.'".');
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Duplicate Primary Key error for query: "'.$query.'".');
 					}
 
 					$retryFlag = (in_array($pdoErrno, $retryCodes));
 
 					if(!empty($retryFlag))
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Deadlock detected for query: "'.$query.'".');
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Deadlock detected for query: "'.$query.'".');
 					}
 				}
 
@@ -149,21 +142,21 @@ class PzPHP_Library_Db_PDO_Interactions
 				{
 					if($retryCount === $firstIntervalRetries)
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Reducing retry interval for deadlock detection on query: "'.$query.'".');
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Reducing retry interval for deadlock detection on query: "'.$query.'".');
 					}
 
-					usleep($firstIntervalDelay);
+					usleep($firstIntervalDelay*1000000);
 				}
 				elseif($retryCount > $firstIntervalRetries && $retryCount <= $secondIntervalRetries)
 				{
-					usleep($secondIntervalDelay);
+					usleep($secondIntervalDelay*1000000);
 				}
 				else
 				{
 					$result = false;
 					$retryCount--;
 
-					$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Finally gave up on query: "'.$query.'".');
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Finally gave up on query: "'.$query.'".');
 
 					break;
 				}
@@ -173,12 +166,12 @@ class PzPHP_Library_Db_PDO_Interactions
 			// If update query failed, log
 			if(!$result)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Query failed: "'.$query.'".');
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'".');
 			}
 
 			if($retryCount > 0 && $retryCount < $secondIntervalRetries)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('pdo'), 'Query finally succeeded: "'.$query.'".');
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query finally succeeded: "'.$query.'".');
 			}
 
 			// Return result
@@ -191,6 +184,12 @@ class PzPHP_Library_Db_PDO_Interactions
 				return $result;
 			}
 		}
+		catch(Exception $e)
+		{
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+
+			return false;
+		}
 	}
 
 	/**
@@ -198,48 +197,39 @@ class PzPHP_Library_Db_PDO_Interactions
 	 *
 	 * @access public
 	 * @param PDOStatement $queryObject
-	 * @param int $id
+	 * @param int $serverId
 	 * @return int
 	 */
-	public function affectedRows(PDOStatement $queryObject, $id = -1)
+	public function affectedRows(PDOStatement $queryObject, $serverId = -1)
 	{
-		$id = $this->pzCore()->decideActivePDOId($id);
+		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		return ($this->pzCore()->pdoActiveObject($id)?$this->pzCore()->pdoActiveObject($id)->affectedRows($queryObject):0);
+		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->affectedRows($queryObject):0);
 	}
 
 	/**
 	 * Returns the last insert id of the last insert query.
 	 *
 	 * @access public
-	 * @param int $id
+	 * @param int $serverId
 	 * @return int
 	 */
-	public function insertId($id = -1)
+	public function insertId($serverId = -1)
 	{
-		$id = $this->pzCore()->decideActivePDOId($id);
+		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		return ($this->pzCore()->pdoActiveObject($id)?$this->pzCore()->pdoActiveObject($id)->insertId():0);
+		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->insertId():0);
 	}
 
 	/**
-	 * Sanitize a value that will be injected into a query string.
-	 *
-	 * @access public
-	 * @param mixed $value
+	 * @param $value
 	 * @param bool $mustBeNumeric
-	 * @param int  $decimalPlaces
-	 * @param int  $cleanall
-	 * @return mixed
+	 * @param int $decimalPlaces
+	 * @param int $cleanall
+	 * @return array|float|int|mixed|string
 	 */
-	public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = Pz_Security::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
+	public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 	{
-		return $this->pzCore()->pzSecurity()->cleanQuery(
-			null,
-			$value,
-			$mustBeNumeric,
-			$decimalPlaces,
-			$cleanall
-		);
+		return PzPHP_Library_Security_Cleanse::cleanQuery(null, $value,$mustBeNumeric, $decimalPlaces, $cleanall);
 	}
 }

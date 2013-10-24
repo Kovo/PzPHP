@@ -19,10 +19,79 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 	protected $_servers = array();
 
 	/**
+	 * @var null|PzPHP_Library_Db_Mysqli_Interactions
+	 */
+	protected $_mysqliInteractions = null;
+
+	/**
+	 * @var null|PzPHP_Library_Db_Mysql_Interactions
+	 */
+	protected $_mysqlInteractions = null;
+
+	/**
+	 * @var null|PzPHP_Library_Db_PDO_Interactions
+	 */
+	protected $_pdoInteractions = null;
+
+	/**
 	 * @var int
 	 */
 	protected $_activeServerId = -1;
 
+	/**
+	 * @return null|PzPHP_Library_Db_Mysqli_Interactions
+	 */
+	public function mysqliInteract()
+	{
+		if($this->_mysqliInteractions === null)
+		{
+			$this->_mysqliInteractions = new PzPHP_Library_Db_Mysqli_Interactions($this->_PzPHP);
+		}
+
+		return $this->_mysqliInteractions;
+	}
+
+	/**
+	 * @return null|PzPHP_Library_Db_Mysql_Interactions
+	 */
+	public function mysqlInteract()
+	{
+		if($this->_mysqlInteractions === null)
+		{
+			$this->_mysqlInteractions = new PzPHP_Library_Db_Mysql_Interactions($this->_PzPHP);
+		}
+
+		return $this->_mysqlInteractions;
+	}
+
+	/**
+	 * @return null|PzPHP_Library_Db_PDO_Interactions
+	 */
+	public function pdoInteract()
+	{
+		if($this->_pdoInteractions === null)
+		{
+			$this->_pdoInteractions = new PzPHP_Library_Db_PDO_Interactions($this->_PzPHP);
+		}
+
+		return $this->_pdoInteractions;
+	}
+
+	/**
+	 * @param $user
+	 * @param $password
+	 * @param string $name
+	 * @param string $host
+	 * @param int $port
+	 * @param bool $preventAutoAssign
+	 * @param array $pdoDriverOptions
+	 * @param string $pdoServer
+	 * @param string $pdoProtocol
+	 * @param string $pdoSocket
+	 * @param string $pdoCharset
+	 * @return mixed
+	 * @throws PzPHP_Exception
+	 */
 	public function add($user, $password, $name = '', $host = 'localhost', $port = 3306, $preventAutoAssign = false, $pdoDriverOptions = array(), $pdoServer = '', $pdoProtocol = '', $pdoSocket = '', $pdoCharset = '')
 	{
 		switch(PzPHP_Config::get('DATABASE_MODE'))
@@ -33,8 +102,11 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 			case PzPHP_Config::get('DATABASE_MYSQL'):
 				$this->_servers[] = new PzPHP_Library_Db_Mysql_Server($user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'));
 				break;
+			case PzPHP_Config::get('DATABASE_PDO'):
+				$this->_servers[] = new PzPHP_Library_Db_PDO_Server($user, $password, PzPHP_Config::get('DATABASE_PDO_MODE'), $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'), $pdoDriverOptions, $pdoServer, $pdoProtocol, $pdoSocket, $pdoCharset);
+				break;
 			default:
-				$this->_servers[] = new PzPHP_Library_Db_PDO_Server($user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'), $pdoDriverOptions, $pdoServer, $pdoProtocol, $pdoSocket, $pdoCharset);
+				throw new PzPHP_Exception('Invalid database mode provided.', PzPHP_Helper_Codes::DATABASE_INVALID_MODE);
 		}
 
 		$serverId = max(array_keys($this->_servers));
@@ -77,12 +149,12 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @param $id
+	 * @param $serverId
 	 * @return int
 	 */
-	public function getActiveServerId($id = -1)
+	public function getActiveServerId($serverId = -1)
 	{
-		return ($id===-1?$this->_activeServerId:$id);
+		return ($serverId===-1?$this->_activeServerId:$serverId);
 	}
 
 	/**
@@ -97,15 +169,15 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @param $id
+	 * @param $serverId
 	 * @return PzPHP_Library_Db_Mysqli_Server|PzPHP_Library_Db_Mysql_Server|PzPHP_Library_Db_PDO_Server
 	 * @throws PzPHP_Exception
 	 */
-	public function getActiveServer($id = -1)
+	public function getActiveServer($serverId = -1)
 	{
-		if(isset($this->_servers[($id===-1?$this->_activeServerId:$id)]))
+		if(isset($this->_servers[($serverId===-1?$this->_activeServerId:$serverId)]))
 		{
-			return $this->_servers[($id===-1?$this->_activeServerId:$id)];
+			return $this->_servers[($serverId===-1?$this->_activeServerId:$serverId)];
 		}
 		else
 		{
@@ -113,54 +185,309 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		}
 	}
 
-	public function sanitizeNumeric($value, $decimalPlaces = 2, $id = -1)
+	/**
+	 * @param $value
+	 * @param int $decimalPlaces
+	 * @param $serverId
+	 * @return bool|mixed
+	 */
+	public function sanitizeNumeric($value, $decimalPlaces = 2, $serverId = -1)
 	{
-		switch($this->_databaseMethod)
+		switch(PzPHP_Config::get('DATABASE_MODE'))
 		{
-/*			case PzPHP_Config::get('DATABASE_MYSQLI'):
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
 			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);;
-			case self::PDO:
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);
+				return $this->mysqlInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return $this->pdoInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
 			default:
-				return false;*/
+				return false;
 		}
 	}
 
-		/**
-		 * Expects to be passed a non-numeric value to make sure it is safe.
-		 *
-		 * @access public
-		 * @param mixed $value
-		 * @param int $cleanHtmlLevel
-		 * @param int $id
-		 * @return mixed
-		 */
-	public function sanitizeNonNumeric($value, $cleanHtmlLevel = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $id = -1)
+	/**
+	 * @param $value
+	 * @param int $cleanHtmlLevel
+	 * @param $serverId
+	 * @return bool|mixed
+	 */
+	public function sanitizeNonNumeric($value, $cleanHtmlLevel = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId = -1)
 	{
-		switch($this->_databaseMethod)
+		switch(PzPHP_Config::get('DATABASE_MODE'))
 		{
-		/*	case PzPHP_Config::get('DATABASE_MYSQLI'):
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
 			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);;
-			case self::PDO:
-				return PzPHP_Library_Security_Cleanse::cleanQuery(
-
-				);
+				return $this->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return $this->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
 			default:
-				return false;*/
+				return false;
+		}
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function select($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function set($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function optimize($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function analyze($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function check($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function insert($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->write($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function delete($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->write($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function update($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->write($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function alter($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result
+	 */
+	public function create($query, $serverId = -1)
+	{
+		return $this->mysqliInteract()->read($query, $serverId);
+	}
+
+	/**
+	 * @param $serverId
+	 * @return bool|int
+	 */
+	public function insertId($serverId = -1)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->insertId($this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return $this->mysqlInteract()->insertId($this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return $this->pdoInteract()->insertId($this->getActiveServerId($serverId));
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param PDOStatement $queryObject
+	 * @param $serverId
+	 * @return bool|int
+	 */
+	public function affectedRows(PDOStatement $queryObject = null, $serverId = -1)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->affectedRows($this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return $this->mysqliInteract()->affectedRows($this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return $this->pdoInteract()->affectedRows($queryObject, $this->getActiveServerId($serverId));
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param $object
+	 * @return bool|int
+	 */
+	public function returnedRows($object)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return (is_object($object)?$object->num_rows:0);
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return (is_resource($object)?mysql_num_rows($object):0);
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return (is_object($object)?$object->rowCount():0);
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param $object
+	 * @return array|bool
+	 */
+	public function fetchNextRowAssoc($object)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return (is_object($object)?$object->fetch_assoc():false);
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return (is_resource($object)?mysql_fetch_assoc($object):false);
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return (is_object($object)?$object->fetch(PDO::FETCH_ASSOC):false);
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param $object
+	 * @return array|bool
+	 */
+	public function fetchNextRowEnum($object)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return (is_object($object)?$object->fetch_row():false);
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return (is_resource($object)?mysql_fetch_row($object):false);
+			case PzPHP_Config::get('DATABASE_PDO'):
+				return (is_object($object)?$object->fetch(PDO::FETCH_NUM):false);
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param $object
+	 */
+	public function freeResult($object)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				if(is_object($object) && method_exists($object, 'close'))
+				{
+					$object->close();
+				}
+
+				break;
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				if(is_resource($object))
+				{
+					mysql_free_result($object);
+				}
+
+				break;
+			case PzPHP_Config::get('DATABASE_PDO'):
+				if(is_object($object) && method_exists($object, 'closeCursor'))
+				{
+					$object->closeCursor();
+				}
+		}
+
+	}
+
+	/**
+	 * @param $name
+	 * @param $serverId
+	 * @return bool
+	 */
+	public function changeDatabase($name, $serverId = -1)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->selectDatabase($name, $this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return $this->mysqlInteract()->selectDatabase($name, $this->getActiveServerId($serverId));
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param $user
+	 * @param $password
+	 * @param null $dbName
+	 * @param $serverId
+	 * @return bool
+	 */
+	public function changeUser($user, $password, $dbName = null, $serverId = -1)
+	{
+		switch(PzPHP_Config::get('DATABASE_MODE'))
+		{
+			case PzPHP_Config::get('DATABASE_MYSQLI'):
+				return $this->mysqliInteract()->changeUser($user, $password, $dbName, $this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_MYSQL'):
+				return $this->mysqlInteract()->mysqlChangeUser($user, $password, $dbName, $this->getActiveServerId($serverId));
+			default:
+				return false;
 		}
 	}
 }

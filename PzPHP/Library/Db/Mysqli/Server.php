@@ -145,9 +145,9 @@ class PzPHP_Library_Db_Mysqli_Server
 
 			$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
-			if(mysqli_connect_error())
+			if($this->_dbObject->connect_error)
 			{
-				if(strpos(mysqli_connect_error(), 'access denied') !== false)
+				if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 				{
 					$this->_status = self::DISCONNECTED;
 
@@ -160,9 +160,9 @@ class PzPHP_Library_Db_Mysqli_Server
 
 					$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
-					if(mysqli_connect_error())
+					if($this->_dbObject->connect_error)
 					{
-						if(strpos(mysqli_connect_error(), 'access denied') !== false)
+						if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 						{
 							$this->_status = self::DISCONNECTED;
 
