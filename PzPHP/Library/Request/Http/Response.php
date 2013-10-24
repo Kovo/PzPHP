@@ -13,7 +13,7 @@
 /**
  * Allows you to set response headers and status codes.
  */
-class PzPHP_Library_Request_Http_Response extends Pz_Abstract_Generic
+class PzPHP_Library_Request_Http_Response
 {
 	/**
 	 * An array of custom set headers.

@@ -13,7 +13,7 @@
 	/**
 	 * Interaction class for dealing with the local cache system.
 	 */
-	class Pz_LocalCache_Interactions extends Pz_Abstract_Generic
+	class Pz_LocalCache_Interactions
 	{
 		/**
 		 * The key / value pairs are stored in a simple array.

@@ -13,7 +13,7 @@
 	/**
 	 * This class allows you to interact with the shared memory cache.
 	 */
-	class Pz_SHM_Interactions extends Pz_Abstract_Generic
+	class Pz_SHM_Interactions
 	{
 		/**
 		 * Converts key to a valid hex value (for proper storage with shmop).

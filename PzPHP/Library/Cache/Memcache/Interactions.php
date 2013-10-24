@@ -13,7 +13,7 @@
 	/**
 	 * Interaction class for dealing with memcache using memcache.
 	 */
-	class Pz_Memcache_Interactions extends Pz_Abstract_Generic
+	class Pz_Memcache_Interactions
 	{
 		/**
 		 * Writes a value to the cache.

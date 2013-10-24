@@ -13,7 +13,7 @@
 /**
  * The Request class allows you to learn about the essentials of the current request.
  */
-class PzPHP_Library_Request_Http_Request extends Pz_Abstract_Generic
+class PzPHP_Library_Request_Http_Request
 {
 	/**
 	 * Whether the current request is an AJAX request or not.

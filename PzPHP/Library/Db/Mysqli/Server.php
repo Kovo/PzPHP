@@ -106,7 +106,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 * @access private
 	 * @var null|mysqli
 	 */
-	private $_mysqli_obj = NULL;
+	private $_dbObject = NULL;
 
 	/**
 	 * The constructor handles setting the mysql server credentials.
@@ -143,7 +143,7 @@ class PzPHP_Library_Db_Mysqli_Server
 		{
 			$this->_status = self::CONNECTING;
 
-			$this->_mysqli_obj =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
+			$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
 			if(mysqli_connect_error())
 			{
@@ -158,7 +158,7 @@ class PzPHP_Library_Db_Mysqli_Server
 				{
 					sleep($this->_connectRetryDelay);
 
-					$this->_mysqli_obj =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
+					$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
 
 					if(mysqli_connect_error())
 					{
@@ -210,11 +210,11 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function disconnect()
 	{
-		if($this->isConnected() === true && is_object($this->_mysqli_obj))
+		if($this->isConnected() === true && is_object($this->_dbObject))
 		{
-			$this->_mysqli_obj->close();
+			$this->_dbObject->close();
 
-			$this->_mysqli_obj = NULL;
+			$this->_dbObject = NULL;
 
 			$this->_status = self::DISCONNECTED;
 		}
@@ -228,7 +228,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function isConnected()
 	{
-		return ($this->_status===self::CONNECTED&&is_object($this->_mysqli_obj)?true:false);
+		return ($this->_status===self::CONNECTED&&is_object($this->_dbObject)?true:false);
 	}
 
 	/**
@@ -237,9 +237,9 @@ class PzPHP_Library_Db_Mysqli_Server
 	 * @access public
 	 * @return mysqli|null
 	 */
-	public function returnMysqliObj()
+	public function getDBObject()
 	{
-		return $this->_mysqli_obj;
+		return $this->_dbObject;
 	}
 
 	/**
@@ -250,7 +250,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function insertId()
 	{
-		return $this->_mysqli_obj->insert_id;
+		return $this->_dbObject->insert_id;
 	}
 
 	/**
@@ -261,7 +261,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function affectedRows()
 	{
-		return $this->_mysqli_obj->affected_rows;
+		return $this->_dbObject->affected_rows;
 	}
 
 	/**
@@ -273,7 +273,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function selectDatabase($dbName)
 	{
-		if($this->_mysqli_obj->select_db($dbName))
+		if($this->_dbObject->select_db($dbName))
 		{
 			$this->_dbName = $dbName;
 
@@ -296,7 +296,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	 */
 	public function changeUser($user, $password, $dbName = NULL)
 	{
-		if($this->_mysqli_obj->change_user($user, $password, $dbName))
+		if($this->_dbObject->change_user($user, $password, $dbName))
 		{
 			$this->_user = $user;
 			$this->_password = $password;

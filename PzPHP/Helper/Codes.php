@@ -71,4 +71,18 @@ class PzPHP_Helper_Codes
 	 * @var int
 	 */
 	const SECURITY_CHECKSUM_MISMATCH = 500;
+
+
+
+
+
+	/**
+	 * @var int
+	 */
+	const DATABASE_NO_ACTIVE_SERVER_ID = 600;
+
+	/**
+	 * @var int
+	 */
+	const DATABASE_CONNECT_FAILURE = 601;
 }

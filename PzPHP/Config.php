@@ -72,6 +72,15 @@ class PzPHP_Config
 	}
 
 	/**
+	 * @param $configKeyName
+	 * @param $value
+	 */
+	public static function set($configKeyName, $value)
+	{
+		self::$_CONFIGS[$configKeyName] = $value;
+	}
+
+	/**
 	 * @return array
 	 */
 	public static function getAll()

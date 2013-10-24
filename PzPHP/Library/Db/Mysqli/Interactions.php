@@ -13,43 +13,33 @@
 /**
  * The interaction class for communicating with mysql using mysqli.
  */
-class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
+class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Expects to handle read related queries.
-	 *
-	 * @access public
-	 * @param string $query
-	 * @param int $id
+	 * @param $query
+	 * @param $serverId
 	 * @return bool|mysqli_result
 	 */
-	public function read($query, $id = -1)
+	public function read($query, $serverId = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		if($this->pzCore()->mysqliActiveObject($id) === false)
-		{
-			return false;
-		}
-		else
-		{
-			if($this->pzCore()->mysqliActiveObject($id)->isConnected() === false)
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
 			{
-				if($this->pzCore()->mysqliConnect($id) === false)
+				if(!$this->pzphp()->db()->connect($serverId))
 				{
 					return false;
 				}
 			}
 
-			$result = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->query($query);
+			$result = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->query($query);
 
-			if(!$result && strtoupper(substr($query,0,6)) === 'SELECT')
+			if(!$result)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Query failed: "'.$query.'".');
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.' | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
 			}
-
-			$this->pzCore()->debugger('mysqlReadsInc');
-			$this->pzCore()->debugger('mysqlLogQuery', array($query));
 
 			if(empty($result))
 			{
@@ -60,6 +50,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 				return $result;
 			}
 		}
+		catch(Exception $e)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -67,32 +61,28 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 *
 	 * @access public
 	 * @param string $query
-	 * @param int $id
+	 * @param int $serverId
 	 * @return bool|mysqli_result
 	 */
-	public function write($query, $id = -1)
+	public function write($query, $serverId = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		if($this->pzCore()->mysqliActiveObject($id) === false)
-		{
-			return false;
-		}
-		else
-		{
-			if($this->pzCore()->mysqliActiveObject($id)->isConnected() === false)
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
 			{
-				if($this->pzCore()->mysqliConnect($id) === false)
+				if(!$this->pzphp()->db()->mysqliConnect($serverId))
 				{
 					return false;
 				}
 			}
 
-			$firstIntervalDelay = $this->pzCore()->getSetting('db_write_retry_first_interval_delay');
-			$secondIntervalDelay = $this->pzCore()->getSetting('db_write_retry_second_interval_delay');
+			$firstIntervalDelay = $this->pzphp()->db()->getSetting('db_write_retry_first_interval_delay');
+			$secondIntervalDelay = $this->pzphp()->db()->getSetting('db_write_retry_second_interval_delay');
 
-			$firstIntervalRetries = $this->pzCore()->getSetting('db_write_retry_first_interval_retries');
-			$secondIntervalRetries = $this->pzCore()->getSetting('db_write_retry_second_interval_retries');
+			$firstIntervalRetries = $this->pzphp()->db()->getSetting('db_write_retry_first_interval_retries');
+			$secondIntervalRetries = $this->pzphp()->db()->getSetting('db_write_retry_second_interval_retries');
 
 			$retryCodes = array(
 				1213, //Deadlock found when trying to get lock
@@ -109,12 +99,12 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 				$retryFlag = 0;
 
 				// Write query (UPDATE, INSERT)
-				$result = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->query($query);
-				$mysqlErrno = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->errno;
-				$mysqlError = $this->pzCore()->mysqliActiveObject($id)->returnMysqliObj()->error;
+				$result = $this->pzphp()->db()->mysqliActiveObject($serverId)->returnMysqliObj()->query($query);
+				$mysqlErrno = $this->pzphp()->db()->mysqliActiveObject($serverId)->returnMysqliObj()->errno;
+				$mysqlError = $this->pzphp()->db()->mysqliActiveObject($serverId)->returnMysqliObj()->error;
 
-				$this->pzCore()->debugger('mysqlWritesInc');
-				$this->pzCore()->debugger('mysqlLogQuery', array($query));
+				$this->pzphp()->db()->debugger('mysqlWritesInc');
+				$this->pzphp()->db()->debugger('mysqlLogQuery', array($query));
 
 				// If failed,
 				if(!$result)
@@ -125,14 +115,14 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 					// then we need to retry
 					if($mysqlErrno == 1062 && strpos($mysqlError,"for key 'PRIMARY'") !== false)
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Duplicate Primary Key error for query: "'.$query.'".');
+						$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Duplicate Primary Key error for query: "'.$query.'".');
 					}
 
 					$retryFlag = (in_array($mysqlErrno, $retryCodes));
 
 					if(!empty($retryFlag))
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Deadlock detected for query: "'.$query.'".');
+						$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Deadlock detected for query: "'.$query.'".');
 					}
 				}
 
@@ -149,7 +139,7 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 				{
 					if($retryCount === $firstIntervalRetries)
 					{
-						$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Reducing retry interval for deadlock detection on query: "'.$query.'".');
+						$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Reducing retry interval for deadlock detection on query: "'.$query.'".');
 					}
 
 					usleep($firstIntervalDelay);
@@ -163,7 +153,7 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 					$result = false;
 					$retryCount--;
 
-					$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Finally gave up on query: "'.$query.'".');
+					$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Finally gave up on query: "'.$query.'".');
 
 					break;
 				}
@@ -173,12 +163,12 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 			// If update query failed, log
 			if(!$result)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Query failed: "'.$query.'".');
+				$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Query failed: "'.$query.'".');
 			}
 
 			if($retryCount > 0 && $retryCount < $secondIntervalRetries)
 			{
-				$this->pzCore()->addToLog($this->pzCore()->getLoggerObject('mysql'), 'Query finally succeeded: "'.$query.'".');
+				$this->pzphp()->db()->addToLog($this->pzphp()->db()->getLoggerObject('mysql'), 'Query finally succeeded: "'.$query.'".');
 			}
 
 			// Return result
@@ -191,6 +181,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 				return $result;
 			}
 		}
+		catch(Exception $e)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -202,9 +196,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 */
 	public function affectedRows($id = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		$id = $this->pzphp()->db()->decideActiveMySqliId($id);
 
-		return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->affectedRows():0);
+		return ($this->pzphp()->db()->mysqliActiveObject($id)?$this->pzphp()->db()->mysqliActiveObject($id)->affectedRows():0);
 	}
 
 	/**
@@ -216,9 +210,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 */
 	public function insertId($id = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		$id = $this->pzphp()->db()->decideActiveMySqliId($id);
 
-		return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->insertId():0);
+		return ($this->pzphp()->db()->mysqliActiveObject($id)?$this->pzphp()->db()->mysqliActiveObject($id)->insertId():0);
 	}
 
 	/**
@@ -231,9 +225,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 */
 	public function selectDatabase($dbName, $id = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		$id = $this->pzphp()->db()->decideActiveMySqliId($id);
 
-		return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->selectDatabase($dbName):false);
+		return ($this->pzphp()->db()->mysqliActiveObject($id)?$this->pzphp()->db()->mysqliActiveObject($id)->selectDatabase($dbName):false);
 	}
 
 	/**
@@ -248,9 +242,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 */
 	public function changeUser($user, $password, $dbName = NULL, $id = -1)
 	{
-		$id = $this->pzCore()->decideActiveMySqliId($id);
+		$id = $this->pzphp()->db()->decideActiveMySqliId($id);
 
-		return ($this->pzCore()->mysqliActiveObject($id)?$this->pzCore()->mysqliActiveObject($id)->changeUser($user, $password, $dbName):false);
+		return ($this->pzphp()->db()->mysqliActiveObject($id)?$this->pzphp()->db()->mysqliActiveObject($id)->changeUser($user, $password, $dbName):false);
 	}
 
 	/**
@@ -266,8 +260,8 @@ class PzPHP_Library_Db_Mysqli_Interactions extends Pz_Abstract_Generic
 	 */
 	public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = 0, $id = -1)
 	{
-		return $this->pzCore()->pzSecurity()->cleanQuery(
-			$this->pzCore()->mysqliActiveObject($this->pzCore()->decideActiveMySqliId($id))->returnMysqliObj(),
+		return $this->pzphp()->db()->pzSecurity()->cleanQuery(
+			$this->pzphp()->db()->mysqliActiveObject($this->pzphp()->db()->decideActiveMySqliId($id))->returnMysqliObj(),
 			$value,
 			$mustBeNumeric,
 			$decimalPlaces,

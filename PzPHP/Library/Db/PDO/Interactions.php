@@ -13,7 +13,7 @@
 /**
  * The interaction class for communicating with mysql using mysqli.
  */
-class PzPHP_Library_Db_PDO_Interactions extends Pz_Abstract_Generic
+class PzPHP_Library_Db_PDO_Interactions
 {
 	/**
 	 * Expects to handle read related queries.

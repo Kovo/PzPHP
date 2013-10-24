@@ -13,7 +13,7 @@
 	/**
 	 * This class allows you to interact with APC.
 	 */
-	class Pz_APC_Interactions extends Pz_Abstract_Generic
+	class Pz_APC_Interactions
 	{
 		/**
 		 * Writes a value to the cache.
