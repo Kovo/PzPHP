@@ -23,9 +23,12 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 	 */
 	public function warmup()
 	{
-		ini_set('error_log', PzPHP_Config::get('LOGS_DIR').PzPHP_Config::get('SETTING_PHP_ERROR_LOG_FILE_NAME').'-'.date('Y-m-d').'.log');
-		ini_set('error_reporting', E_ALL | E_NOTICE);
-		ini_set('display_errors', (PzPHP_Config::get('SETTING_DEBUG_MODE')?1:0));
+		if(PzPHP_Config::get('SETTING_LOG_PHP_ERRORS'))
+		{
+			ini_set('error_log', PzPHP_Config::get('LOGS_DIR').PzPHP_Config::get('SETTING_PHP_ERROR_LOG_FILE_NAME').'-'.date('Y-m-d').'.log');
+			ini_set('error_reporting', E_ALL | E_NOTICE);
+			ini_set('display_errors', (PzPHP_Config::get('SETTING_PHP_DISPLAY_ERRORS')?1:0));
+		}
 
 		if(PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS') > 0 && !empty($this->_logs))
 		{

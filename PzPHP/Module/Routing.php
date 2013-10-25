@@ -294,7 +294,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	 * @param $controller
 	 * @param $action
 	 * @param array $constraints
-	 * @return PzPHP_Routing
+	 * @return PzPHP_Module_Routing
 	 */
 	public function add($identifier, $pattern, $controller, $action, array $constraints = array())
 	{
@@ -317,7 +317,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	 * @param $controller
 	 * @param $action
 	 * @param $constraints
-	 * @return PzPHP_Routing
+	 * @return PzPHP_Module_Routing
 	 */
 	public function set($identifier, $pattern, $controller, $action, $constraints)
 	{
@@ -338,7 +338,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	 *
 	 * @access public
 	 * @param $identifier
-	 * @return PzPHP_Routing
+	 * @return PzPHP_Module_Routing
 	 */
 	public function remove($identifier)
 	{

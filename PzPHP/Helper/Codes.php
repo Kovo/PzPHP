@@ -72,6 +72,11 @@ class PzPHP_Helper_Codes
 	 */
 	const SECURITY_CHECKSUM_MISMATCH = 500;
 
+	/**
+	 * @var int
+	 */
+	const SECURITY_ILLEGAL_DOMAIN_DETECTED = 501;
+
 
 
 
@@ -90,4 +95,23 @@ class PzPHP_Helper_Codes
 	 * @var int
 	 */
 	const DATABASE_INVALID_MODE = 602;
+
+
+
+
+
+	/**
+	 * @var int
+	 */
+	const CACHE_INVALID_MODE = 700;
+
+	/**
+	 * @var int
+	 */
+	const CACHE_CONNECT_FAILURE = 701;
+
+	/**
+	 * @var int
+	 */
+	const CACHE_NO_ACTIVE_SERVER_ID = 702;
 }

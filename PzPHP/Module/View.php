@@ -8,7 +8,7 @@ class PzPHP_Module_View extends PzPHP_Wrapper
 	 * @return string
 	 * @throws PzPHP_Exception
 	 */
-	public function render($view, array $parameters)
+	public function render($view, array $parameters = array())
 	{
 		$file = PzPHP_Config::get('VIEWS_DIR').$view.'.php';
 

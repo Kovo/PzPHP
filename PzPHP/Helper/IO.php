@@ -234,6 +234,10 @@ class PzPHP_Helper_IO
 		{
 			return unlink($dir);
 		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -273,10 +277,9 @@ class PzPHP_Helper_IO
 
 	/**
 	 * @param $path
-	 * @param $rootPath
 	 * @return int
 	 */
-	public static function pathType($path, $rootPath)
+	public static function pathType($path)
 	{
 		if(substr($path,0,7)==='http://' || substr($path,0,8)==='https://' || substr($path,0,6)==='ftp://')
 		{

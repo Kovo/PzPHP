@@ -1,198 +1,192 @@
 <?php
+/**
+ * Contributions by:
+ *      Fayez Awad
+ *      Yann Madeleine (http://www.yann-madeleine.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
+ *
+ * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
+ * @package Pz Library
+ */
+/**
+ * Interaction class for dealing with memcache using memcached.
+ */
+class PzPHP_Library_Cache_Memcached_Interactions extends PzPHP_Library_Abstract_Interactions
+{
 	/**
-	 * Contributions by:
-	 *      Fayez Awad
-	 *      Yann Madeleine (http://www.yann-madeleine.com)
+	 * Writes a value to the cache.
 	 *
-	 * Licensed under The MIT License
-	 * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
-	 *
-	 * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
-	 * @package Pz Library
+	 * @access public
+	 * @param string $key
+	 * @param mixed $value
+	 * @param int  $expires
+	 * @param bool $deleteLock
+	 * @param bool $checkFirst
+	 * @param int $serverId
+	 * @return bool
 	 */
-	/**
-	 * Interaction class for dealing with memcache using memcached.
-	 */
-	class Pz_Memcached_Interactions
+	public function write($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true, $serverId = -1)
 	{
-		/**
-		 * Writes a value to the cache.
-		 *
-		 * @access public
-		 * @param string $key
-		 * @param mixed $value
-		 * @param int  $expires
-		 * @param bool $deleteLock
-		 * @param bool $checkFirst
-		 * @param int $id
-		 * @return bool
-		 */
-		public function write($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true, $id = -1)
+		try
 		{
-			$id = $this->pzCore()->decideActiveMemcachedId($id);
+			$serverId = $this->pzphp()->cache()->getActiveServerId($serverId);
 
-			if($this->pzCore()->memcachedActiveObject($id) === false)
+			if(!$this->pzphp()->cache()->getActiveServer($serverId)->isConnected())
 			{
-				return false;
+				if(!$this->pzphp()->cache()->connect($serverId))
+				{
+					return false;
+				}
 			}
-			else
+
+			if(is_scalar($value))
 			{
-				if($this->pzCore()->memcachedActiveObject($id)->isConnected() === false)
+				$value = (string)$value;
+			}
+
+			if($checkFirst)
+			{
+				$replace = $this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->replace($key, $value, $expires);
+
+				if(!$replace)
 				{
-					if($this->pzCore()->memcachedConnect($id) === false)
-					{
-						return false;
-					}
-				}
-
-				if(is_scalar($value))
-				{
-					$value = (string)$value;
-				}
-
-				if($checkFirst === true)
-				{
-					$replace = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->replace($key, $value, $expires);
-
-					$this->pzCore()->debugger('mcdWritesInc');
-
-					if($replace === false)
-					{
-						$return = $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, $value, $expires);
-
-						$this->pzCore()->debugger('mcdWritesInc');
-					}
-					else
-					{
-						$return = true;
-					}
+					$return = $this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->add($key, $value, $expires);
 				}
 				else
 				{
-					if($this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->add($key, $value, $expires) === true)
+					$return = true;
+				}
+			}
+			else
+			{
+				if($this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->add($key, $value, $expires))
+				{
+					if($value == $this->read($key, false, $serverId))
 					{
-						$this->pzCore()->debugger('mcdWritesInc');
-
-						if($value == $this->read($key, false, $id))
-						{
-							$return = true;
-						}
-						else
-						{
-							$return = false;
-						}
+						$return = true;
 					}
 					else
 					{
 						$return = false;
 					}
 				}
-
-				if($deleteLock === true)
-				{
-					$this->delete($key.'_pzLock', false, $id);
-				}
-
-				return $return;
-			}
-		}
-
-		/**
-		 * Reads a value from the cache.
-		 *
-		 * @access public
-		 * @param string $key
-		 * @param bool $checkLock
-		 * @param int $id
-		 * @return bool|mixed
-		 */
-		public function read($key, $checkLock = false, $id = -1)
-		{
-			$id = $this->pzCore()->decideActiveMemcachedId($id);
-
-			if($this->pzCore()->memcachedActiveObject($id) === false)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->pzCore()->memcachedActiveObject($id)->isConnected() === false)
-				{
-					if($this->pzCore()->memcachedConnect($id) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->pzCore()->debugger('mcdReadsInc');
-
-					return $this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->get($key);
-				}
 				else
 				{
-					while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false, $id) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->read($key, false, $id);
+					$return = false;
 				}
 			}
+
+			if($deleteLock)
+			{
+				$this->delete($key.self::LOCK_VALUE, false, $serverId);
+			}
+
+			return $return;
 		}
-
-		/**
-		 * Deletes a value from the cache.
-		 *
-		 * @access public
-		 * @param string $key
-		 * @param bool $checkLock
-		 * @param int $id
-		 * @return bool
-		 */
-		public function delete($key, $checkLock = false, $id = -1)
+		catch(Exception $e)
 		{
-			$id = $this->pzCore()->decideActiveMemcachedId($id);
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MEMCACHE_ERROR_LOG_FILE_NAME'), 'Excpetion during writing of: "'.$key.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
 
-			if($this->pzCore()->memcachedActiveObject($id) === false)
-			{
-				return false;
-			}
-			else
-			{
-				if($this->pzCore()->memcachedActiveObject($id)->isConnected() === false)
-				{
-					if($this->pzCore()->memcachedConnect($id) === false)
-					{
-						return false;
-					}
-				}
-
-				if($checkLock === false)
-				{
-					$this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->delete($key);
-
-					$this->pzCore()->debugger('mcdDeletesInc');
-
-					if(substr($key, -7) !== '_pzLock')
-					{
-						$this->pzCore()->memcachedActiveObject($id)->returnMemcachedObj()->delete($key.'_pzLock');
-
-						$this->pzCore()->debugger('mcdDeletesInc');
-					}
-
-					return true;
-				}
-				else
-				{
-					while($this->write($key.'_pzLock', mt_rand(1,2000000000), $this->pzCore()->getSetting('cache_lock_expire_time'), false, false, $id) === false)
-					{
-						usleep(mt_rand(1000,500000));
-					}
-
-					return $this->delete($key, false, $id);
-				}
-			}
+			return false;
 		}
 	}
+
+	/**
+	 * Reads a value from the cache.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @param bool $checkLock
+	 * @param int $serverId
+	 * @return bool|mixed
+	 */
+	public function read($key, $checkLock = false, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->cache()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->cache()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->cache()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			if(!$checkLock)
+			{
+				return $this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->get($key);
+			}
+			else
+			{
+				while(!$this->write($key.self::LOCK_VALUE, mt_rand(1,2000000000), PzPHP_Config::get('SETTING_CACHE_LOCK_EXPIRE_TIME_SECONDS'), false, false, $serverId))
+				{
+					usleep(mt_rand(1000,500000));
+				}
+
+				return $this->read($key, false, $serverId);
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MEMCACHE_ERROR_LOG_FILE_NAME'), 'Excpetion during reading of: "'.$key.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * Deletes a value from the cache.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @param bool $checkLock
+	 * @param int $serverId
+	 * @return bool
+	 */
+	public function delete($key, $checkLock = false, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->cache()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->cache()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->cache()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			if(!$checkLock)
+			{
+				$this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->delete($key);
+
+				if(substr($key, -7) !== self::LOCK_VALUE)
+				{
+					$this->pzphp()->cache()->getActiveServer($serverId)->getCacheObject()->delete($key.self::LOCK_VALUE);
+				}
+
+				return true;
+			}
+			else
+			{
+				while(!$this->write($key.self::LOCK_VALUE, mt_rand(1,2000000000), PzPHP_Config::get('SETTING_CACHE_LOCK_EXPIRE_TIME_SECONDS'), false, false, $serverId))
+				{
+					usleep(mt_rand(1000,500000));
+				}
+
+				return $this->delete($key, false, $serverId);
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MEMCACHE_ERROR_LOG_FILE_NAME'), 'Excpetion during deletion of: "'.$key.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+
+			return false;
+		}
+	}
+}

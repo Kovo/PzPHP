@@ -52,6 +52,79 @@ class PzPHP_Core
 		$this->registerModule('PzPHP_Module_Routing');
 		$this->registerModule('PzPHP_Module_View');
 		$this->registerModule('PzPHP_Module_Log');
+		$this->registerModule('PzPHP_Module_Request');
+		$this->registerModule('PzPHP_Module_Response');
+
+		if(PzPHP_Config::get('SETTING_DOMAIN_PROTECTION'))
+		{
+			try
+			{
+				$this->security()->domainCheck();
+			}
+			catch(Exception $e)
+			{
+				$solution = PzPHP_Config::get('SETTING_DOMAIN_SOLUTION');
+
+				if($solution['type'] === 'redirect')
+				{
+					$this->response()->redirect($solution['value']);
+				}
+				else
+				{
+					$this->view()->render($solution['value']);
+				}
+			}
+		}
+
+		if(PzPHP_Config::get('SETTING_OUTPUT_COMPRESSION'))
+		{
+			ob_start(array($this, 'compressOutput'));
+		}
+		elseif(PzPHP_Config::get('SETTING_OUTPUT_BUFFERING'))
+		{
+			ob_start();
+		}
+	}
+
+	/**
+	 * @param $buffer
+	 * @return string
+	 */
+	public function compressOutput($buffer)
+	{
+		$buffer = explode("<!--compress-html-->", $buffer);
+		$count = count($buffer);
+		$buffer_out = '';
+
+		for($i =0;$i<=$count;$i++)
+		{
+			if(isset($buffer[$i]))
+			{
+				if(stristr($buffer[$i], '<!--compress-html no compression-->'))
+				{
+					$buffer[$i] = str_replace("<!--compress-html no compression-->", " ", $buffer[$i]);
+				}
+				else
+				{
+					$buffer[$i] = str_replace(array("\t","\n\n","\n","\r"), array(" ","\n","",""), $buffer[$i]);
+
+					while(stristr($buffer[$i], '  '))
+					{
+						$buffer[$i] = str_replace("  ", " ", $buffer[$i]);
+					}
+				}
+
+				$buffer_out .= $buffer[$i];
+
+				$buffer[$i] = null;
+				unset($buffer[$i]);
+			}
+		}
+
+		$buffer = null;
+		unset($buffer);
+
+		return $buffer_out;
 	}
 
 	/**
@@ -200,7 +273,7 @@ class PzPHP_Core
 	 * Returns the instance of PzPHP_Module_Security.
 	 *
 	 * @access public
-	 * @return PzPHP_Library_Security_Crypt|null
+	 * @return PzPHP_Module_Security|null
 	 */
 	public function security()
 	{
@@ -249,5 +322,21 @@ class PzPHP_Core
 	public function log()
 	{
 		return $this->module('PzPHP_Module_Log');
+	}
+
+	/**
+	 * @return PzPHP_Module_Request|null
+	 */
+	public function request()
+	{
+		return $this->module('PzPHP_Module_Request');
+	}
+
+	/**
+	 * @return PzPHP_Module_Response|null
+	 */
+	public function response()
+	{
+		return $this->module('PzPHP_Module_Response');
 	}
 }
