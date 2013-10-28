@@ -21,4 +21,7 @@ class PzPHP_Controller_Controller
 	{
 		return $this->_PzPHP;
 	}
+
+	public function before(){}
+	public function after(){}
 }
