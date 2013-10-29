@@ -46,9 +46,6 @@ $_PZPHP->log()
 	->registerLog(PzPHP_Config::get('SETTING_MEMCACHE_ERROR_LOG_FILE_NAME'), PzPHP_Config::get('LOGS_DIR').'MEMCACHED')
 	->warmup();
 
-###INIT LOCALIZATION###
-$_PZPHP->locale()->addLanguage('en', 'en_us')->setCurrentLocale('en');
-
 ###CLEANUP###
 $PZPHP_CONFIG_ARRAY = null;
 unset($PZPHP_CONFIG_ARRAY);
