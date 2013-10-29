@@ -29,7 +29,6 @@ spl_autoload_register(function($className)
 });
 
 ###BASE CONFIG###
-$PZPHP_CONFIG_ARRAY = array();
 $PZPHP_CONFIG_ARRAY['BASE_DIR'] = __DIR__.DIRECTORY_SEPARATOR;
 $PZPHP_CONFIG_ARRAY['ENV'] = getenv('PZPHP_ENVIRONMENT');
 
