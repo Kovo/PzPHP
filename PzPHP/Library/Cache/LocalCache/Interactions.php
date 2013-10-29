@@ -1,31 +1,13 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * Interaction class for dealing with the local cache system.
- */
 class PzPHP_Library_Cache_LocalCache_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * The key / value pairs are stored in a simple array.
-	 *
-	 * @access private
 	 * @var array
 	 */
 	protected $_localCache = array();
 
 	/**
 	 * @param $key
-	 *
 	 * @return bool
 	 */
 	protected function _keyExists($key)
@@ -34,11 +16,8 @@ class PzPHP_Library_Cache_LocalCache_Interactions extends PzPHP_Library_Abstract
 	}
 
 	/**
-	 * Writes a value to the cache.
-	 *
-	 * @access public
-	 * @param string $key
-	 * @param mixed $value
+	 * @param $key
+	 * @param $value
 	 * @param bool $deleteOnExist
 	 * @return bool
 	 */
@@ -57,10 +36,7 @@ class PzPHP_Library_Cache_LocalCache_Interactions extends PzPHP_Library_Abstract
 	}
 
 	/**
-	 * Gets a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @return bool
 	 */
 	public function read($key)
@@ -76,10 +52,7 @@ class PzPHP_Library_Cache_LocalCache_Interactions extends PzPHP_Library_Abstract
 	}
 
 	/**
-	 * Deletes a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @return bool
 	 */
 	public function delete($key)

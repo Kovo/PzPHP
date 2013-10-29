@@ -1,27 +1,10 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * This class allows you to interact with APC.
- */
 class PzPHP_Library_Cache_APC_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Writes a value to the cache.
-	 *
-	 * @access public
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int  $expires
+	 * @param $key
+	 * @param $value
+	 * @param int $expires
 	 * @param bool $deleteLock
 	 * @param bool $replaceOnExist
 	 * @return bool
@@ -66,10 +49,7 @@ class PzPHP_Library_Cache_APC_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Reads a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
 	 * @return mixed
 	 */
@@ -91,12 +71,9 @@ class PzPHP_Library_Cache_APC_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Deletes a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
-	 * @return mixed
+	 * @return bool
 	 */
 	public function delete($key, $checkLock = false)
 	{

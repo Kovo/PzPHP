@@ -1,30 +1,13 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * Interaction class for dealing with memcache using memcached.
- */
 class PzPHP_Library_Cache_Memcached_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Writes a value to the cache.
-	 *
-	 * @access public
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int  $expires
+	 * @param $key
+	 * @param $value
+	 * @param int $expires
 	 * @param bool $deleteLock
 	 * @param bool $checkFirst
-	 * @param int $serverId
+	 * @param $serverId
 	 * @return bool
 	 */
 	public function write($key, $value, $expires = 0, $deleteLock = false, $checkFirst = true, $serverId = -1)
@@ -94,13 +77,10 @@ class PzPHP_Library_Cache_Memcached_Interactions extends PzPHP_Library_Abstract_
 	}
 
 	/**
-	 * Reads a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
-	 * @param int $serverId
-	 * @return bool|mixed
+	 * @param $serverId
+	 * @return array|bool|mixed|string
 	 */
 	public function read($key, $checkLock = false, $serverId = -1)
 	{
@@ -139,12 +119,9 @@ class PzPHP_Library_Cache_Memcached_Interactions extends PzPHP_Library_Abstract_
 	}
 
 	/**
-	 * Deletes a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
-	 * @param int $serverId
+	 * @param $serverId
 	 * @return bool
 	 */
 	public function delete($key, $checkLock = false, $serverId = -1)

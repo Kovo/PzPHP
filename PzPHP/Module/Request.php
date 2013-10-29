@@ -1,80 +1,42 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * The Request class allows you to learn about the essentials of the current request.
- */
 class PzPHP_Module_Request extends PzPHP_Wrapper
 {
 	/**
-	 * Whether the current request is an AJAX request or not.
-	 *
-	 * @access protected
 	 * @var bool
 	 */
 	protected $_isAjax = false;
 
 	/**
-	 * The query string (if any) associated with this request.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_queryString = '';
 
 	/**
-	 * The different accepted media types.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_mediaTypes = array();
 
 	/**
-	 * The different accepted charsets.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_charsets = array();
 
 	/**
-	 * The different accepted encodings.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_encodings = array();
 
 	/**
-	 * The different accepted languages.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_languages = array();
 
 	/**
-	 * The referer url for this request.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_referer = '';
 
 	/**
-	 * Whether this request is being sent over https.
-	 *
-	 * @access protected
 	 * @var bool
 	 */
 	protected $_secure = false;
@@ -89,11 +51,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		$this->_populateRequestParameters();
 	}
 
-	/**
-	 * Gathers various information about the request and stores it.
-	 *
-	 * @access protected
-	 */
 	protected function _populateRequestParameters()
 	{
 		$this->_detectAjax();
@@ -106,11 +63,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		$this->_detectLanguages();
 	}
 
-	/**
-	 * Detects the referer url (if any).
-	 *
-	 * @access protected
-	 */
 	protected function _detectReferer()
 	{
 		$rawData = $this->server('HTTP_REFERER');
@@ -121,11 +73,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Detects whether https is being used.
-	 *
-	 * @access protected
-	 */
 	protected function _detectHttps()
 	{
 		$rawData = $this->server('HTTPS');
@@ -141,11 +88,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Detects and cleans the query string (if any).
-	 *
-	 * @access protected
-	 */
 	protected function _detectQueryString()
 	{
 		$rawData = $this->server('QUERY_STRING');
@@ -156,11 +98,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Reads header information for media types and extracts them.
-	 *
-	 * @access protected
-	 */
 	protected function _detectMediaTypes()
 	{
 		$rawData = $this->server('HTTP_ACCEPT');
@@ -191,11 +128,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Reads header information for charsets and extracts them.
-	 *
-	 * @access protected
-	 */
 	protected function _detectCharsets()
 	{
 		$rawData = $this->server('HTTP_ACCEPT_CHARSET');
@@ -226,11 +158,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Reads header information for accepted encodings and extracts them.
-	 *
-	 * @access protected
-	 */
 	protected function _detectEncodings()
 	{
 		$rawData = $this->server('HTTP_ACCEPT_ENCODING');
@@ -261,11 +188,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Reads header information for accepted languages and extracts them.
-	 *
-	 * @access protected
-	 */
 	protected function _detectLanguages()
 	{
 		$rawData = $this->server('HTTP_ACCEPT_LANGUAGE');
@@ -296,11 +218,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 		}
 	}
 
-	/**
-	 * Detects if current request is an ajax call.
-	 *
-	 * @access protected
-	 */
 	protected function _detectAjax()
 	{
 		$serverXmlHttpVar = $this->server('HTTP_X_REQUESTED_WITH');
@@ -309,9 +226,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Parses any kind of accept header and extracts its data.
-	 *
-	 * @access public
 	 * @param $header
 	 * @return array|null
 	 */
@@ -357,9 +271,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Breaks-apart the accept header value.
-	 *
-	 * @access public
 	 * @param $ruleSet
 	 * @return array
 	 */
@@ -396,9 +307,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns true or false depending on if the current request is ajax.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function isAjax()
@@ -407,9 +315,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns this requests accepted media types.
-	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getMediaTypes()
@@ -418,9 +323,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns this requests accepted charsets.
-	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getCharsets()
@@ -429,9 +331,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns this requests accepted encodings.
-	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getEncodings()
@@ -440,9 +339,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns this requests accepted languages.
-	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getLanguages()
@@ -451,9 +347,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns true or false depending on if this request is secure or not.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function isSecure()
@@ -462,9 +355,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns this request's referer url (if any).
-	 *
-	 * @access public
 	 * @return string
 	 */
 	public function getReferer()
@@ -473,11 +363,8 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns a value from the SERVER super global.
-	 *
-	 * @access public
 	 * @param $varname
-	 * @return null|string
+	 * @return null
 	 */
 	public function server($varname)
 	{
@@ -492,11 +379,8 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns a value from the GET super global.
-	 *
-	 * @access public
 	 * @param $varname
-	 * @return null|string
+	 * @return null
 	 */
 	public function get($varname)
 	{
@@ -511,11 +395,8 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns a value from the POST super global.
-	 *
-	 * @access public
 	 * @param $varname
-	 * @return null|string
+	 * @return null
 	 */
 	public function post($varname)
 	{
@@ -530,11 +411,8 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns a value from the COOKIE super global.
-	 *
-	 * @access public
 	 * @param $varname
-	 * @return null|string
+	 * @return null
 	 */
 	public function cookie($varname)
 	{
@@ -549,9 +427,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns a value from the FILES super global.
-	 *
-	 * @access public
 	 * @param $varname
 	 * @return null
 	 */
@@ -568,10 +443,7 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns the client IP address.
-	 *
-	 * @access public
-	 * @return string
+	 * @return null|string
 	 */
 	public function clientIpAddress()
 	{
@@ -600,9 +472,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Returns the server's IP address/
-	 *
-	 * @access public
 	 * @return null|string
 	 */
 	public function serverIpAddress()
@@ -627,9 +496,6 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Cleans a raw query string.
-	 *
-	 * @access public
 	 * @param $queryString
 	 * @return string
 	 */

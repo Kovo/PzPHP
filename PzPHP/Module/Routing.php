@@ -1,18 +1,4 @@
 <?php
-/**
- * Website: http://www.pzphp.com
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package PzPHP
- */
-/**
- * The Routing class allows your application to use pretty urls, and route them to the correct classes.
- *
- * These classes can be controllers, or any other type of object.
- */
 class PzPHP_Module_Routing extends PzPHP_Wrapper
 {
 	/**
@@ -46,50 +32,34 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	const REGEX_TERM_OPT_PATTERN = "#\\(<[^>]++>\\)#";
 
 	/**
-	 * An array that holds all routing information.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_routes = array();
 
 	/**
-	 * The site url for all routes.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_siteUrl = '';
 
 	/**
-	 * The base uri for all routes.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_baseUri = '';
 
 	/**
-	 * @access protected
 	 * @var bool
 	 */
 	protected $_throwExceptionForReqTermMiss = true;
 
 	/**
-	 * @access protected
 	 * @var bool
 	 */
 	protected $_throwExceptionForConstraintTermMiss = true;
 
 	/**
-	 * This method scans the request uri and attempts to match it to a registered route.
-	 *
-	 * This method scans the rquest uri and attempts to match it to a registered route. Once a route is found, the specified class and method are executed with the found terms passed to it.
-	 *
-	 * @access public
-	 * @var $allowGetOverride
+	 * @param bool $allowGetOverride
 	 * @return mixed
-	 * @throws Exception
+	 * @throws PzPHP_Exception
 	 */
 	public function listen($allowGetOverride = false)
 	{
@@ -253,9 +223,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $uri
-	 *
 	 * @return string
 	 */
 	public function stripBaseUri($uri)
@@ -284,17 +252,12 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Adds a new route.
-	 *
-	 * If the identifier is not found, a new route is added. If the identifier exists, nothing happens.
-	 *
-	 * @access public
 	 * @param $identifier
 	 * @param $pattern
 	 * @param $controller
 	 * @param $action
 	 * @param array $constraints
-	 * @return PzPHP_Module_Routing
+	 * @return $this
 	 */
 	public function add($identifier, $pattern, $controller, $action, array $constraints = array())
 	{
@@ -307,17 +270,12 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Adds a new route or replaces an existing one.
-	 *
-	 * If the identifier is not found, a new route is added. If the identifier exists, it is overwritten with the new data.
-	 *
-	 * @access public
 	 * @param $identifier
 	 * @param $pattern
 	 * @param $controller
 	 * @param $action
 	 * @param $constraints
-	 * @return PzPHP_Module_Routing
+	 * @return $this
 	 */
 	public function set($identifier, $pattern, $controller, $action, $constraints)
 	{
@@ -332,13 +290,8 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Removes a defined route.
-	 *
-	 * If you need to remove a route from the Routing class, this is where you do it.
-	 *
-	 * @access public
 	 * @param $identifier
-	 * @return PzPHP_Module_Routing
+	 * @return $this
 	 */
 	public function remove($identifier)
 	{
@@ -410,9 +363,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $string
-	 *
 	 * @return string
 	 */
 	public function stripTrailingSlash($string)
@@ -425,9 +376,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $string
-	 *
 	 * @return string
 	 */
 	public function addTrailingSlash($string)
@@ -440,9 +389,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $string
-	 *
 	 * @return string
 	 */
 	public function stripLeadingSlash($string)
@@ -455,9 +402,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $string
-	 *
 	 * @return string
 	 */
 	public function addLeadingSlash($string)
@@ -470,9 +415,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access public
 	 * @param $string
-	 *
 	 * @return string
 	 */
 	public function stripBothSlashes($string)
@@ -484,10 +427,9 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @param       $identifier
+	 * @param $identifier
 	 * @param array $terms
-	 * @param null  $overrideSiteUrl
-	 *
+	 * @param null $overrideSiteUrl
 	 * @return string
 	 * @throws PzPHP_Exception
 	 */
@@ -517,9 +459,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access protected
 	 * @param $partString
-	 *
 	 * @return bool
 	 */
 	protected function _isPartATerm($partString)
@@ -535,9 +475,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access protected
 	 * @param $partString
-	 *
 	 * @return bool
 	 */
 	protected function _isPartAnOptionalTerm($partString)
@@ -553,13 +491,11 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access protected
 	 * @param array $terms
-	 * @param       $pattern
+	 * @param $pattern
 	 * @param array $constraints
-	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws PzPHP_Exception
 	 */
 	protected function _mergeTermsWithPattern(array $terms, $pattern, array $constraints = array())
 	{
@@ -629,10 +565,8 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access protected
 	 * @param $partString
 	 * @param $term
-	 *
 	 * @return bool
 	 */
 	protected function _termMatchesPart($partString, $term)
@@ -641,11 +575,9 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @access protected
 	 * @param $constraints
 	 * @param $term
 	 * @param $value
-	 *
 	 * @return bool
 	 */
 	protected function _constraintCheck($constraints, $term, $value)
@@ -661,11 +593,8 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Retrieves the current page URI.
-	 *
-	 * @access public
-	 * @return mixed
-	 * @throws Exception
+	 * @return string
+	 * @throws PzPHP_Exception
 	 */
 	public function getUri()
 	{

@@ -1,37 +1,17 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * Class is used for storing mysql connection information using mysqli.
- */
 class PzPHP_Library_Db_Mysqli_Server
 {
 	/**
-	 * Status constant when the connection is established.
-	 *
 	 * @var int
 	 */
 	const CONNECTED = 1;
 
 	/**
-	 * Status constant when the connection is disconnected.
-	 *
 	 * @var int
 	 */
 	const DISCONNECTED = 2;
 
 	/**
-	 * Status constant when the connection is connecting.
-	 *
 	 * @var int
 	 */
 	const CONNECTING = 3;
@@ -45,80 +25,53 @@ class PzPHP_Library_Db_Mysqli_Server
 	private $_user = '';
 
 	/**
-	 * The password that will access the mysql server.
-	 *
-	 * @access private
 	 * @var string
 	 */
 	private $_password = '';
 
 	/**
-	 * The host that the mysql server is on.
-	 *
-	 * @access private
 	 * @var string
 	 */
 	private $_host = '';
 
 	/**
-	 * The default database to connect to.
-	 *
-	 * @access private
 	 * @var string
 	 */
 	private $_dbName = '';
 
 	/**
-	 * The port that the mysql server is on.
-	 *
-	 * @access private
 	 * @var int
 	 */
 	private $_port = 0;
 
 	/**
-	 * The amount of times Pz should try to reconnect to the mysql server.
-	 *
-	 * @access private
 	 * @var int
 	 */
 	private $_connectRetryAttempts = 0;
 
 	/**
-	 * The amount of seconds to wait between connection retry attempts.
-	 *
-	 * @access private
 	 * @var int
 	 */
 	private $_connectRetryDelay = 0;
 
 	/**
-	 * The current connection status.
-	 *
-	 * @access private
 	 * @var int
 	 */
 	private $_status = self::DISCONNECTED;
 
 	/**
-	 * The final mysqli object.
-	 *
-	 * @access private
 	 * @var null|mysqli
 	 */
 	private $_dbObject = NULL;
 
 	/**
-	 * The constructor handles setting the mysql server credentials.
-	 *
-	 * @access private
-	 * @param string $dbUser
-	 * @param string $dbPassword
-	 * @param string $dbName
-	 * @param string $dbHost
-	 * @param int $dbPort
-	 * @param int $connectRetries
-	 * @param int $connectRetryWait
+	 * @param $dbUser
+	 * @param $dbPassword
+	 * @param $dbName
+	 * @param $dbHost
+	 * @param $dbPort
+	 * @param $connectRetries
+	 * @param $connectRetryWait
 	 */
 	function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
 	{
@@ -132,9 +85,6 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Attempts to connect to the mysql server.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function connect()
@@ -203,11 +153,6 @@ class PzPHP_Library_Db_Mysqli_Server
 		}
 	}
 
-	/**
-	 * Disconnects from the mysql server.
-	 *
-	 * @access public
-	 */
 	public function disconnect()
 	{
 		if($this->isConnected() === true && is_object($this->_dbObject))
@@ -221,9 +166,6 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Returns true or false if the mysql server connection went through and is active.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function isConnected()
@@ -232,9 +174,6 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Returns the active mysqli object.
-	 *
-	 * @access public
 	 * @return mysqli|null
 	 */
 	public function getDBObject()
@@ -243,9 +182,6 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Returns the last insert id.
-	 *
-	 * @access public
 	 * @return mixed
 	 */
 	public function insertId()
@@ -254,10 +190,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Returns the affected rows from the last query.
-	 *
-	 * @access public
-	 * @return mixed
+	 * @return int
 	 */
 	public function affectedRows()
 	{
@@ -265,10 +198,7 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Select a new database;
-	 *
-	 * @access public
-	 * @param string $dbName
+	 * @param $dbName
 	 * @return bool
 	 */
 	public function selectDatabase($dbName)
@@ -286,12 +216,9 @@ class PzPHP_Library_Db_Mysqli_Server
 	}
 
 	/**
-	 * Change the current user.
-	 *
-	 * @access public
-	 * @param string $user
-	 * @param string $password
-	 * @param null|string $dbName
+	 * @param $user
+	 * @param $password
+	 * @param null $dbName
 	 * @return bool
 	 */
 	public function changeUser($user, $password, $dbName = NULL)

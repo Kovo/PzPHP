@@ -1,27 +1,10 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * The interaction class for communicating with mysql using mysqli.
- */
 class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Expects to handle read related queries.
-	 *
-	 * @access public
-	 * @param string $query
-	 * @param int $serverId
-	 * @return bool|PDOStatement
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result|PDOStatement
 	 */
 	public function read($query, $serverId = -1)
 	{
@@ -62,12 +45,9 @@ class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interacti
 	}
 
 	/**
-	 * Expects to handle write related query.
-	 *
-	 * @access public
-	 * @param string $query
-	 * @param int $serverId
-	 * @return bool|PDOStatement
+	 * @param $query
+	 * @param $serverId
+	 * @return bool|mysqli_result|PDOStatement
 	 */
 	public function write($query, $serverId = -1)
 	{
@@ -193,12 +173,9 @@ class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interacti
 	}
 
 	/**
-	 * Returns the affected rows of the last delete/insert/update/etc... query.
-	 *
-	 * @access public
 	 * @param PDOStatement $queryObject
-	 * @param int $serverId
-	 * @return int
+	 * @param $serverId
+	 * @return int|mixed
 	 */
 	public function affectedRows(PDOStatement $queryObject, $serverId = -1)
 	{
@@ -208,11 +185,8 @@ class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interacti
 	}
 
 	/**
-	 * Returns the last insert id of the last insert query.
-	 *
-	 * @access public
-	 * @param int $serverId
-	 * @return int
+	 * @param $serverId
+	 * @return int|mixed
 	 */
 	public function insertId($serverId = -1)
 	{

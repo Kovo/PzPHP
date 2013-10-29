@@ -1,13 +1,4 @@
 <?php
-/**
- * Website: http://www.pzphp.com
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package PzPHP
- */
 class PzPHP_Library_Security_Crypt
 {
 	/**

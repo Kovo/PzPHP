@@ -2,9 +2,8 @@
 class PzPHP_Module_View extends PzPHP_Wrapper
 {
 	/**
-	 * @param       $view
+	 * @param $view
 	 * @param array $parameters
-	 *
 	 * @return string
 	 * @throws PzPHP_Exception
 	 */

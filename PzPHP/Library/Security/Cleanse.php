@@ -37,12 +37,7 @@ class PzPHP_Library_Security_Cleanse extends PzPHP_Wrapper
 	const CLEAN_NOTHING = false;
 
 	/**
-	 * Method cleans various HTML related elements from a string.
-	 *
-	 * The type of elements cleaned depends on the $cleanall paramter.
-	 *
-	 * @access public
-	 * @param string $value
+	 * @param $value
 	 * @param int $cleanall
 	 * @return mixed|string
 	 */
@@ -97,16 +92,12 @@ class PzPHP_Library_Security_Cleanse extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Function that sanitizes a given query string.
-	 *
-	 * Do not pass an entire query string to this function, only the individual varaibles that make up the string should be passed.
-	 * @access public
-	 * @param mysqli|resource|null $dbLinkRes
-	 * @param mixed $value
+	 * @param $dbLinkRes
+	 * @param $value
 	 * @param bool $mustBeNumeric
 	 * @param int $decimalPlaces
 	 * @param int $cleanall
-	 * @return array|float|int|mixed|string
+	 * @return array|mixed|string
 	 */
 	public static function cleanQuery($dbLinkRes, $value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = self::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES)
 	{
