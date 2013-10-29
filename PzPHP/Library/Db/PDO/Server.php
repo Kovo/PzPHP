@@ -1,177 +1,110 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * Class is used for storing database connection information using pdo.
- */
 class PzPHP_Library_Db_PDO_Server
 {
 	/**
-	 * Status constant when the connection is established.
-	 *
 	 * @var int
 	 */
 	const CONNECTED = 1;
 
 	/**
-	 * Status constant when the connection is disconnected.
-	 *
 	 * @var int
 	 */
 	const DISCONNECTED = 2;
 
 	/**
-	 * Status constant when the connection is connecting.
-	 *
 	 * @var int
 	 */
 	const CONNECTING = 3;
 
 	/**
-	 * The username that will access the database server.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_user = '';
 
 	/**
-	 * The password that will access the database server.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_password = '';
 
 	/**
-	 * The host that the database server is on.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_host = '';
 
 	/**
-	 * The server name for the database (if any).
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_server = '';
 
 	/**
-	 * The connection socket for the database (if any).
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_socket = '';
 
 	/**
-	 * The connection protocol for the database (if any).
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_protocol = '';
 
 	/**
-	 * The default database to connect to.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_dbName = '';
 
 	/**
-	 * The type of database this is.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_dbType = '';
 
 	/**
-	 * The charset to use for the connection.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_charset = '';
 
 	/**
-	 * The chosen database's driver options.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_dbDriverOptions = array();
 
 	/**
-	 * The port that the database server is on.
-	 *
-	 * @access protected
 	 * @var int
 	 */
 	protected $_port = 0;
 
 	/**
-	 * The amount of times Pz should try to reconnect to the database server.
-	 *
-	 * @access protected
 	 * @var int
 	 */
 	protected $_connectRetryAttempts = 0;
 
 	/**
-	 * The amount of seconds to wait between connection retry attempts.
-	 *
-	 * @access protected
 	 * @var int
 	 */
 	protected $_connectRetryDelay = 0;
 
 	/**
-	 * The current connection status.
-	 *
-	 * @access protected
 	 * @var int
 	 */
 	protected $_status = self::DISCONNECTED;
 
 	/**
-	 * The final pdo object.
-	 *
-	 * @access protected
 	 * @var null|pdo
 	 */
 	protected $_pdo_obj = null;
 
 	/**
-	 * The constructor handles setting the database server credentials.
-	 *
-	 * @param string $dbUser
-	 * @param string $dbPassword
-	 * @param string $dbType
-	 * @param string $dbName
-	 * @param string $dbHost
-	 * @param int $dbPort
-	 * @param int $connectRetries
-	 * @param int $connectRetryWait
-	 * @param array $dbDriverOptions
-	 * @param string $server
-	 * @param string $protocol
-	 * @param string $socket
-	 * @param string $charset
+	 * @param $dbUser
+	 * @param $dbPassword
+	 * @param $dbType
+	 * @param $dbName
+	 * @param $dbHost
+	 * @param $dbPort
+	 * @param $connectRetries
+	 * @param $connectRetryWait
+	 * @param $dbDriverOptions
+	 * @param $server
+	 * @param $protocol
+	 * @param $socket
+	 * @param $charset
 	 */
 	function __construct($dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait, $dbDriverOptions, $server, $protocol, $socket, $charset)
 	{
@@ -191,9 +124,6 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Attempts to connect to the database server.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function connect()
@@ -233,9 +163,6 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Returns the correct DSN for the PDO connection.
-	 *
-	 * @access protected
 	 * @return string
 	 */
 	protected function _getDSN()
@@ -279,11 +206,6 @@ class PzPHP_Library_Db_PDO_Server
 		}
 	}
 
-	/**
-	 * Disconnects from the database server.
-	 *
-	 * @access public
-	 */
 	public function disconnect()
 	{
 		if($this->isConnected() === true && is_object($this->_pdo_obj))
@@ -295,9 +217,6 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Returns true or false if the database server connection went through and is active.
-	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function isConnected()
@@ -306,10 +225,7 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Returns the active pdo object.
-	 *
-	 * @access public
-	 * @return pdo|null
+	 * @return null|pdo
 	 */
 	public function getDBObject()
 	{
@@ -317,10 +233,7 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Returns the last insert id.
-	 *
-	 * @access public
-	 * @return mixed
+	 * @return string
 	 */
 	public function insertId()
 	{
@@ -328,11 +241,8 @@ class PzPHP_Library_Db_PDO_Server
 	}
 
 	/**
-	 * Returns the affected rows from the provided query.
-	 *
-	 * @access public
 	 * @param PDOStatement $queryOnject
-	 * @return mixed
+	 * @return int
 	 */
 	public function affectedRows(PDOStatement $queryOnject)
 	{

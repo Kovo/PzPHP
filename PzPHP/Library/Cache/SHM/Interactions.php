@@ -1,25 +1,8 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * This class allows you to interact with the shared memory cache.
- */
 class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Converts key to a valid hex value (for proper storage with shmop).
-	 *
-	 * @access protected
-	 * @param string $keyname
+	 * @param $keyname
 	 * @return string
 	 */
 	protected function _shmKeyToHex($keyname)
@@ -28,9 +11,6 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Converts a value to be stored to a string, or a serialized string.
-	 *
-	 * @access protected
 	 * @param $value
 	 * @return string
 	 */
@@ -47,11 +27,8 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Returns a stringback to its original type.
-	 *
-	 * @access protected
 	 * @param $value
-	 * @return string
+	 * @return mixed
 	 */
 	protected function _shmStringToValue($value)
 	{
@@ -68,11 +45,8 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Writes a value to the cache.
-	 *
-	 * @access public
-	 * @param string $key
-	 * @param mixed $value
+	 * @param $key
+	 * @param $value
 	 * @param bool $deleteLock
 	 * @param bool $deleteOnExist
 	 * @return bool
@@ -127,12 +101,9 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Reads a value from the cache.
-	 *
-	 * @access public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
-	 * @return mixed
+	 * @return bool|mixed
 	 */
 	public function read($key, $checkLock = false)
 	{
@@ -167,12 +138,9 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 	}
 
 	/**
-	 * Deletes a value from the cache.
-	 *
-	 * @qccess public
-	 * @param string $key
+	 * @param $key
 	 * @param bool $checkLock
-	 * @return mixed
+	 * @return bool
 	 */
 	public function delete($key, $checkLock = false)
 	{

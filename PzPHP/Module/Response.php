@@ -16,33 +16,21 @@
 class PzPHP_Module_Response extends PzPHP_Wrapper
 {
 	/**
-	 * An array of custom set headers.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_headers = array();
 
 	/**
-	 * The http status code to be sent to the client.
-	 *
-	 * @access protected
 	 * @var int
 	 */
 	protected $_statusCode = 200;
 
 	/**
-	 * The http version being used.
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_httpVersion = '1.1';
 
 	/**
-	 * Status code texts array.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_statusText = array(
@@ -109,13 +97,10 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	);
 
 	/**
-	 * Defines a new header or replaces an existing one.
-	 *
-	 * @access public
-	 * @param  string $name
+	 * @param $name
 	 * @param string $value
-	 * @param bool   $replace
-	 * @param null|int   $responsecode
+	 * @param bool $replace
+	 * @param null $responsecode
 	 */
 	public function setHeader($name, $value = '', $replace = false, $responsecode = null)
 	{
@@ -125,9 +110,6 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Gets all custom set headers.
-	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getHeaders()
@@ -136,10 +118,7 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Gets a custom set header.
-	 *
-	 * @access public
-	 * @param string $name
+	 * @param $name
 	 * @return mixed
 	 */
 	public function getHeader($name)
@@ -148,10 +127,7 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Sets redirect headers, and can stop script execution if stated.
-	 *
-	 * @access public
-	 * @param string $url
+	 * @param $url
 	 * @param bool $exit
 	 */
 	public function redirect($url, $exit = true)
@@ -167,10 +143,7 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Set the response status code.
-	 *
-	 * @access public
-	 * @param string|int $code
+	 * @param $code
 	 */
 	public function setStatusCode($code)
 	{
@@ -180,10 +153,7 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Sets the http version for the response.
-	 *
-	 * @access public
-	 * @param string $version
+	 * @param $version
 	 */
 	public function setHttpVersion($version)
 	{
@@ -191,9 +161,6 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Gets the response status code.
-	 *
-	 * @access public
 	 * @return int
 	 */
 	public function getStatusCode()
@@ -202,9 +169,6 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Gets the response http version.
-	 *
-	 * @access public
 	 * @return string
 	 */
 	public function getHttpVersion()
@@ -213,9 +177,6 @@ class PzPHP_Module_Response extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Gets the response status code text.
-	 *
-	 * @access public
 	 * @return mixed
 	 */
 	public function getStatusText()

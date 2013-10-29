@@ -4,7 +4,7 @@ class PzPHP_Controller
 	/**
 	 * @var null|PzPHP_Core
 	 */
-	protected $_PZPHP = NULL;
+	protected $_PzPHP = NULL;
 
 	public function before(){}
 
@@ -13,7 +13,15 @@ class PzPHP_Controller
 	 */
 	function __construct(PzPHP_Core $PzPHPCore)
 	{
-		$this->_PZPHP = $PzPHPCore;
+		$this->_PzPHP = $PzPHPCore;
+	}
+
+	/**
+	 * @return null|PzPHP_Core
+	 */
+	public function pzphp()
+	{
+		return $this->_PzPHP;
 	}
 
 	public function after(){}

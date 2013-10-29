@@ -1,7 +1,4 @@
 <?php
-/**
- *
- */
 class PzPHP_Helper_IO
 {
 	/**
@@ -173,6 +170,12 @@ class PzPHP_Helper_IO
 		}
 	}
 
+	/**
+	 * @param $sourcefoldername
+	 * @param $targetfoldername
+	 * @param $filename
+	 * @return bool
+	 */
 	public static function moveFileEnforce($sourcefoldername, $targetfoldername, $filename)
 	{
 		if(!self::moveFile($sourcefoldername, $targetfoldername, $filename))

@@ -1,18 +1,9 @@
 <?php
-/**
- * Website: http://www.pzphp.com
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package PzPHP
- */
-/**
- * The database class allows you to send queries to a database server, run through results, and a lot more.
- */
 class PzPHP_Module_Security extends PzPHP_Wrapper
 {
+	/**
+	 * @param PzPHP_Core $PzPHPCore
+	 */
 	public function init(PzPHP_Core $PzPHPCore)
 	{
 		parent::init($PzPHPCore);
@@ -21,10 +12,7 @@ class PzPHP_Module_Security extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Takes a string and creates a decryptable encryption.
-	 *
-	 * @access public
-	 * @param string $value
+	 * @param $value
 	 * @return string
 	 */
 	public function twoWayEncrypt($value)
@@ -33,10 +21,7 @@ class PzPHP_Module_Security extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Decrypts a string that was encrypted using the two-way method.
-	 *
-	 * @access public
-	 * @param string $value
+	 * @param $value
 	 * @return string
 	 */
 	public function twoWayDecrypt($value)
@@ -45,12 +30,7 @@ class PzPHP_Module_Security extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Creates a strong one-way encryption/hash.
-	 *
-	 * This will generate a 44 character long hash by default (unless you have provided custom security rules (see init())).
-	 *
-	 * @access public
-	 * @param string $value
+	 * @param $value
 	 * @return string
 	 */
 	public function oneWayEncrypt($value)
@@ -59,11 +39,8 @@ class PzPHP_Module_Security extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Compare a string to a one-way hash string.
-	 *
-	 * @access public
-	 * @param string $unhashedValue
-	 * @param string $hashedComparisonValue
+	 * @param $unhashedValue
+	 * @param $hashedComparisonValue
 	 * @return bool
 	 */
 	public function oneWayHashComparison($unhashedValue, $hashedComparisonValue)
@@ -72,11 +49,8 @@ class PzPHP_Module_Security extends PzPHP_Wrapper
 	}
 
 	/**
-	 * Compare a string to a two-way encrypted string.
-	 *
-	 * @access public
-	 * @param string $unhashedValue
-	 * @param string $hashedComparisonValue
+	 * @param $unhashedValue
+	 * @param $hashedComparisonValue
 	 * @return bool
 	 */
 	public function twoWayHashComparison($unhashedValue, $hashedComparisonValue)

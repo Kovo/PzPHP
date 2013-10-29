@@ -1,26 +1,9 @@
 <?php
-/**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
- *
- * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
- * @package Pz Library
- */
-/**
- * The interaction class for communicating with mysql using mysql.
- */
 class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
-	 * Expects to handle read related queries.
-	 *
-	 * @access public
-	 * @param string $query
-	 * @param int $serverId
+	 * @param $query
+	 * @param $serverId
 	 * @return bool|resource
 	 */
 	public function read($query, $serverId = -1)
@@ -62,11 +45,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Expects to handle write related query.
-	 *
-	 * @access public
-	 * @param string $query
-	 * @param int $serverId
+	 * @param $query
+	 * @param $serverId
 	 * @return bool|resource
 	 */
 	public function write($query, $serverId = -1)
@@ -193,11 +173,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Returns the affected rows of the last delete/insert/update/etc... query.
-	 *
-	 * @access public
-	 * @param int $serverId
-	 * @return int
+	 * @param $serverId
+	 * @return int|mixed
 	 */
 	public function affectedRows($serverId = -1)
 	{
@@ -207,11 +184,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Returns the last insert id of the last insert query.
-	 *
-	 * @access public
-	 * @param int $serverId
-	 * @return int
+	 * @param $serverId
+	 * @return int|mixed
 	 */
 	public function insertId($serverId = -1)
 	{
@@ -221,11 +195,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Select a new database for the current connection.
-	 *
-	 * @access public
-	 * @param string $dbName
-	 * @param int $serverId
+	 * @param $dbName
+	 * @param $serverId
 	 * @return bool
 	 */
 	public function selectDatabase($dbName, $serverId = -1)
@@ -236,13 +207,10 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Change the user for the current connection.
-	 *
-	 * @access public
-	 * @param string $user
-	 * @param string $password
-	 * @param null|string $dbName
-	 * @param int $serverId
+	 * @param $user
+	 * @param $password
+	 * @param null $dbName
+	 * @param $serverId
 	 * @return bool
 	 */
 	public function changeUser($user, $password, $dbName = null, $serverId = -1)
@@ -253,15 +221,12 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	}
 
 	/**
-	 * Sanitize a value that will be injected into a query string.
-	 *
-	 * @access public
-	 * @param mixed $value
+	 * @param $value
 	 * @param bool $mustBeNumeric
-	 * @param int  $decimalPlaces
-	 * @param int  $cleanall
-	 * @param int $serverId
-	 * @return mixed
+	 * @param int $decimalPlaces
+	 * @param int $cleanall
+	 * @param $serverId
+	 * @return array|float|int|mixed|string
 	 */
 	public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId = -1)
 	{
