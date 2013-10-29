@@ -1,5 +1,5 @@
 ###ENVIRONMENT VARAIBLES
-SetEnv PZPHP_ENVIRONMENT production
+SetEnv PZPHP_ENVIRONMENT prod
 
 ###BASIC CONFIG
 Options -Indexes +FollowSymLinks
