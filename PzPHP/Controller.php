@@ -6,7 +6,10 @@ class PzPHP_Controller
 	 */
 	protected $_PzPHP = NULL;
 
-	public function before(){}
+	/**
+	 * @param $view
+	 */
+	public function before($view){}
 
 	/**
 	 * @param PzPHP_Core $PzPHPCore
@@ -24,5 +27,8 @@ class PzPHP_Controller
 		return $this->_PzPHP;
 	}
 
-	public function after(){}
+	/**
+	 * @param $view
+	 */
+	public function after($view){}
 }
