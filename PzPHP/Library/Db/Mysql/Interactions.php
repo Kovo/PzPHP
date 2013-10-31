@@ -20,6 +20,7 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 				}
 			}
 
+			$query = trim($query);
 			$result = mysql_query($query, $this->pzphp()->db()->getActiveServer($serverId)->getDBObject());
 
 			if(!$result)
@@ -76,6 +77,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 
 			//Initialize
 			$retryCount = 0;
+
+			$query = trim($query);
 
 			//Main loop
 			do
