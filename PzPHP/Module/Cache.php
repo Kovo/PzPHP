@@ -350,4 +350,28 @@ class PzPHP_Module_Cache extends PzPHP_Wrapper
 				return false;
 		}
 	}
+
+	/**
+	 * @param $keyName
+	 * @param $id
+	 * @return bool
+	 */
+	public function deleteLock($keyName, $id = -1)
+	{
+		switch(PzPHP_Config::get('CACHING_MODE'))
+		{
+			case PzPHP_Config::get('CACHE_MODE_APC'):
+				return $this->apcInteract()->delete($keyName.PzPHP_Library_Cache_APC_Interactions::LOCK_VALUE, false);
+			case PzPHP_Config::get('CACHE_MODE_MEMCACHE'):
+				return $this->memcacheInteract()->delete($keyName.PzPHP_Library_Cache_Memcache_Interactions::LOCK_VALUE, false, $id);
+			case PzPHP_Config::get('CACHE_MODE_MEMCACHED'):
+				return $this->memcachedInteract()->delete($keyName.PzPHP_Library_Cache_Memcached_Interactions::LOCK_VALUE, false, $id);
+			case PzPHP_Config::get('CACHE_MODE_SHARED_MEMORY'):
+				return $this->shmInteract()->delete($keyName.PzPHP_Library_Cache_SHM_Interactions::LOCK_VALUE, false);
+			case PzPHP_Config::get('CACHE_MODE_LOCALCACHE'):
+				return $this->localCacheInteract()->delete($keyName.PzPHP_Library_Cache_LocalCache_Interactions::LOCK_VALUE);
+			default:
+				return false;
+		}
+	}
 }
