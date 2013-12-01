@@ -61,7 +61,7 @@ class PzPHP_Config
 	 */
 	public static function get($configKeyName)
 	{
-		if(isset(self::$_CONFIGS[$configKeyName]))
+		if(array_key_exists($configKeyName, self::$_CONFIGS))
 		{
 			return self::$_CONFIGS[$configKeyName];
 		}

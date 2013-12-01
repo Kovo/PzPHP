@@ -39,9 +39,5 @@ PzPHP_Config::loadConfig('config');
 ###INIT PZPHP###
 $_PZPHP = new PzPHP_Core();
 
-###CLEANUP###
-$PZPHP_CONFIG_ARRAY = null;
-unset($PZPHP_CONFIG_ARRAY);
-
 ###CUSTOM BOOTSTRAP###
 include PzPHP_Config::get('BASE_DIR').'mybootstrap.php';

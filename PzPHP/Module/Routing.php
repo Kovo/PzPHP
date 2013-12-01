@@ -57,6 +57,136 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	protected $_throwExceptionForConstraintTermMiss = true;
 
 	/**
+	 * @return mixed
+	 * @throws PzPHP_Exception
+	 */
+	protected function _overrideListen()
+	{
+		$class = $_GET['controller'];
+		$method = $_GET['action'];
+		$terms = $_GET['terms'];
+
+		if($class !== null && $method !== null)
+		{
+			if(class_exists($class) && method_exists($class, $method))
+			{
+				if($terms === null)
+				{
+					$arguments = array();
+				}
+				elseif(!is_array($terms))
+				{
+					$arguments = array($terms);
+				}
+				else
+				{
+					$arguments = $terms;
+				}
+
+				$classObj = new $class($this->pzphp());
+
+				if(method_exists($classObj, 'before'))
+				{
+					$classObj->before($method);
+				}
+
+				$return = call_user_func_array(
+					array($classObj, $method),
+					$arguments
+				);
+
+				if(method_exists($classObj, 'after'))
+				{
+					$classObj->after($method, $return);
+				}
+
+				return $return;
+			}
+			else
+			{
+				throw new PzPHP_Exception('Requested class or action does not exist.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_CLASS_OR_ACTION);
+			}
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function _listenParseURI()
+	{
+		$resultFromParse = array();
+		$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
+		$resultFromParse['foundKey'] = null;
+		$resultFromParse['terms'] = array();
+
+		foreach($this->_routes as $routeKey => $routeValues)
+		{
+			$patternParts = explode('/', $routeValues[self::PATTERN]);
+			$broken = false;
+
+			foreach($patternParts as $order => $partString)
+			{
+				if(!$this->_isPartATerm($partString))
+				{
+					if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString)
+					{
+						$broken = true;
+						break;
+					}
+				}
+				else
+				{
+					if(!$this->_isPartAnOptionalTerm($partString))
+					{
+						if(!isset($uriParts[$order]))
+						{
+							$broken = true;
+							break;
+						}
+						else
+						{
+							if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+							{
+								$broken = true;
+								break;
+							}
+							else
+							{
+								$resultFromParse['terms'][] = $uriParts[$order];
+							}
+						}
+					}
+					else
+					{
+						if(isset($uriParts[$order]))
+						{
+							if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+							{
+								$broken = true;
+								break;
+							}
+							else
+							{
+								$resultFromParse['terms'][] = $uriParts[$order];
+							}
+						}
+					}
+				}
+			}
+
+			if(!$broken)
+			{
+				$resultFromParse['foundKey'] = $routeKey;
+				$resultFromParse['finalRouteValues'] = $routeValues;
+
+				break;
+			}
+		}
+
+		return $resultFromParse;
+	}
+
+	/**
 	 * @param bool $allowGetOverride
 	 * @return mixed
 	 * @throws PzPHP_Exception
@@ -65,151 +195,21 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	{
 		if($allowGetOverride)
 		{
-			$class = $_GET['controller'];
-			$method = $_GET['action'];
-			$terms = $_GET['terms'];
-
-			if($class !== null && $method !== null)
-			{
-				if(class_exists($class) && method_exists($class, $method))
-				{
-					if($terms === null)
-					{
-						$arguments = array();
-					}
-					elseif(!is_array($terms))
-					{
-						$arguments = array($terms);
-					}
-					else
-					{
-						$arguments = $terms;
-					}
-
-					$classObj = new $class($this->pzphp());
-
-					if(method_exists($classObj, 'before'))
-					{
-						$classObj->before($method);
-					}
-
-					$return = call_user_func_array(
-						array($classObj, $method),
-						$arguments
-					);
-
-					if(method_exists($classObj, 'after'))
-					{
-						$classObj->after($method, $return);
-					}
-
-					return $return;
-				}
-				else
-				{
-					throw new PzPHP_Exception('Requested class or action does not exist.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_CLASS_OR_ACTION);
-				}
-			}
+			$this->_overrideListen();
 		}
 
 		if(!empty($this->_routes))
 		{
-			$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
-			$foundKey = null;
-			$terms = array();
-			$finalRouteValues = array();
+			$resultFromParse = $this->_listenParseURI();
 
-			foreach($this->_routes as $routeKey => $routeValues)
+			if(!isset($resultFromParse['finalRouteValues']))
 			{
-				$patternParts = explode('/', $routeValues[self::PATTERN]);
-				$broken = false;
-
-				foreach($patternParts as $order => $partString)
-				{
-					if(!$this->_isPartATerm($partString))
-					{
-						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString)
-						{
-							$broken = true;
-							break;
-						}
-					}
-					else
-					{
-						if(!$this->_isPartAnOptionalTerm($partString))
-						{
-							if(!isset($uriParts[$order]))
-							{
-								$broken = true;
-								break;
-							}
-							else
-							{
-								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
-								{
-									$broken = true;
-									break;
-								}
-								else
-								{
-									$terms[] = $uriParts[$order];
-								}
-							}
-						}
-						else
-						{
-							if(isset($uriParts[$order]))
-							{
-								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
-								{
-									$broken = true;
-									break;
-								}
-								else
-								{
-									$terms[] = $uriParts[$order];
-								}
-							}
-						}
-					}
-				}
-
-				if(!$broken)
-				{
-					$foundKey = $routeKey;
-					$finalRouteValues = $routeValues;
-
-					break;
-				}
+				$resultFromParse['finalRouteValues'] = array();
 			}
 
-			if($foundKey !== null)
+			if($resultFromParse['foundKey'] !== null)
 			{
-				if(class_exists($finalRouteValues[self::CONTROLLER]) && method_exists($finalRouteValues[self::CONTROLLER], $finalRouteValues[self::ACTION]))
-				{
-					$classObj = new $finalRouteValues[self::CONTROLLER]($this->pzphp());
-
-					if(method_exists($classObj, 'before'))
-					{
-						$classObj->before($finalRouteValues[self::ACTION]);
-					}
-
-					$return = call_user_func_array(
-						array($classObj, $finalRouteValues[self::ACTION]),
-						$terms
-					);
-
-					if(method_exists($classObj, 'after'))
-					{
-						$classObj->after($finalRouteValues[self::ACTION], $return);
-					}
-
-					return $return;
-				}
-				else
-				{
-					throw new PzPHP_Exception('Requested class or action does not exist.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_CLASS_OR_ACTION);
-				}
+				return $this->_listenFinalExecutions($resultFromParse);
 			}
 			else
 			{
@@ -219,6 +219,41 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 		else
 		{
 			throw new PzPHP_Exception('No routes to match this request to.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_ROUTE);
+		}
+	}
+
+	/**
+	 * @param $resultFromParse
+	 *
+	 * @return mixed
+	 * @throws PzPHP_Exception
+	 */
+	protected function _listenFinalExecutions($resultFromParse)
+	{
+		if(class_exists($resultFromParse['finalRouteValues'][self::CONTROLLER]) && method_exists($resultFromParse['finalRouteValues'][self::CONTROLLER], $resultFromParse['finalRouteValues'][self::ACTION]))
+		{
+			$classObj = new $resultFromParse['finalRouteValues'][self::CONTROLLER]($this->pzphp());
+
+			if(method_exists($classObj, 'before'))
+			{
+				$classObj->before($resultFromParse['finalRouteValues'][self::ACTION]);
+			}
+
+			$return = call_user_func_array(
+				array($classObj, $resultFromParse['finalRouteValues'][self::ACTION]),
+				$resultFromParse['terms']
+			);
+
+			if(method_exists($classObj, 'after'))
+			{
+				$classObj->after($resultFromParse['finalRouteValues'][self::ACTION], $return);
+			}
+
+			return $return;
+		}
+		else
+		{
+			throw new PzPHP_Exception('Requested class or action does not exist.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_CLASS_OR_ACTION);
 		}
 	}
 
