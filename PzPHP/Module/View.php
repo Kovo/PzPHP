@@ -26,7 +26,10 @@ class PzPHP_Module_View extends PzPHP_Wrapper
 
 			$content = ob_get_clean();
 
-			ob_end_clean();
+			if(!empty($content))
+			{
+				ob_end_clean();
+			}
 
 			return $content;
 		}
