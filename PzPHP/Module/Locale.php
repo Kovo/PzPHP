@@ -157,4 +157,12 @@ class PzPHP_Module_Locale extends PzPHP_Wrapper
 			return $key;
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentLocale()
+	{
+		return $this->_currentLocale;
+	}
 }
