@@ -159,6 +159,23 @@ class PzPHP_Module_Locale extends PzPHP_Wrapper
 	}
 
 	/**
+	 * @param $lang
+	 *
+	 * @return bool
+	 */
+	public function languageExists($lang)
+	{
+		if(empty($this->getShortLocaleId($lang)))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getCurrentLocale()

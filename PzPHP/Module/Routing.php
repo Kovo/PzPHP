@@ -124,6 +124,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	{
 		$resultFromParse = array();
 		$uriParts = explode('/', $this->stripBaseUri($this->getUri()));
+		$uriPartsCount = count($uriParts);
 		$resultFromParse['foundKey'] = null;
 		$resultFromParse['terms'] = array();
 
@@ -131,6 +132,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 		{
 			$patternParts = explode('/', $routeValues[self::PATTERN]);
 			$broken = false;
+			$uriHits = 0;
 
 			foreach($patternParts as $order => $partString)
 			{
@@ -141,6 +143,8 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 						$broken = true;
 						break;
 					}
+
+					$uriHits++;
 				}
 				else
 				{
@@ -162,6 +166,8 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 							{
 								$resultFromParse['terms'][] = $uriParts[$order];
 							}
+
+							$uriHits++;
 						}
 					}
 					else
@@ -177,12 +183,14 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 							{
 								$resultFromParse['terms'][] = $uriParts[$order];
 							}
+
+							$uriHits++;
 						}
 					}
 				}
 			}
 
-			if(!$broken)
+			if(!$broken && $uriHits == $uriPartsCount)
 			{
 				$resultFromParse['foundKey'] = $routeKey;
 				$resultFromParse['finalRouteValues'] = $routeValues;
@@ -633,7 +641,9 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 	 */
 	protected function _constraintCheck($constraints, $term, $value)
 	{
-		if(isset($constraints[$term]) && preg_match("#".$constraints[$term]."#", $value) !== 1)
+		$term = str_replace(array('<','>','(',')'),'',$term);
+
+		if(isset($constraints[$term]) && preg_match("#^".$constraints[$term]."$#", $value) !== 1)
 		{
 			return false;
 		}
