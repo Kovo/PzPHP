@@ -85,9 +85,13 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 
 				$classObj = new $class($this->pzphp());
 
+				$arguments['actionCalled'] = $method;
 				if(method_exists($classObj, 'before'))
 				{
-					$classObj->before($method);
+					call_user_func_array(
+						array($classObj, 'before'),
+						$arguments
+					);
 				}
 
 				$return = call_user_func_array(
@@ -95,9 +99,13 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 					$arguments
 				);
 
+				$arguments['returnFromAction'] = $return;
 				if(method_exists($classObj, 'after'))
 				{
-					$classObj->after($method, $return);
+					call_user_func_array(
+						array($classObj, 'after'),
+						$arguments
+					);
 				}
 
 				return $return;
@@ -234,9 +242,13 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 		{
 			$classObj = new $resultFromParse['finalRouteValues'][self::CONTROLLER]($this->pzphp());
 
+			$resultFromParse['terms']['actionCalled'] = $resultFromParse['finalRouteValues'][self::ACTION];
 			if(method_exists($classObj, 'before'))
 			{
-				$classObj->before($resultFromParse['finalRouteValues'][self::ACTION]);
+				call_user_func_array(
+					array($classObj, 'before'),
+					$resultFromParse['terms']
+				);
 			}
 
 			$return = call_user_func_array(
@@ -244,9 +256,13 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 				$resultFromParse['terms']
 			);
 
+			$resultFromParse['terms']['returnFromAction'] = $return;
 			if(method_exists($classObj, 'after'))
 			{
-				$classObj->after($resultFromParse['finalRouteValues'][self::ACTION], $return);
+				call_user_func_array(
+					array($classObj, 'after'),
+					$resultFromParse['terms']
+				);
 			}
 
 			return $return;
