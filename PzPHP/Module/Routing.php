@@ -174,7 +174,7 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 					{
 						if(isset($uriParts[$order]))
 						{
-							if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+							if(!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
 							{
 								$broken = true;
 								break;
