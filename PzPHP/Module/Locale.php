@@ -47,13 +47,20 @@ class PzPHP_Module_Locale extends PzPHP_Wrapper
 	}
 
 	/**
-	 * @param $shortform
+	 * @param      $shortform
+	 * @param bool $autoload
+	 *
 	 * @return $this
 	 */
-	public function setCurrentLocale($shortform)
+	public function setCurrentLocale($shortform, $autoload = true)
 	{
 		$shortLocale = $this->getShortLocaleId($shortform);
 		$this->_currentLocale = $shortLocale;
+
+		if($autoload)
+		{
+			$this->load($shortLocale);
+		}
 
 		return $this;
 	}
