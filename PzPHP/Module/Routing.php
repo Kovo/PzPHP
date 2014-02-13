@@ -146,6 +146,7 @@
 						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString)
 						{
 							$broken = true;
+							$resultFromParse['terms'] = array();
 							break;
 						}
 
@@ -158,6 +159,7 @@
 							if(!isset($uriParts[$order]))
 							{
 								$broken = true;
+								$resultFromParse['terms'] = array();
 								break;
 							}
 							else
@@ -165,6 +167,7 @@
 								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
 								{
 									$broken = true;
+									$resultFromParse['terms'] = array();
 									break;
 								}
 								else
@@ -182,6 +185,7 @@
 								if(!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
 								{
 									$broken = true;
+									$resultFromParse['terms'] = array();
 									break;
 								}
 								else
