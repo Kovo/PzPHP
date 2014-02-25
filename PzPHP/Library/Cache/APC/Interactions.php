@@ -11,7 +11,7 @@ class PzPHP_Library_Cache_APC_Interactions extends PzPHP_Library_Abstract_Intera
 	 */
 	public function write($key, $value, $expires = 0, $deleteLock = false, $replaceOnExist = true)
 	{
-		if(is_scalar($value))
+		if(is_scalar($value) && !is_bool($value))
 		{
 			$value = (string)$value;
 		}

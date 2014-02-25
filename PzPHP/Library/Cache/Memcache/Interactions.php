@@ -24,7 +24,7 @@ class PzPHP_Library_Cache_Memcache_Interactions extends PzPHP_Library_Abstract_I
 				}
 			}
 
-			if(is_scalar($value))
+			if(is_scalar($value) && !is_bool($value))
 			{
 				$value = (string)$value;
 			}

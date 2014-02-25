@@ -20,15 +20,22 @@ class PzPHP_Module_View extends PzPHP_Wrapper
 				extract($parameters);
 			}
 
-			ob_start();
+			try
+			{
+				ob_start();
 
-			require $file;
+				require $file;
 
-			$content = ob_get_clean();
+				$content = ob_get_clean();
 
-			ob_end_clean();
+				return $content;
+			}
+			catch(Exception $e)
+			{
+				ob_end_clean();
 
-			return $content;
+				throw new Exception($e->getMessage(), $e->getCode());
+			}
 		}
 		else
 		{

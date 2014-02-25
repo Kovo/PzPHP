@@ -17,6 +17,20 @@ class PzPHP_Helper_String
 	const HEX = 2;
 
 	/**
+	 * @param        $string
+	 * @param string $charlist
+	 *
+	 * @return string
+	 */
+	public static function trim($string, $charlist = " \t\n\r\0\x0B\xC2\xA0")
+	{
+		$string = str_replace("\xC2\xA0", ' ', $string);
+		$string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
+
+		return trim($string, $charlist);
+	}
+
+	/**
 	 * @param $length
 	 * @param int $type
 	 * @param bool $regenerateSeed
