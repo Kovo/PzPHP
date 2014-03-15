@@ -25,6 +25,11 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 	{
 		if(PzPHP_Config::get('SETTING_LOG_PHP_ERRORS'))
 		{
+			if(!PzPHP_Helper_IO::isValidDir(PzPHP_Config::get('LOGS_DIR')))
+			{
+				PzPHP_Helper_IO::createDir(PzPHP_Config::get('LOGS_DIR'));
+			}
+
 			ini_set('error_log', PzPHP_Config::get('LOGS_DIR').PzPHP_Config::get('SETTING_PHP_ERROR_LOG_FILE_NAME').'-'.date('Y-m-d').'.log');
 			ini_set('error_reporting', E_ALL | E_NOTICE);
 			ini_set('display_errors', (PzPHP_Config::get('SETTING_PHP_DISPLAY_ERRORS')?1:0));
