@@ -31,6 +31,21 @@ class PzPHP_Helper_Codes
 	 */
 	const ROUTING_ERROR_NO_CLASS_OR_ACTION = 105;
 
+	/**
+	 * @var int
+	 */
+	const ROUTING_ERROR_RESPONSE_REDIRECT = 106;
+
+	/**
+	 * @var int
+	 */
+	const ROUTING_SUCCESS = 107;
+
+	/**
+	 * @var int
+	 */
+	const ROUTING_ERROR = 108;
+
 
 
 
