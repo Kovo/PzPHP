@@ -169,7 +169,7 @@
 								}
 								else
 								{
-									$resultFromParse['terms'][] = $uriParts[$order];
+									$resultFromParse['terms'][str_replace(array('(',')','<','>'), '', $partString)] = $uriParts[$order];
 								}
 
 								$uriHits++;
@@ -186,7 +186,7 @@
 								}
 								else
 								{
-									$resultFromParse['terms'][] = $uriParts[$order];
+									$resultFromParse['terms'][str_replace(array('(',')','<','>'), '', $partString)] = $uriParts[$order];
 								}
 
 								$uriHits++;
