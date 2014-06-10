@@ -143,7 +143,7 @@
 				{
 					if(!$this->_isPartATerm($partString))
 					{
-						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString)
+						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString || $uriParts[$order] == '')
 						{
 							$broken = true;
 							break;
@@ -162,7 +162,7 @@
 							}
 							else
 							{
-								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]) || $uriParts[$order] == '')
 								{
 									$broken = true;
 									break;
@@ -179,7 +179,7 @@
 						{
 							if(isset($uriParts[$order]))
 							{
-								if(!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+								if((!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order])) || $uriParts[$order] == '')
 								{
 									$broken = true;
 									break;
