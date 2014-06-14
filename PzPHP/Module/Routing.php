@@ -148,10 +148,9 @@
 				{
 					if(!$this->_isPartATerm($partString))
 					{
-						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString)
+						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString || $uriParts[$order] == '')
 						{
 							$broken = true;
-							$resultFromParse['terms'] = array();
 							break;
 						}
 
@@ -164,20 +163,18 @@
 							if(!isset($uriParts[$order]))
 							{
 								$broken = true;
-								$resultFromParse['terms'] = array();
 								break;
 							}
 							else
 							{
-								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+								if(!$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]) || $uriParts[$order] == '')
 								{
 									$broken = true;
-									$resultFromParse['terms'] = array();
 									break;
 								}
 								else
 								{
-									$resultFromParse['terms'][] = $uriParts[$order];
+									$resultFromParse['terms'][str_replace(array('(',')','<','>'), '', $partString)] = $uriParts[$order];
 								}
 
 								$uriHits++;
@@ -187,15 +184,14 @@
 						{
 							if(isset($uriParts[$order]))
 							{
-								if(!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
+								if((!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order])) || $uriParts[$order] == '')
 								{
 									$broken = true;
-									$resultFromParse['terms'] = array();
 									break;
 								}
 								else
 								{
-									$resultFromParse['terms'][] = $uriParts[$order];
+									$resultFromParse['terms'][str_replace(array('(',')','<','>'), '', $partString)] = $uriParts[$order];
 								}
 
 								$uriHits++;
@@ -211,6 +207,10 @@
 					$this->_currentRoute = $routeKey;
 
 					break;
+				}
+				else
+				{
+					$resultFromParse['terms'] = array();
 				}
 			}
 
