@@ -62,6 +62,11 @@
 		protected $_currentRoute = '';
 
 		/**
+		 * @var array
+		 */
+		protected $_exposed = array();
+
+		/**
 		 * @return mixed
 		 * @throws PzPHP_Exception
 		 */
@@ -277,6 +282,9 @@
 					);
 				}
 
+				array_shift($resultFromParse['terms']);
+				array_pop($resultFromParse['terms']);
+
 				$return = call_user_func_array(
 					array($classObj, $resultFromParse['finalRouteValues'][self::ACTION]),
 					$resultFromParse['terms']
@@ -329,21 +337,52 @@
 		}
 
 		/**
-		 * @param $identifier
-		 * @param $pattern
-		 * @param $controller
-		 * @param $action
+		 * @param       $identifier
+		 * @param       $pattern
+		 * @param       $controller
+		 * @param       $action
 		 * @param array $constraints
+		 * @param bool  $expose
+		 *
 		 * @return $this
 		 */
-		public function add($identifier, $pattern, $controller, $action, array $constraints = array())
+		public function add($identifier, $pattern, $controller, $action, array $constraints = array(), $expose = false)
 		{
 			if(!isset($this->_routes[$identifier]))
 			{
 				$this->set($identifier, $pattern, $controller, $action, $constraints);
 			}
 
+			if($expose)
+			{
+				$this->_exposed[$identifier] = $pattern;
+			}
+
 			return $this;
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getSiteUrl()
+		{
+			return $this->_siteUrl;
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getBaseUri()
+		{
+			return $this->_baseUri;
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getExposed()
+		{
+			return $this->_exposed;
 		}
 
 		/**
@@ -525,9 +564,32 @@
 
 			if(isset($this->_routes[$identifier]))
 			{
+				if(isset($this->_routes[$identifier][self::CONSTRAINTS]['lang']))
+				{
+					$terms['lang'] = $this->_MantraCore->locale()->getCurrentLocale();
+				}
+
 				$mergedPattern = $this->_mergeTermsWithPattern($terms, $this->_routes[$identifier][self::PATTERN], $this->_routes[$identifier][self::CONSTRAINTS]);
 
 				return $this->addTrailingSlash($siteUrl.'/'.$mergedPattern);
+			}
+			else
+			{
+				throw new PzPHP_Exception('Route not found.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_ROUTE);
+			}
+		}
+
+		/**
+		 * @param $identifier
+		 *
+		 * @return mixed
+		 * @throws PzPHP_Exception
+		 */
+		public function fetch($identifier)
+		{
+			if(isset($this->_routes[$identifier]))
+			{
+				return $this->_routes[$identifier];
 			}
 			else
 			{
