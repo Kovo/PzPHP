@@ -184,7 +184,7 @@
 						{
 							if(isset($uriParts[$order]))
 							{
-								if((!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order])) || $uriParts[$order] == '')
+								if(!empty($uriParts[$order]) && !$this->_constraintCheck($routeValues[self::CONSTRAINTS],$partString,$uriParts[$order]))
 								{
 									$broken = true;
 									break;
