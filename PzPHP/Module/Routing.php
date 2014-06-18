@@ -566,7 +566,7 @@
 			{
 				if(isset($this->_routes[$identifier][self::CONSTRAINTS]['lang']))
 				{
-					$terms['lang'] = $this->_MantraCore->locale()->getCurrentLocale();
+					$terms['lang'] = $this->_PzPHP->locale()->getCurrentLocale();
 				}
 
 				$mergedPattern = $this->_mergeTermsWithPattern($terms, $this->_routes[$identifier][self::PATTERN], $this->_routes[$identifier][self::CONSTRAINTS]);
