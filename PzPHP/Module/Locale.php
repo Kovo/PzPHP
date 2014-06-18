@@ -29,6 +29,27 @@
 		protected $_currentLocale = '';
 
 		/**
+		 * @return array
+		 */
+		public function getExposed()
+		{
+			$exposed = array();
+
+			if(!empty($this->_translations[$this->_currentLocale]))
+			{
+				foreach($this->_translations[$this->_currentLocale] as $key => $value)
+				{
+					if(substr($key,0,7) === 'exposed')
+					{
+						$exposed[$key] = $value;
+					}
+				}
+			}
+
+			return $exposed;
+		}
+
+		/**
 		 * @param $shortForm
 		 * @param $longForm
 		 * @param bool $autoload
