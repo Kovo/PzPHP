@@ -183,6 +183,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	{
 		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
+		$this->_connect($serverId);
+
 		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->affectedRows():0);
 	}
 
@@ -193,6 +195,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	public function insertId($serverId = -1)
 	{
 		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+		$this->_connect($serverId);
 
 		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->insertId():0);
 	}
@@ -205,6 +209,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	public function selectDatabase($dbName, $serverId = -1)
 	{
 		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+		$this->_connect($serverId);
 
 		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->selectDatabase($dbName):false);
 	}
@@ -220,6 +226,8 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	{
 		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
+		$this->_connect($serverId);
+
 		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->changeUser($user, $password, $dbName):false);
 	}
 
@@ -233,6 +241,34 @@ class PzPHP_Library_Db_Mysql_Interactions extends PzPHP_Library_Abstract_Interac
 	 */
 	public function sanitize($value, $mustBeNumeric = true, $decimalPlaces = 2, $cleanall = PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId = -1)
 	{
+		$this->_connect($serverId);
+
 		return PzPHP_Library_Security_Cleanse::cleanQuery($this->pzphp()->db()->getActiveServer($this->pzphp()->db()->getActiveServerId($serverId))->getDBObject(),$value,$mustBeNumeric, $decimalPlaces, $cleanall);
+	}
+
+	/**
+	 * @param $serverId
+	 * @return bool
+	 */
+	protected function _connect($serverId)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during sanitization | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+
+			return false;
+		}
 	}
 }
