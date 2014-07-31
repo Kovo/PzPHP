@@ -282,8 +282,15 @@
 					);
 				}
 
-				array_shift($resultFromParse['terms']);
-				array_pop($resultFromParse['terms']);
+				if(isset($resultFromParse['terms']['lang']))
+				{
+					unset($resultFromParse['terms']['lang']);
+				}
+
+				if(isset($resultFromParse['terms']['actionCalled']))
+				{
+					unset($resultFromParse['terms']['actionCalled']);
+				}
 
 				$return = call_user_func_array(
 					array($classObj, $resultFromParse['finalRouteValues'][self::ACTION]),
