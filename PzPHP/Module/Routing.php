@@ -148,7 +148,7 @@
 				{
 					if(!$this->_isPartATerm($partString))
 					{
-						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString || $uriParts[$order] == '')
+						if(!isset($uriParts[$order]) || $uriParts[$order] !== $partString || ($uriPartsCount > 1 && $uriParts[$order] == ''))
 						{
 							$broken = true;
 							break;
