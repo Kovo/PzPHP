@@ -8,9 +8,6 @@
  * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
  * @package PzPHP
  */
-/**
- * A class extended by PzPHP modules to give easy access to the PzPHP core, among other things.
- */
 class PzPHP_Wrapper
 {
 	/**

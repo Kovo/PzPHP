@@ -8,11 +8,6 @@
  * @author Kevork Aghazarian (http://www.kevorkaghazarian.com)
  * @package PzPHP
  */
-/**
- * The PzPHP core class is the central registry for modules, and allows quick access to them.
- *
- * The PzPHP core class also allows you to register variables that can later be accessed in modules.
- */
 class PzPHP_Core
 {
 	/**
@@ -20,7 +15,7 @@ class PzPHP_Core
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.9/Semper Cursus';
+	const VERSION = '2.0.11/Semper Cursus';
 
 	/**
 	 * An array of registered modules and their instances.
@@ -176,33 +171,38 @@ class PzPHP_Core
 	}
 
 	/**
-	 * A short-form for the registerVariable method.
-	 *
 	 * @param $variableName
 	 * @param $variableValue
-	 *
-	 * @return mixed
+	 * @return $this
 	 */
-	public function set($variableName, $variableValue)
+	public function set($variableValue, $variableName = null)
 	{
 		if(!$this->exists($variableName))
 		{
-			$this->_registeredVariables[$variableName] = $variableValue;
+			if($variableName !== null)
+			{
+				$this->_registeredVariables[$variableName] = $variableValue;
+			}
+			else
+			{
+				$this->_registeredVariables[] = $variableValue;
+			}
 		}
 
 		return $this;
 	}
 
 	/**
-	 * Returns a registered varaible.
-	 *
-	 * @access public
-	 * @param string $variableName
-	 * @return null|mixed
+	 * @param $variableName
+	 * @return null
 	 */
-	public function get($variableName)
+	public function get($variableName = null)
 	{
-		if($this->exists($variableName))
+		if($variableName === null)
+		{
+			return $this->_registeredVariables;
+		}
+		elseif($this->exists($variableName))
 		{
 			return $this->_registeredVariables[$variableName];
 		}
@@ -213,10 +213,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns true or false depending on if specified variable is registered or not.
-	 *
-	 * @access public
-	 * @param string $variableName
+	 * @param $variableName
 	 * @return bool
 	 */
 	public function exists($variableName)
@@ -225,9 +222,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Short-form for the unregisterVariable method.
-	 *
-	 * @return mixed
+	 * @return $this
 	 */
 	public function delete()
 	{
@@ -239,19 +234,22 @@ class PzPHP_Core
 			{
 				if($this->exists($variableName))
 				{
+					$this->_registeredVariables[$variableName] = null;
 					unset($this->_registeredVariables[$variableName]);
 				}
 			}
+		}
+		else
+		{
+			$this->_registeredVariables = null;
+			$this->_registeredVariables = array();
 		}
 
 		return $this;
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Cache.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Cache|null
+	 * @return mixed|PzPHP_Module_Cache
 	 */
 	public function cache()
 	{
@@ -259,10 +257,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Db.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Db|null
+	 * @return mixed|PzPHP_Module_Db
 	 */
 	public function db()
 	{
@@ -270,10 +265,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Security.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Security|null
+	 * @return mixed|PzPHP_Module_Security
 	 */
 	public function security()
 	{
@@ -281,10 +273,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Locale.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Locale|null
+	 * @return mixed|PzPHP_Module_Locale
 	 */
 	public function locale()
 	{
@@ -292,10 +281,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Routing.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Routing|null
+	 * @return mixed|PzPHP_Module_Routing
 	 */
 	public function routing()
 	{
@@ -303,10 +289,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_View.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_View|null
+	 * @return mixed|PzPHP_Module_View
 	 */
 	public function view()
 	{
@@ -314,10 +297,7 @@ class PzPHP_Core
 	}
 
 	/**
-	 * Returns the instance of PzPHP_Module_Log.
-	 *
-	 * @access public
-	 * @return PzPHP_Module_Log|null
+	 * @return mixed|PzPHP_Module_Log
 	 */
 	public function log()
 	{
