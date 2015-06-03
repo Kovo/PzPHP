@@ -20,7 +20,7 @@ class PzPHP_Core
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.9/Semper Cursus';
+	const VERSION = '2.0.10/Semper Cursus';
 
 	/**
 	 * An array of registered modules and their instances.
@@ -54,6 +54,7 @@ class PzPHP_Core
 		$this->registerModule('PzPHP_Module_Log');
 		$this->registerModule('PzPHP_Module_Request');
 		$this->registerModule('PzPHP_Module_Response');
+		$this->registerModule('PzPHP_Module_Notification');
 
 		if(PzPHP_Config::get('SETTING_DOMAIN_PROTECTION'))
 		{
@@ -338,5 +339,13 @@ class PzPHP_Core
 	public function response()
 	{
 		return $this->module('PzPHP_Module_Response');
+	}
+
+	/**
+	 * @return PzPHP_Module_Notification|null
+	 */
+	public function notification()
+	{
+		return $this->module('PzPHP_Module_Notification');
 	}
 }

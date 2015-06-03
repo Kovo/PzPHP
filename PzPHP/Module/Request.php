@@ -366,80 +366,90 @@ class PzPHP_Module_Request extends PzPHP_Wrapper
 	 * @param $varname
 	 * @return null
 	 */
-	public function server($varname)
+	public function server($varname = null)
 	{
-		$return = NULL;
-
-		if(isset($_SERVER[$varname]))
+		if($varname === null)
 		{
-			$return = $_SERVER[$varname];
+			return $_SERVER;
+		}
+		elseif(isset($_SERVER[$varname]))
+		{
+			return $_SERVER[$varname];
 		}
 
-		return $return;
+		return null;
 	}
 
 	/**
 	 * @param $varname
 	 * @return null
 	 */
-	public function get($varname)
+	public function get($varname = null)
 	{
-		$return = NULL;
-
-		if(isset($_GET[$varname]))
+		if($varname === null)
 		{
-			$return = $_GET[$varname];
+			return $_GET;
+		}
+		elseif(isset($_GET[$varname]))
+		{
+			return $_GET[$varname];
 		}
 
-		return $return;
+		return null;
 	}
 
 	/**
 	 * @param $varname
 	 * @return null
 	 */
-	public function post($varname)
+	public function post($varname = null)
 	{
-		$return = NULL;
-
-		if(isset($_POST[$varname]))
+		if($varname === null)
 		{
-			$return = $_POST[$varname];
+			return $_POST;
+		}
+		elseif(isset($_POST[$varname]))
+		{
+			return $_POST[$varname];
 		}
 
-		return $return;
+		return null;
 	}
 
 	/**
 	 * @param $varname
 	 * @return null
 	 */
-	public function cookie($varname)
+	public function cookie($varname = null)
 	{
-		$return = NULL;
-
-		if(isset($_COOKIE[$varname]))
+		if($varname === null)
 		{
-			$return = $_COOKIE[$varname];
+			return $_COOKIE;
+		}
+		elseif(isset($_COOKIE[$varname]))
+		{
+			return $_COOKIE[$varname];
 		}
 
-		return $return;
+		return null;
 	}
 
 	/**
 	 * @param $varname
 	 * @return null
 	 */
-	public function files($varname)
+	public function files($varname = null)
 	{
-		$return = NULL;
-
-		if(isset($_FILES[$varname]))
+		if($varname === null)
 		{
-			$return = $_FILES[$varname];
+			return $_FILES;
+		}
+		elseif(isset($_FILES[$varname]))
+		{
+			return $_FILES[$varname];
 		}
 
-		return $return;
+		return null;
 	}
 
 	/**

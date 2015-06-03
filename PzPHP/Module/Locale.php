@@ -115,7 +115,7 @@
 
 			if(file_exists(PzPHP_Config::get('TRANSLATIONS_DIR').$shortLocale.'.php'))
 			{
-				require PzPHP_Config::get('TRANSLATIONS_DIR').$shortLocale.'.php';
+				require_once PzPHP_Config::get('TRANSLATIONS_DIR').$shortLocale.'.php';
 			}
 			else
 			{
@@ -146,13 +146,13 @@
 			$shortLocale = ($localeoverride===''?$this->_currentLocale:$this->getShortLocaleId($localeoverride));
 			$translations = array();
 
-			if(file_exists(PzPHP_Config::get('TRANSLATIONS_DIR').$file.'.php'))
+			if(file_exists($file))
 			{
-				require PzPHP_Config::get('TRANSLATIONS_DIR').$file.'.php';
+				require_once $file;
 			}
 			else
 			{
-				throw new PzPHP_Exception('Could not find "'.PzPHP_Config::get('TRANSLATIONS_DIR').$file.'.php"!', PzPHP_Helper_Codes::LOCALE_FILE_NOT_FOUND);
+				throw new PzPHP_Exception('Could not find "'.$file.'"!', PzPHP_Helper_Codes::LOCALE_FILE_NOT_FOUND);
 			}
 
 			$this->_translations[$shortLocale] += $translations;

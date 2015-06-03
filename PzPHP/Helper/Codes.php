@@ -129,4 +129,13 @@ class PzPHP_Helper_Codes
 	 * @var int
 	 */
 	const CACHE_NO_ACTIVE_SERVER_ID = 702;
+
+
+
+
+
+	/**
+	 * @var int
+	 */
+	const REQUEST_BAD_PARAMS = 800;
 }

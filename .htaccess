@@ -1,5 +1,5 @@
 ###ENVIRONMENT VARAIBLES
-SetEnv PZPHP_ENVIRONMENT prod
+SetEnv PZPHP_ENVIRONMENT local
 
 ###BASIC CONFIG
 Options -Indexes +FollowSymLinks
@@ -15,10 +15,9 @@ satisfy all
 </Files>
 
 ##CATCHALL FOR ROUTING
-####this is disabled by default
 ####enable it if you plan to use the Routing Module
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteRule .* bootstrap.php [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* bootstrap.php [NC]
 
 ###INJECTION PREVENTION
 ####these catches are disabled by default
