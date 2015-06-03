@@ -246,6 +246,11 @@
 					$resultFromParse['finalRouteValues'] = array();
 				}
 
+				if(!isset($resultFromParse['terms']['lang']))
+				{
+					$resultFromParse['terms'] = array('lang' => '')+$resultFromParse['terms'];
+				}
+
 				if($resultFromParse['foundKey'] !== null)
 				{
 					return $this->_listenFinalExecutions($resultFromParse);
@@ -274,6 +279,7 @@
 				$classObj = new $resultFromParse['finalRouteValues'][self::CONTROLLER]($this->pzphp());
 
 				$resultFromParse['terms']['actionCalled'] = $resultFromParse['finalRouteValues'][self::ACTION];
+
 				if(method_exists($classObj, 'before'))
 				{
 					call_user_func_array(

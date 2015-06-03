@@ -98,4 +98,30 @@ class PzPHP_Helper_Response
 			return $referer;
 		}
 	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return bool
+	 */
+	public static function deleteCookie($name)
+	{
+		return setcookie($name, null, 1234, '/', PzPHP_Config::get('COOKIE_URL'), false, true);
+	}
+
+	/**
+	 * @param        $name
+	 * @param        $value
+	 * @param int    $duration
+	 * @param string $dir
+	 * @param null   $cookieUrl
+	 * @param bool   $secure
+	 * @param bool   $httpOnly
+	 *
+	 * @return bool
+	 */
+	public static function createCookie($name, $value, $duration = 0, $dir = '/', $cookieUrl = null, $secure = false, $httpOnly = true)
+	{
+		return setcookie($name, $value, $duration, $dir, ($cookieUrl===null?PzPHP_Config::get('COOKIE_URL'):$cookieUrl), $secure, $httpOnly);
+	}
 }

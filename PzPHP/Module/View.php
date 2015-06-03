@@ -2,14 +2,17 @@
 class PzPHP_Module_View extends PzPHP_Wrapper
 {
 	/**
-	 * @param $view
+	 * @param       $view
 	 * @param array $parameters
+	 * @param null  $overrideViewDir
+	 *
 	 * @return string
 	 * @throws PzPHP_Exception
+	 * @throws Exception
 	 */
-	public function render($view, array $parameters = array())
+	public function render($view, array $parameters = array(), $overrideViewDir = null)
 	{
-		$file = PzPHP_Config::get('VIEWS_DIR').$view.'.php';
+		$file = (empty($overrideViewDir)?PzPHP_Config::get('VIEWS_DIR'):$overrideViewDir).$view.'.php';
 
 		if(file_exists($file))
 		{
