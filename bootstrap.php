@@ -1,9 +1,5 @@
 <?php
 /**
- * Contributions by:
- *      Fayez Awad
- *      Yann Madeleine (http://www.yann-madeleine.com)
- *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice, contribtuions, and original author information.
  *
@@ -11,7 +7,6 @@
  * @website http://www.kevorkaghazarian.com
  * @website http://www.pzphp.com
  */
-
 try
 {
 	###AUTOLOAD###
