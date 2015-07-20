@@ -5,17 +5,6 @@ if(!String.prototype.trim)
     };
 }
 
-if(!Object.prototype.size)
-{
-    Object.prototype.size = function(obj) {
-        var size = 0, key;
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) size++;
-        }
-        return size;
-    };
-}
-
 Class.Singleton = new Class({
     initialize: function(classDefinition, options)
     {
@@ -26,31 +15,6 @@ Class.Singleton = new Class({
 
 function empty(mixed_var)
 {
-    // Checks if the argument variable is empty
-    // undefined, null, false, number 0, empty string,
-    // string "0", objects without properties and empty arrays
-    // are considered empty
-    //
-    // From: http://phpjs.org/functions
-    // +   original by: Philippe Baumann
-    // +      input by: Onno Marsman
-    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +      input by: LH
-    // +   improved by: Onno Marsman
-    // +   improved by: Francesco
-    // +   improved by: Marc Jansen
-    // +      input by: Stoyan Kyosev (http://www.svest.org/)
-    // +   improved by: Rafal Kukawski
-    // *     example 1: empty(null);
-    // *     returns 1: true
-    // *     example 2: empty(undefined);
-    // *     returns 2: true
-    // *     example 3: empty([]);
-    // *     returns 3: true
-    // *     example 4: empty({});
-    // *     returns 4: true
-    // *     example 5: empty({'aFunc' : function () { alert('humpty'); } });
-    // *     returns 5: false
     var undef, key, i, len;
     var emptyValues = [undef, null, false, 0, "", "0"];
 
@@ -77,27 +41,8 @@ function stopEvent(e)
     e.stop();
 }
 
-function get_html_translation_table(table, quote_style) {
-    //  discuss at: http://phpjs.org/functions/get_html_translation_table/
-    // original by: Philip Peterson
-    //  revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // bugfixed by: noname
-    // bugfixed by: Alex
-    // bugfixed by: Marco
-    // bugfixed by: madipta
-    // bugfixed by: Brett Zamir (http://brett-zamir.me)
-    // bugfixed by: T.Wild
-    // improved by: KELAN
-    // improved by: Brett Zamir (http://brett-zamir.me)
-    //    input by: Frank Forte
-    //    input by: Ratheous
-    //        note: It has been decided that we're not going to add global
-    //        note: dependencies to php.js, meaning the constants are not
-    //        note: real constants, but strings instead. Integers are also supported if someone
-    //        note: chooses to create the constants themselves.
-    //   example 1: get_html_translation_table('HTML_SPECIALCHARS');
-    //   returns 1: {'"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;'}
-
+function get_html_translation_table(table, quote_style)
+{
     var entities = {},
         hash_map = {},
         decimal;
@@ -241,24 +186,8 @@ function get_html_translation_table(table, quote_style) {
     return hash_map;
 }
 
-function htmlentities(string, quote_style, charset, double_encode) {
-    //  discuss at: http://phpjs.org/functions/htmlentities/
-    // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    //  revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    //  revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // improved by: nobbler
-    // improved by: Jack
-    // improved by: Rafał Kukawski (http://blog.kukawski.pl)
-    // improved by: Dj (http://phpjs.org/functions/htmlentities:425#comment_134018)
-    // bugfixed by: Onno Marsman
-    // bugfixed by: Brett Zamir (http://brett-zamir.me)
-    //    input by: Ratheous
-    //  depends on: get_html_translation_table
-    //   example 1: htmlentities('Kevin & van Zonneveld');
-    //   returns 1: 'Kevin &amp; van Zonneveld'
-    //   example 2: htmlentities("foo'bar","ENT_QUOTES");
-    //   returns 2: 'foo&#039;bar'
-
+function htmlentities(string, quote_style, charset, double_encode)
+{
     var hash_map = get_html_translation_table('HTML_ENTITIES', quote_style),
         symbol = '';
     string = string == null ? '' : string + '';
