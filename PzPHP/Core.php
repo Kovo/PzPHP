@@ -15,7 +15,7 @@ class PzPHP_Core
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.12/Semper Cursus';
+	const VERSION = '2.0.13/Semper Cursus';
 
 	/**
 	 * An array of registered modules and their instances.
