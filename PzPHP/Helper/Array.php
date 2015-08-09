@@ -35,4 +35,15 @@ class PzPHP_Helper_Array
 
 		$sourceArray = $replacementArray;
 	}
+
+	/**
+	 * @param array $array
+	 * @param       $pos
+	 * @param       $value
+	 * @return array
+	 */
+	public static function insertValueAtPos(array $array, $pos, $value)
+	{
+		return array_slice($array, 0, $pos, true)+$value+array_slice($array, $pos, count($array)-$pos, true);
+	}
 }
