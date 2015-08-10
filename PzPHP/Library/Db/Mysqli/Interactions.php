@@ -2,6 +2,38 @@
 class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Interactions
 {
 	/**
+	 * @var array
+	 */
+	protected $_lastErrorNo = array();
+
+	/**
+	 * @var array
+	 */
+	protected $_lastErrorMsg = array();
+
+	/**
+	 * @param $serverId
+	 * @return null
+	 */
+	public function getLastErrorCode($serverId = -1)
+	{
+		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+		return (isset($this->_lastErrorNo[$serverId])?$this->_lastErrorNo[$serverId]:null);
+	}
+
+	/**
+	 * @param $serverId
+	 * @return null
+	 */
+	public function getLastErrorMessage($serverId = -1)
+	{
+		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+		return (isset($this->_lastErrorMsg[$serverId])?$this->_lastErrorMsg[$serverId]:null);
+	}
+
+	/**
 	 * @param $query
 	 * @param $serverId
 	 * @return bool|mysqli_result|PDOStatement
@@ -25,7 +57,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 
 			if(!$result)
 			{
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.' | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.' | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 			}
 
 			if(empty($result))
@@ -39,7 +74,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 		}
 		catch(Exception $e)
 		{
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 
 			return false;
 		}
@@ -92,23 +130,23 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 				// If failed,
 				if(!$result)
 				{
-					$mysqlErrno = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
-					$mysqlError = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+					$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+					$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
 
 					// Determine if we need to retry this transaction -
 					// If duplicate PRIMARY key error,
 					// or one of the errors in 'arr_need_to_retry_error_codes'
 					// then we need to retry
-					if($mysqlErrno == 1062 && strpos($mysqlError,"for key 'PRIMARY'") !== false)
+					if($this->_lastErrorNo[$serverId] == 1062 && strpos($this->_lastErrorMsg[$serverId],"for key 'PRIMARY'") !== false)
 					{
 						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Duplicate Primary Key error for query: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
 					}
 
-					$retryFlag = (in_array($mysqlErrno, $retryCodes));
+					$retryFlag = (in_array($this->_lastErrorNo[$serverId], $retryCodes));
 
 					if(!empty($retryFlag))
 					{
-						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Deadlock detected for query: "'.$query.'" | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Deadlock detected for query: "'.$query.'" | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 					}
 				}
 
@@ -125,7 +163,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 				{
 					if($retryCount === $firstIntervalRetries)
 					{
-						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Reducing retry interval for deadlock detection on query: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+						$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+						$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Reducing retry interval for deadlock detection on query: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 					}
 
 					usleep($firstIntervalDelay*1000000);
@@ -139,7 +180,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 					$result = false;
 					$retryCount--;
 
-					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Finally gave up on query: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+					$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+					$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Finally gave up on query: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 
 					break;
 				}
@@ -149,12 +193,18 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 			// If update query failed, log
 			if(!$result)
 			{
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 			}
 
 			if($retryCount > 0 && $retryCount < $secondIntervalRetries)
 			{
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query finally succeeded: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
+				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
+				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Query finally succeeded: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 			}
 
 			// Return result
@@ -169,7 +219,10 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 		}
 		catch(Exception $e)
 		{
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 
 			return false;
 		}
