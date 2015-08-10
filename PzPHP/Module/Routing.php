@@ -95,7 +95,8 @@
 
 					$classObj = new $class($this->pzphp());
 
-					$arguments['actionCalled'] = $method;
+					$arguments = PzPHP_Helper_Array::insertValueAtPos($arguments, 1, array('actionCalled'=> $method));
+
 					if(method_exists($classObj, 'before'))
 					{
 						call_user_func_array(
@@ -278,7 +279,7 @@
 			{
 				$classObj = new $resultFromParse['finalRouteValues'][self::CONTROLLER]($this->pzphp());
 
-				$resultFromParse['terms']['actionCalled'] = $resultFromParse['finalRouteValues'][self::ACTION];
+				$resultFromParse['terms'] = PzPHP_Helper_Array::insertValueAtPos($resultFromParse['terms'], 1, array('actionCalled'=> $resultFromParse['finalRouteValues'][self::ACTION]));
 
 				if(method_exists($classObj, 'before'))
 				{
