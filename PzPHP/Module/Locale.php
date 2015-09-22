@@ -57,7 +57,7 @@
 		 */
 		public function addLanguage($shortForm, $longForm, $autoload = false)
 		{
-			$this->_languages[$longForm] = $shortForm;
+			$this->_languages[strtolower($longForm)] = strtolower($shortForm);
 
 			if($autoload)
 			{
