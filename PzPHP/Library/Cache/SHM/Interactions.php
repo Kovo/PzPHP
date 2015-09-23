@@ -156,7 +156,7 @@ class PzPHP_Library_Cache_SHM_Interactions extends PzPHP_Library_Abstract_Intera
 
 				shmop_close($shm_id);
 
-				if(substr($key, -7) !== self::LOCK_VALUE)
+				if(substr($key, -strlen(self::LOCK_VALUE)) !== self::LOCK_VALUE)
 				{
 					$validKey = $this->_shmKeyToHex($key.self::LOCK_VALUE);
 
