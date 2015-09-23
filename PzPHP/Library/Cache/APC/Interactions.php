@@ -81,7 +81,7 @@ class PzPHP_Library_Cache_APC_Interactions extends PzPHP_Library_Abstract_Intera
 		{
 			apc_delete($key);
 
-			if(substr($key, -7) !== self::LOCK_VALUE)
+			if(substr($key, -strlen(self::LOCK_VALUE)) !== self::LOCK_VALUE)
 			{
 				apc_delete($key.self::LOCK_VALUE);
 			}
