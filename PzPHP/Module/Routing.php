@@ -67,6 +67,39 @@
 		protected $_exposed = array();
 
 		/**
+		 * @var bool
+		 */
+		protected $_secure = false;
+
+		/**
+		 * @return $this
+		 */
+		public function secure()
+		{
+			$this->_secure = true;
+
+			return $this;
+		}
+
+		/**
+		 * @return $this
+		 */
+		public function unsecure()
+		{
+			$this->_secure = false;
+
+			return $this;
+		}
+
+		/**
+		 * @return bool
+		 */
+		public function secured()
+		{
+			return $this->_secure;
+		}
+
+		/**
 		 * @return mixed
 		 * @throws PzPHP_Exception
 		 */
@@ -260,6 +293,43 @@
 				{
 					throw new PzPHP_Exception('No valid route found for this request.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_ROUTE);
 				}
+			}
+			else
+			{
+				throw new PzPHP_Exception('No routes to match this request to.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_ROUTE);
+			}
+		}
+
+		/**
+		 * @param $identifier
+		 * @param array $terms
+		 * @return mixed
+		 * @throws PzPHP_Exception
+		 */
+		public function reroute($identifier, array $terms = array())
+		{
+			if(!empty($this->_routes))
+			{
+				if(isset($this->_routes[$identifier]))
+				{
+					$finalRouteValues	= array(
+						'foundKey'			=> $identifier,
+						'finalRouteValues'	=> $this->_routes[$identifier],
+						'terms'				=> is_array($terms)? $terms:array()
+					);
+
+					if(!isset($finalRouteValues['terms']['lang']))
+					{
+						$finalRouteValues['terms'] = array('lang' => '')+$finalRouteValues['terms'];
+					}
+
+					return $this->_listenFinalExecutions($finalRouteValues);
+				}
+				else
+				{
+					throw new PzPHP_Exception('No valid route found for this request.', PzPHP_Helper_Codes::ROUTING_ERROR_NO_ROUTE);
+				}
+
 			}
 			else
 			{
@@ -560,10 +630,11 @@
 		 * @param $identifier
 		 * @param array $terms
 		 * @param null $overrideSiteUrl
+		 * @param null $secure
 		 * @return string
 		 * @throws PzPHP_Exception
 		 */
-		public function get($identifier, array $terms = array(), $overrideSiteUrl = null)
+		public function get($identifier, array $terms = array(), $overrideSiteUrl = null, $secure = null)
 		{
 			if($overrideSiteUrl === null)
 			{
@@ -575,6 +646,11 @@
 			}
 
 			$siteUrl = $this->stripBaseUri($siteUrl);
+
+			if(($this->_secure || $secure) && $secure !== false)
+			{
+				$siteUrl = str_replace('http://','https://', $siteUrl);
+			}
 
 			if(isset($this->_routes[$identifier]))
 			{
