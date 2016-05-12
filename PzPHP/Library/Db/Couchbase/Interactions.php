@@ -53,14 +53,16 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 			}
 
 			$query = trim($query);
-			$result = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->query($query);
-
-			if(!$result)
+			try
 			{
-				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->query(CouchbaseN1qlQuery::fromString($query));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'". | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
 
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.' | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
 			}
 
 			if(empty($result))
@@ -77,7 +79,7 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 			$this->_lastErrorMsg[$serverId] = $e->getMessage();
 			$this->_lastErrorNo[$serverId] = $e->getCode();
 
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 
 			return false;
 		}
@@ -102,112 +104,20 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 				}
 			}
 
-			$firstIntervalDelay = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_FIRST_INTERVAL_DELAY_SECONDS');
-			$secondIntervalDelay = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_SECOND_INTERVAL_DELAY_SECONDS');
-
-			$firstIntervalRetries = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_FIRST_INTERVAL_RETRIES');
-			$secondIntervalRetries = PzPHP_Config::get('SETTING_DB_WRITE_RETRY_SECOND_INTERVAL_RETRIES');
-
-			$retryCodes = array(
-				1213, //Deadlock found when trying to get lock
-				1205 //Lock wait timeout exceeded
-			);
-
-			//Initialize
-			$retryCount = 0;
-
 			$query = trim($query);
 
-			//Main loop
-			do
+			try
 			{
-				//Initialize 'flag_retry' indicating whether or not we need to retry this transaction
-				$retryFlag = 0;
-
-				// Write query (UPDATE, INSERT)
-				$result = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->query($query);
-
-				// If failed,
-				if(!$result)
-				{
-					$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-					$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
-
-					// Determine if we need to retry this transaction -
-					// If duplicate PRIMARY key error,
-					// or one of the errors in 'arr_need_to_retry_error_codes'
-					// then we need to retry
-					if($this->_lastErrorNo[$serverId] == 1062 && strpos($this->_lastErrorMsg[$serverId],"for key 'PRIMARY'") !== false)
-					{
-						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Duplicate Primary Key error for query: "'.$query.'". | Error: "#'.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno.' / '.$this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error.'"');
-					}
-
-					$retryFlag = (in_array($this->_lastErrorNo[$serverId], $retryCodes));
-
-					if(!empty($retryFlag))
-					{
-						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Deadlock detected for query: "'.$query.'" | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
-					}
-				}
-
-				// If successful or failed but no need to retry
-				if($result || empty($retryFlag))
-				{
-					// We're done
-					break;
-				}
-
-				$retryCount++;
-
-				if($retryCount <= $firstIntervalRetries)
-				{
-					if($retryCount === $firstIntervalRetries)
-					{
-						$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-						$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
-
-						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Reducing retry interval for deadlock detection on query: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
-					}
-
-					usleep($firstIntervalDelay*1000000);
-				}
-				elseif($retryCount > $firstIntervalRetries && $retryCount <= $secondIntervalRetries)
-				{
-					usleep($secondIntervalDelay*1000000);
-				}
-				else
-				{
-					$result = false;
-					$retryCount--;
-
-					$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-					$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
-
-					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Finally gave up on query: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
-
-					break;
-				}
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->query(CouchbaseN1qlQuery::fromString($query));
 			}
-			while(true);
-
-			// If update query failed, log
-			if(!$result)
+			catch(Exception $e)
 			{
-				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'". | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
 
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Query failed: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
 			}
 
-			if($retryCount > 0 && $retryCount < $secondIntervalRetries)
-			{
-				$this->_lastErrorMsg[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->error;
-				$this->_lastErrorNo[$serverId] = $this->pzphp()->db()->getActiveServer($serverId)->getDBObject()->errno;
-
-				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Query finally succeeded: "'.$query.'". | Error: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
-			}
-
-			// Return result
 			if(empty($result))
 			{
 				return false;
@@ -222,36 +132,519 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 			$this->_lastErrorMsg[$serverId] = $e->getMessage();
 			$this->_lastErrorNo[$serverId] = $e->getCode();
 
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during query: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
 
 			return false;
 		}
 	}
 
 	/**
-	 * @param $serverId
-	 * @return int|mixed
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
 	 */
-	public function affectedRows($serverId = -1)
+	public function insert($key, $value, $expiry = 0, $serverId = -1)
 	{
-		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		$this->_connect($serverId);
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
 
-		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->affectedRows():0);
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->insert($key, $value, array('expiry' => $expiry));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Insert failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during insert: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
 	}
 
 	/**
-	 * @param $serverId
-	 * @return int|mixed
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
 	 */
-	public function insertId($serverId = -1)
+	public function append($key, $value, $expiry = 0, $serverId = -1)
 	{
-		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
 
-		$this->_connect($serverId);
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
 
-		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->insertId():0);
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->append($key, $value, array('expiry' => $expiry));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Append failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during append: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function prepend($key, $value, $expiry = 0, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->prepend($key, $value, array('expiry' => $expiry));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Prepend failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during prepend: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function counter($key, $value = 1, $initial = null, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				if($initial === null)
+				{
+					$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->counter($key, $value);
+				}
+				else
+				{
+					$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->counter($key, $value, array('initial' => $initial));
+				}
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Counter failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during counter: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function upsert($key, $value, $expiry = 0, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->upsert($key, $value, array('expiry' => $expiry));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Upsert failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during upsert: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param bool $touch
+	 * @param int $expiry
+	 * @param bool $locked
+	 * @param int $lockfor
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function get($key, $touch = false, $expiry = 0, $locked = false, $lockfor = 0, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				if(!$locked)
+				{
+					if($touch)
+					{
+						$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->getAndTouch($key, $expiry);
+					}
+					else
+					{
+						$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->get($key);
+					}
+				}
+				else
+				{
+					$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->getAndLock($key, $lockfor);
+				}
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Get failed: "'.$key.'". | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during get: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param bool $touch
+	 * @param int $expiry
+	 * @param bool $locked
+	 * @param int $lockfor
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function unlock($key, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->unlock($key);
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Unlock failed: "'.$key.'". | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during unlock: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param int $expiry
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function replace($key, $value, $expiry = 0, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->replace($key, $value, array('expiry' => $expiry));
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Replace failed: "'.$key.'" // '.serialize($value).'. | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during replace: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param int $serverId
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	public function remove($key, $serverId = -1)
+	{
+		try
+		{
+			$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
+
+			if(!$this->pzphp()->db()->getActiveServer($serverId)->isConnected())
+			{
+				if(!$this->pzphp()->db()->connect($serverId))
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				$result = $this->pzphp()->db()->getActiveServer($serverId)->getBucketObject()->remove($key);
+			}
+			catch(Exception $e)
+			{
+				$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Remove failed: "'.$key.'". | Error: "#'.$e->getMessage().' / '.$e->getCode().'"');
+
+				$this->_lastErrorMsg[$serverId] = $e->getMessage();
+				$this->_lastErrorNo[$serverId] = $e->getCode();
+			}
+
+			if(empty($result))
+			{
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->_lastErrorMsg[$serverId] = $e->getMessage();
+			$this->_lastErrorNo[$serverId] = $e->getCode();
+
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during remove: "'.$key.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
+			return false;
+		}
 	}
 
 	/**
@@ -269,22 +662,6 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 	}
 
 	/**
-	 * @param $user
-	 * @param $password
-	 * @param null $dbName
-	 * @param $serverId
-	 * @return bool
-	 */
-	public function changeUser($user, $password, $dbName = NULL, $serverId = -1)
-	{
-		$serverId = $this->pzphp()->db()->getActiveServerId($serverId);
-
-		$this->_connect($serverId);
-
-		return ($this->pzphp()->db()->getActiveServer($serverId)?$this->pzphp()->db()->getActiveServer($serverId)->changeUser($user, $password, $dbName):false);
-	}
-
-	/**
 	 * @param $value
 	 * @param bool $mustBeNumeric
 	 * @param int $decimalPlaces
@@ -296,7 +673,7 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 	{
 		$this->_connect($serverId);
 
-		return PzPHP_Library_Security_Cleanse::cleanQuery($this->pzphp()->db()->getActiveServer($this->pzphp()->db()->getActiveServerId($serverId))->getDBObject(),$value,$mustBeNumeric, $decimalPlaces, $cleanall);
+		return PzPHP_Library_Security_Cleanse::cleanQuery($this->pzphp()->db()->getActiveServer($this->pzphp()->db()->getActiveServerId($serverId))->getBucketObject(),$value,$mustBeNumeric, $decimalPlaces, $cleanall);
 	}
 
 	/**
@@ -319,7 +696,7 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 		}
 		catch(Exception $e)
 		{
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during connection | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Exception during connection | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
 
 			return false;
 		}

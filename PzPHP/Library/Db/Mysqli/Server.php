@@ -101,6 +101,8 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 			{
 				if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 				{
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$this->_dbObject->connect_error.' | '.$this->_dbObject->connect_errno);
+
 					$this->_status = self::DISCONNECTED;
 
 					return false;
@@ -114,6 +116,8 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 
 					if($this->_dbObject->connect_error)
 					{
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$this->_dbObject->connect_error.' | '.$this->_dbObject->connect_errno);
+
 						if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 						{
 							$this->_status = self::DISCONNECTED;

@@ -115,9 +115,9 @@ class PzPHP_Library_Db_Couchbase_Server extends PzPHP_Library_Abstract_Generic
 
 					break;
 				}
-				catch(CouchbaseException $e)
+				catch(Exception $e)
 				{
-					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$e->getMessage().' | '.$e->getCode());
 
 					sleep($this->_connectRetryDelay);
 				}
@@ -129,13 +129,9 @@ class PzPHP_Library_Db_Couchbase_Server extends PzPHP_Library_Abstract_Generic
 
 				return false;
 			}
+		}
 
-			return true;
-		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
 
 	public function disconnect()
@@ -159,11 +155,19 @@ class PzPHP_Library_Db_Couchbase_Server extends PzPHP_Library_Abstract_Generic
 	}
 
 	/**
-	 * @return mysqli|null
+	 * @return CouchbaseCluster|null
 	 */
 	public function getDBObject()
 	{
 		return $this->_dbObject;
+	}
+
+	/**
+	 * @return CouchbaseBucket|null
+	 */
+	public function getBucketObject()
+	{
+		return $this->_bucketObject;
 	}
 
 	/**
@@ -175,32 +179,6 @@ class PzPHP_Library_Db_Couchbase_Server extends PzPHP_Library_Abstract_Generic
 		if($this->_dbObject->openBucket($dbName))
 		{
 			$this->_dbName = $dbName;
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * @param $user
-	 * @param $password
-	 * @param null $dbName
-	 * @return bool
-	 */
-	public function changeUser($user, $password, $dbName = NULL)
-	{
-		if($this->_dbObject->change_user($user, $password, $dbName))
-		{
-			$this->_user = $user;
-			$this->_password = $password;
-
-			if($dbName !== NULL)
-			{
-				$this->_dbName = $dbName;
-			}
 
 			return true;
 		}

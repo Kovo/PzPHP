@@ -150,6 +150,8 @@ class PzPHP_Library_Db_PDO_Server extends PzPHP_Library_Abstract_Generic
 				}
 				catch(PDOException $e)
 				{
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_PDO_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$e->getMessage().' | '.$e->getCode());
+
 					$retries++;
 				}
 			}

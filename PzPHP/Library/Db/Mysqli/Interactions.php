@@ -319,7 +319,7 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 		}
 		catch(Exception $e)
 		{
-			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during sanitization | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
+			$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during connection | Exception: "#'.$e->getCode().' / '.$e->getMessage().'"');
 
 			return false;
 		}

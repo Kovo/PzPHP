@@ -124,13 +124,9 @@ class PzPHP_Library_Security_Cleanse extends PzPHP_Wrapper
 				$value = self::cleanHTML($value, $cleanall); //clean html stuff
 
 				//good old php function as last defense
-				if(is_object($dbLinkRes))
+				if(is_object($dbLinkRes) && method_exists($dbLinkRes, 'real_escape_string'))
 				{
 					$value = $dbLinkRes->real_escape_string($value);
-				}
-				elseif(is_resource($dbLinkRes))
-				{
-					$value = mysql_real_escape_string($value, $dbLinkRes);
 				}
 			}
 
