@@ -1,5 +1,5 @@
 <?php
-class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
+class PzPHP_Library_Db_Couchbase_Server extends PzPHP_Library_Abstract_Generic
 {
 	/**
 	 * @var int
@@ -60,11 +60,18 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 	private $_status = self::DISCONNECTED;
 
 	/**
-	 * @var null|mysqli
+	 * @var null|CouchbaseCluster
 	 */
 	private $_dbObject = NULL;
 
 	/**
+	 * @var null|CouchbaseBucket
+	 */
+	private $_bucketObject = NULL;
+
+	/**
+	 * PzPHP_Library_Db_Couchbase_Server constructor.
+	 * @param PzPHP_Core $pzPHP_Core
 	 * @param $dbUser
 	 * @param $dbPassword
 	 * @param $dbName
@@ -95,59 +102,35 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 		{
 			$this->_status = self::CONNECTING;
 
-			$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
+			$this->_dbObject =  new CouchbaseCluster($this->_host.':'.$this->_port);
 
-			if($this->_dbObject->connect_error)
+			for($x=0;$x<$this->_connectRetryAttempts;$x++)
 			{
-				if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
+				try
 				{
-					$this->_status = self::DISCONNECTED;
+					$this->_bucketObject = $this->_dbObject->openBucket($this->_dbName);
+					$this->_bucketObject->enableN1ql(array($this->_host.':'.$this->_port));
 
-					return false;
+					$this->_status = self::CONNECTED;
+
+					break;
 				}
-
-				for($x=0;$x<$this->_connectRetryAttempts;$x++)
+				catch(CouchbaseException $e)
 				{
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_CB_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: "'.$query.' | Exception: "#'.$this->_lastErrorNo[$serverId].' / '.$this->_lastErrorMsg[$serverId].'"');
+
 					sleep($this->_connectRetryDelay);
-
-					$this->_dbObject =  new mysqli($this->_host, $this->_user, $this->_password, $this->_dbName, $this->_port);
-
-					if($this->_dbObject->connect_error)
-					{
-						if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
-						{
-							$this->_status = self::DISCONNECTED;
-
-							return false;
-						}
-
-						continue;
-					}
-					else
-					{
-						$this->_status = self::CONNECTED;
-
-						break;
-					}
-				}
-
-				if($this->_status === self::CONNECTING)
-				{
-					$this->_status = self::DISCONNECTED;
-
-					return false;
-				}
-				else
-				{
-					return true;
 				}
 			}
-			else
+
+			if($this->_status !== self::CONNECTED)
 			{
-				$this->_status = self::CONNECTED;
+				$this->_status = self::DISCONNECTED;
 
-				return true;
+				return false;
 			}
+
+			return true;
 		}
 		else
 		{
@@ -159,7 +142,7 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 	{
 		if($this->isConnected() === true && is_object($this->_dbObject))
 		{
-			$this->_dbObject->close();
+			$this->_bucketObject->disconnect();
 
 			$this->_dbObject = NULL;
 
@@ -184,28 +167,12 @@ class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function insertId()
-	{
-		return $this->_dbObject->insert_id;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function affectedRows()
-	{
-		return $this->_dbObject->affected_rows;
-	}
-
-	/**
 	 * @param $dbName
 	 * @return bool
 	 */
 	public function selectDatabase($dbName)
 	{
-		if($this->_dbObject->select_db($dbName))
+		if($this->_dbObject->openBucket($dbName))
 		{
 			$this->_dbName = $dbName;
 

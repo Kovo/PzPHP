@@ -1,5 +1,5 @@
 <?php
-class PzPHP_Library_Db_PDO_Server
+class PzPHP_Library_Db_PDO_Server extends PzPHP_Library_Abstract_Generic
 {
 	/**
 	 * @var int
@@ -106,8 +106,10 @@ class PzPHP_Library_Db_PDO_Server
 	 * @param $socket
 	 * @param $charset
 	 */
-	function __construct($dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait, $dbDriverOptions, $server, $protocol, $socket, $charset)
+	function __construct(PzPHP_Core $pzPHP_Core, $dbUser, $dbPassword, $dbType, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait, $dbDriverOptions, $server, $protocol, $socket, $charset)
 	{
+		parent::__construct($pzPHP_Core);
+
 		$this->_user = $dbUser;
 		$this->_password = $dbPassword;
 		$this->_dbType = $dbType;
