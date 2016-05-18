@@ -19,6 +19,11 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 	protected $_logs = array();
 
 	/**
+	 * @var string
+	 */
+	const REGEX_LOG_PATTERN = "#(?:.*)-([0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1]))\\.log#";
+
+	/**
 	 * @return $this
 	 */
 	public function warmup()
@@ -35,40 +40,6 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 			ini_set('display_errors', (PzPHP_Config::get('SETTING_PHP_DISPLAY_ERRORS')?1:0));
 		}
 
-		if(PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS') > 0 && !empty($this->_logs))
-		{
-			foreach($this->_logs as $logName => $location)
-			{
-				$path = PzPHP_Helper_IO::extractPath($location);
-
-				if(!PzPHP_Helper_IO::isValidDir($path))
-				{
-					continue;
-				}
-
-				$files = file($path);
-
-				if(empty($files))
-				{
-					continue;
-				}
-
-				$rootLogNameLength = strlen($logName);
-				foreach($files as $fileName)
-				{
-					if($fileName === '.' || $fileName === '..' || substr($fileName,0,$rootLogNameLength) !== $logName)
-					{
-						continue;
-					}
-
-					if((strtotime(array_pop(explode('-', $fileName)))/86400) >= PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS'))
-					{
-						PzPHP_Helper_IO::removeFileFolderEnforce($path.$fileName);
-					}
-				}
-			}
-		}
-
 		return $this;
 	}
 
@@ -79,7 +50,63 @@ class PzPHP_Module_Log extends PzPHP_Wrapper
 	 */
 	public function registerLog($logName, $logLocation = '')
 	{
-		$this->_logs[$logName] = ($logLocation===''?PzPHP_Config::get('LOGS_DIR').$logName.'-'.date('Y-m-d').'.log':$logLocation.$logName.'-'.date('Y-m-d').'.log');
+		if(!isset($this->_logs[$logName]))
+		{
+			$this->_logs[$logName] = ($logLocation===''?PzPHP_Config::get('LOGS_DIR').$logName.'-'.date('Y-m-d').'.log':$logLocation.$logName.'-'.date('Y-m-d').'.log');
+
+			if(PzPHP_Config::get('SETTING_LOG_FILE_AUTO_ROTATE') === true)
+			{
+				$this->rotateLog($logName);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param $logName
+	 * @return $this
+	 */
+	public function rotateLog($logName)
+	{
+		if(isset($this->_logs[$logName]))
+		{
+			$path = PzPHP_Helper_IO::extractPath($this->_logs[$logName]);
+
+			if(PzPHP_Helper_IO::isValidDir($path))
+			{
+				$files = scandir($path);
+
+				if(!empty($files))
+				{
+					foreach($files as $fileName)
+					{
+						if(PzPHP_Helper_IO::isValidDir($path.$fileName))
+						{
+							continue;
+						}
+
+						if(!preg_match(self::REGEX_LOG_PATTERN, $fileName, $matches))
+						{
+							continue;
+						}
+
+						if(isset($matches[1]))
+						{
+							$fileDate		= new DateTime($matches[1]);
+							$currentDate	= new DateTime(date('Y-m-d'));
+
+							$interval		= $fileDate->diff($currentDate);
+
+							if($interval->days >= PzPHP_Config::get('SETTING_DELETE_LOG_FILES_AFTER_DAYS'))
+							{
+								PzPHP_Helper_IO::removeFileFolderEnforce($path.$fileName);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		return $this;
 	}
