@@ -349,6 +349,8 @@
 			{
 				$classObj = new $resultFromParse['finalRouteValues'][self::CONTROLLER]($this->pzphp());
 
+				$resultFromParse['terms'] = PzPHP_Helper_Array::insertValueAtPos($resultFromParse['terms'], 1, array('controllerCalled'=> $resultFromParse['finalRouteValues'][self::CONTROLLER]));
+
 				$resultFromParse['terms'] = PzPHP_Helper_Array::insertValueAtPos($resultFromParse['terms'], 1, array('actionCalled'=> $resultFromParse['finalRouteValues'][self::ACTION]));
 
 				if(method_exists($classObj, 'before'))
@@ -367,6 +369,11 @@
 				if(isset($resultFromParse['terms']['actionCalled']))
 				{
 					unset($resultFromParse['terms']['actionCalled']);
+				}
+
+				if(isset($resultFromParse['terms']['controllerCalled']))
+				{
+					unset($resultFromParse['terms']['controllerCalled']);
 				}
 
 				$return = call_user_func_array(
@@ -443,6 +450,38 @@
 			}
 
 			return $this;
+		}
+
+		/**
+		 * @param $identifier
+		 * @return bool
+		 */
+		public function getAction($identifier)
+		{
+			if(isset($this->_routes[$identifier]))
+			{
+				return $this->_routes[$identifier][self::ACTION];
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/**
+		 * @param $identifier
+		 * @return bool
+		 */
+		public function getController($identifier)
+		{
+			if(isset($this->_routes[$identifier]))
+			{
+				return $this->_routes[$identifier][self::CONTROLLER];
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		/**
