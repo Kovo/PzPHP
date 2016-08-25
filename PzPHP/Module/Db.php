@@ -19,14 +19,14 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 	protected $_servers = array();
 
 	/**
+	 * @var null|PzPHP_Library_Db_Couchbase_Interactions
+	 */
+	protected $_couchbaseInteractions = null;
+
+	/**
 	 * @var null|PzPHP_Library_Db_Mysqli_Interactions
 	 */
 	protected $_mysqliInteractions = null;
-
-	/**
-	 * @var null|PzPHP_Library_Db_Mysql_Interactions
-	 */
-	protected $_mysqlInteractions = null;
 
 	/**
 	 * @var null|PzPHP_Library_Db_PDO_Interactions
@@ -39,6 +39,19 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 	protected $_activeServerId = -1;
 
 	/**
+	 * @return null|PzPHP_Library_Db_Couchbase_Interactions
+	 */
+	public function couchbaseInteract()
+	{
+		if($this->_couchbaseInteractions === null)
+		{
+			$this->_couchbaseInteractions = new PzPHP_Library_Db_Couchbase_Interactions($this->_PzPHP);
+		}
+
+		return $this->_couchbaseInteractions;
+	}
+
+	/**
 	 * @return null|PzPHP_Library_Db_Mysqli_Interactions
 	 */
 	public function mysqliInteract()
@@ -49,19 +62,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		}
 
 		return $this->_mysqliInteractions;
-	}
-
-	/**
-	 * @return null|PzPHP_Library_Db_Mysql_Interactions
-	 */
-	public function mysqlInteract()
-	{
-		if($this->_mysqlInteractions === null)
-		{
-			$this->_mysqlInteractions = new PzPHP_Library_Db_Mysql_Interactions($this->_PzPHP);
-		}
-
-		return $this->_mysqlInteractions;
 	}
 
 	/**
@@ -97,13 +97,13 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		switch(PzPHP_Config::get('DATABASE_MODE'))
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
-				$this->_servers[] = new PzPHP_Library_Db_Mysqli_Server($user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'));
+				$this->_servers[] = new PzPHP_Library_Db_Mysqli_Server($this->pzphp(), $user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'));
 				break;
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				$this->_servers[] = new PzPHP_Library_Db_Mysql_Server($user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'));
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				$this->_servers[] = new PzPHP_Library_Db_Couchbase_Server($this->pzphp(), $user, $password, $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'));
 				break;
 			case PzPHP_Config::get('DATABASE_PDO'):
-				$this->_servers[] = new PzPHP_Library_Db_PDO_Server($user, $password, PzPHP_Config::get('DATABASE_PDO_MODE'), $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'), $pdoDriverOptions, $pdoServer, $pdoProtocol, $pdoSocket, $pdoCharset);
+				$this->_servers[] = new PzPHP_Library_Db_PDO_Server($this->pzphp(), $user, $password, PzPHP_Config::get('DATABASE_PDO_MODE'), $name, $host, $port, PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_ATTEMPTS'), PzPHP_Config::get('SETTING_DB_CONNECT_RETRY_DELAY_SECONDS'), $pdoDriverOptions, $pdoServer, $pdoProtocol, $pdoSocket, $pdoCharset);
 				break;
 			default:
 				throw new PzPHP_Exception('Invalid database mode provided.', PzPHP_Helper_Codes::DATABASE_INVALID_MODE);
@@ -170,7 +170,7 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 
 	/**
 	 * @param $serverId
-	 * @return PzPHP_Library_Db_Mysqli_Server|PzPHP_Library_Db_Mysql_Server|PzPHP_Library_Db_PDO_Server
+	 * @return PzPHP_Library_Db_Mysqli_Server|PzPHP_Library_Db_Couchbase_Server|PzPHP_Library_Db_PDO_Server
 	 * @throws PzPHP_Exception
 	 */
 	public function getActiveServer($serverId = -1)
@@ -197,8 +197,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->sanitize($value, true, $decimalPlaces, PzPHP_Library_Security_Cleanse::CLEAN_HTML_JS_STYLE_COMMENTS_HTMLENTITIES, $serverId);
 			default:
@@ -218,8 +218,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->sanitize($value, false, 2, $cleanHtmlLevel, $serverId);
 			default:
@@ -237,8 +237,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->getLastErrorCode($serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->getLastErrorCode($serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->getLastErrorCode($serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->getLastErrorCode($serverId);
 			default:
@@ -256,8 +256,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->getLastErrorMessage($serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->getLastErrorMessage($serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->getLastErrorMessage($serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->getLastErrorMessage($serverId);
 			default:
@@ -276,8 +276,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -296,8 +296,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -316,8 +316,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -336,8 +336,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -356,8 +356,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -376,8 +376,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->write($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->write($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->write($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->write($query, $serverId);
 			default:
@@ -396,8 +396,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->write($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->write($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->write($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->write($query, $serverId);
 			default:
@@ -416,8 +416,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->write($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->write($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->write($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->write($query, $serverId);
 			default:
@@ -436,8 +436,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -456,8 +456,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->read($query, $serverId);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->read($query, $serverId);
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->read($query, $serverId);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->read($query, $serverId);
 			default:
@@ -475,8 +475,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->insertId($this->getActiveServerId($serverId));
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->insertId($this->getActiveServerId($serverId));
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->insertId($this->getActiveServerId($serverId));
 			default:
@@ -495,8 +493,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->affectedRows($this->getActiveServerId($serverId));
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqliInteract()->affectedRows($this->getActiveServerId($serverId));
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return $this->pdoInteract()->affectedRows($queryObject, $this->getActiveServerId($serverId));
 			default:
@@ -514,8 +510,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return (is_object($object)?$object->num_rows:0);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return (is_resource($object)?mysql_num_rows($object):0);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return (is_object($object)?$object->rowCount():0);
 			default:
@@ -533,8 +527,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return (is_object($object)?$object->fetch_assoc():false);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return (is_resource($object)?mysql_fetch_assoc($object):false);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return (is_object($object)?$object->fetch(PDO::FETCH_ASSOC):false);
 			default:
@@ -552,8 +544,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return (is_object($object)?$object->fetch_row():false);
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return (is_resource($object)?mysql_fetch_row($object):false);
 			case PzPHP_Config::get('DATABASE_PDO'):
 				return (is_object($object)?$object->fetch(PDO::FETCH_NUM):false);
 			default:
@@ -572,13 +562,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 				if(is_object($object) && method_exists($object, 'close'))
 				{
 					$object->close();
-				}
-
-				break;
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				if(is_resource($object))
-				{
-					mysql_free_result($object);
 				}
 
 				break;
@@ -602,8 +585,8 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->selectDatabase($name, $this->getActiveServerId($serverId));
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->selectDatabase($name, $this->getActiveServerId($serverId));
+			case PzPHP_Config::get('DATABASE_COUCHBASE'):
+				return $this->couchbaseInteract()->selectDatabase($name, $this->getActiveServerId($serverId));
 			default:
 				return false;
 		}
@@ -622,8 +605,6 @@ class PzPHP_Module_Db extends PzPHP_Wrapper
 		{
 			case PzPHP_Config::get('DATABASE_MYSQLI'):
 				return $this->mysqliInteract()->changeUser($user, $password, $dbName, $this->getActiveServerId($serverId));
-			case PzPHP_Config::get('DATABASE_MYSQL'):
-				return $this->mysqlInteract()->mysqlChangeUser($user, $password, $dbName, $this->getActiveServerId($serverId));
 			default:
 				return false;
 		}

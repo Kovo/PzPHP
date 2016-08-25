@@ -1,5 +1,5 @@
 <?php
-class PzPHP_Library_Db_Mysql_Server
+class PzPHP_Library_Db_Mysql_Server extends PzPHP_Library_Abstract_Generic
 {
 	/**
 	 * @var int
@@ -70,8 +70,10 @@ class PzPHP_Library_Db_Mysql_Server
 	 * @param $connectRetries
 	 * @param $connectRetryWait
 	 */
-	function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
+	function __construct(PzPHP_Core $pzPHP_Core, $dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
 	{
+		parent::__construct($pzPHP_Core);
+
 		$this->_user = $dbUser;
 		$this->_password = $dbPassword;
 		$this->_dbName = $dbName;

@@ -1,5 +1,5 @@
 <?php
-class PzPHP_Library_Db_Mysqli_Server
+class PzPHP_Library_Db_Mysqli_Server extends PzPHP_Library_Abstract_Generic
 {
 	/**
 	 * @var int
@@ -73,8 +73,10 @@ class PzPHP_Library_Db_Mysqli_Server
 	 * @param $connectRetries
 	 * @param $connectRetryWait
 	 */
-	function __construct($dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
+	function __construct(PzPHP_Core $pzPHP_Core, $dbUser, $dbPassword, $dbName, $dbHost, $dbPort, $connectRetries, $connectRetryWait)
 	{
+		parent::__construct($pzPHP_Core);
+
 		$this->_user = $dbUser;
 		$this->_password = $dbPassword;
 		$this->_dbName = $dbName;
@@ -99,6 +101,8 @@ class PzPHP_Library_Db_Mysqli_Server
 			{
 				if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 				{
+					$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$this->_dbObject->connect_error.' | '.$this->_dbObject->connect_errno);
+
 					$this->_status = self::DISCONNECTED;
 
 					return false;
@@ -112,6 +116,8 @@ class PzPHP_Library_Db_Mysqli_Server
 
 					if($this->_dbObject->connect_error)
 					{
+						$this->pzphp()->log()->add(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), 'Excpetion during connection attempt: '.$this->_dbObject->connect_error.' | '.$this->_dbObject->connect_errno);
+
 						if(strpos($this->_dbObject->connect_error, 'access denied') !== false)
 						{
 							$this->_status = self::DISCONNECTED;

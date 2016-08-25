@@ -9,20 +9,32 @@
  */
 try
 {
-	###AUTOLOAD###
-	spl_autoload_register(function($className)
+	###USE WITH HTACCESS PROTECTION###
+	if(isset($_GET['action']) && $_GET['action'] === 'htaccessProtection')
 	{
-		$fileNameParts = explode('_', $className);
-		$fileName = __DIR__.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $fileNameParts).'.php';
+		exit();
+	}
 
-		if(file_exists($fileName))
+	###AUTOLOAD###
+	spl_autoload_register(function ($className, $fileExtensions = null ){
+		$className = str_replace ('_', '/', $className);
+		$className = str_replace ('\\', '/', $className);
+
+		$file = stream_resolve_include_path(__DIR__.DIRECTORY_SEPARATOR.$className.'.php');
+
+		if($file === false)
 		{
-			include $fileName;
+			$file = stream_resolve_include_path(__DIR__.DIRECTORY_SEPARATOR.strtolower($className.'.php'));
 		}
-		else
+
+		if($file !== false)
 		{
-			throw new Exception('Failed to load "'.$className.'"! File "'.$fileName.'" does not exist!');
+			include $file;
+
+			return true;
 		}
+
+		return false;
 	});
 
 	###BASE CONFIG###

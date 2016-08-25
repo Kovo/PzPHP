@@ -103,28 +103,31 @@ class PzPHP_Library_Security_Cleanse extends PzPHP_Wrapper
 	{
 		if(is_array($value) === false)
 		{
-			if($mustBeNumeric === true)
+			if($value === null)
 			{
-				if((string)(float)$value == $value)
-				{
-					return bcmul($value, 1, $decimalPlaces);
-				}
-				else
-				{
-					return bcmul($value, 1, 0);
-				}
+				$value = "NULL";
 			}
-
-			$value = self::cleanHTML($value, $cleanall); //clean html stuff
-
-			//good old php function as last defense
-			if(is_object($dbLinkRes))
+			else
 			{
-				$value = $dbLinkRes->real_escape_string($value);
-			}
-			elseif(is_resource($dbLinkRes))
-			{
-				$value = mysql_real_escape_string($value, $dbLinkRes);
+				if($mustBeNumeric === true)
+				{
+					if((string)(float)$value == $value)
+					{
+						return bcmul($value, 1, $decimalPlaces);
+					}
+					else
+					{
+						return bcmul($value, 1, 0);
+					}
+				}
+
+				$value = self::cleanHTML($value, $cleanall); //clean html stuff
+
+				//good old php function as last defense
+				if(is_object($dbLinkRes) && method_exists($dbLinkRes, 'real_escape_string'))
+				{
+					$value = $dbLinkRes->real_escape_string($value);
+				}
 			}
 
 			//we are done!
