@@ -71,6 +71,9 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}
@@ -124,6 +127,9 @@ class PzPHP_Library_Db_Couchbase_Interactions extends PzPHP_Library_Abstract_Int
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}

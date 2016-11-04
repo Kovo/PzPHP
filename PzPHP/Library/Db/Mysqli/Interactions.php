@@ -69,6 +69,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}
@@ -214,6 +217,9 @@ class PzPHP_Library_Db_Mysqli_Interactions extends PzPHP_Library_Abstract_Intera
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}

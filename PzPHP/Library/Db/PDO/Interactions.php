@@ -69,6 +69,9 @@ class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interacti
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}
@@ -205,6 +208,9 @@ class PzPHP_Library_Db_PDO_Interactions extends PzPHP_Library_Abstract_Interacti
 			}
 			else
 			{
+				$this->_lastErrorMsg[$serverId] = null;
+				$this->_lastErrorNo[$serverId] = null;
+
 				return $result;
 			}
 		}
