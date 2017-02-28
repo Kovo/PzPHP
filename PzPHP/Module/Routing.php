@@ -323,6 +323,10 @@ class PzPHP_Module_Routing extends PzPHP_Wrapper
 					$finalRouteValues['terms'] = array('lang' => '')+$finalRouteValues['terms'];
 				}
 
+				## Save current values
+				$this->_currentRoute    = $identifier;
+				$this->_currentTerms    = isset($finalRouteValues['terms'])? $finalRouteValues['terms']:array();				
+				
 				return $this->_listenFinalExecutions($finalRouteValues);
 			}
 			else
