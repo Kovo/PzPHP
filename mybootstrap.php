@@ -12,6 +12,7 @@
 		->registerLog(PzPHP_Config::get('SETTING_MYSQL_ERROR_LOG_FILE_NAME'), PzPHP_Config::get('LOGS_DIR').'MYSQL')
 		->warmup();
 
+	PzPHP_Config::loadFile($PZPHP_CONFIG_ARRAY['BASE_DIR'].'my_config.php');
 	PzPHP_Config::loadConfig('my_config');
 
 	$_PZPHP->routing()->setSiteUrl(PzPHP_Config::get('ROOT_URL'));
