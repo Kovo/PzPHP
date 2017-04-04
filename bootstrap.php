@@ -43,6 +43,7 @@ try
 
 	###INIT CONFIG###
 	PzPHP_Config::loadArray($PZPHP_CONFIG_ARRAY);
+	PzPHP_Config::loadFile($PZPHP_CONFIG_ARRAY['BASE_DIR'].'config.php');
 	PzPHP_Config::loadConfig('config');
 
 	###INIT PZPHP###
