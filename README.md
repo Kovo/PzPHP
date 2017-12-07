@@ -1,4 +1,4 @@
-* Please note that PzPHP has been completely redesigned for PHP 7.1+. To use the new framework, checkout LowCal PHP: https://github.com/Kovo/LowCalPHP *
+* Please note that PzPHP has been completely redesigned for PHP 7.1+. To use the new framework, checkout LowCal PHP: https://github.com/Kovo/LowCalPHP
 
 PzPHP
 ======
